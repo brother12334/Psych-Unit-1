@@ -1,0 +1,735 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Psych Unit 1 Study Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a study bench — one column, sticky deck filter, three tools (guide, flashcards, quiz) sharing one mastery record */
+:root{
+  --bg:#f2f4f7; --surface:#ffffff; --surface-2:#f8f9fb; --ink:#15202b; --muted:#566373; --line:#d8dee6;
+  --accent:#2a55c8; --accent-ink:#ffffff; --accent-soft:#e2e9fb;
+  --good:#1d7f55; --good-soft:#dcf1e7; --bad:#b93a26; --bad-soft:#f9e1dc; --warn-soft:#fbf1cf; --warn-ink:#6b5208;
+  --d-neuron:#c2410c; --d-nt:#7c3aed; --d-ns:#0f766e; --d-brain:#be185d; --d-vision:#1d4ed8; --d-senses:#a16207;
+  --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e141b; --surface:#161f29; --surface-2:#1b2633; --ink:#e7ecf1; --muted:#97a4b2; --line:#2a3745;
+  --accent:#86a6ff; --accent-ink:#0e141b; --accent-soft:#1c2a47;
+  --good:#52c98f; --good-soft:#143326; --bad:#ff8d76; --bad-soft:#3a1d18; --warn-soft:#3a3115; --warn-ink:#f1d675;
+  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e141b; --surface:#161f29; --surface-2:#1b2633; --ink:#e7ecf1; --muted:#97a4b2; --line:#2a3745;
+  --accent:#86a6ff; --accent-ink:#0e141b; --accent-soft:#1c2a47;
+  --good:#52c98f; --good-soft:#143326; --bad:#ff8d76; --bad-soft:#3a1d18; --warn-soft:#3a3115; --warn-ink:#f1d675;
+  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:920px;margin:0 auto;padding-inline:16px;padding-block:24px 64px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(1.7rem,4.5vw,2.4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.45rem;font-weight:700}
+h3{font-size:1.02rem;font-weight:700}
+.label{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header.top{display:grid;gap:14px;margin-bottom:18px}
+.meter{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.bar{flex:1 1 220px;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--good);border-radius:99px;transition:width .3s}
+.meter b{font-variant-numeric:tabular-nums}
+
+.sticky{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:grid;gap:10px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;width:max-content;max-width:100%}
+.tabs button{border:0;background:none;padding:8px 16px;border-radius:999px;font-weight:700}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);padding:5px 11px;border-radius:999px;font-size:.88rem}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+.chip small{font-family:var(--mono);font-size:.7rem;opacity:.8;font-variant-numeric:tabular-nums}
+
+/* Guide */
+.deck{margin-bottom:40px}
+.deck-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.deck-head .dot{width:12px;height:12px;align-self:center}
+.deck-sub{color:var(--muted);margin:0 0 16px;max-width:65ch}
+.chain{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:14px}
+.chain ol{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chain li{display:flex;align-items:center;gap:6px}
+.chain li span{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:3px 9px;font-size:.9rem}
+.chain li+li::before{content:"→";color:var(--muted)}
+.tree{font-family:var(--mono);font-size:.82rem;line-height:1.7;white-space:pre;overflow-x:auto;margin:8px 0 0}
+.sec{margin:22px 0 8px}
+.rows{display:grid;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:minmax(120px,190px) 1fr auto;gap:6px 16px;padding:11px 0;border-bottom:1px solid var(--line);align-items:start}
+.row .t{font-weight:700}
+.row .x{min-width:0}
+.hook{display:block;margin-top:4px;font-size:.88rem;color:var(--accent)}
+.know{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:4px 9px;font-size:.78rem;white-space:nowrap}
+.know[aria-pressed="true"]{background:var(--good-soft);border-color:var(--good);color:var(--good);font-weight:700}
+@media (max-width:560px){.row{grid-template-columns:1fr auto}.row .x{grid-column:1 / -1;grid-row:2}}
+.watch{background:var(--warn-soft);color:var(--warn-ink);border-radius:var(--r);padding:12px 14px;margin-top:16px;font-size:.93rem}
+.watch b{display:block;margin-bottom:2px}
+.compare{width:100%;border-collapse:collapse;font-size:.92rem;min-width:520px}
+.compare th,.compare td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.compare th{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-top:12px}
+
+/* Flashcards */
+.fc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.toggle{display:flex;gap:6px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 14px;font-weight:700}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.good{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.btn.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.btn.small{padding:6px 10px;font-size:.85rem;font-weight:400}
+.btn[aria-pressed="true"]{border-color:var(--ink)}
+.card{width:100%;min-height:260px;border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:28px 24px;display:grid;place-items:center;text-align:center;box-shadow:0 1px 0 var(--line),0 12px 30px -18px rgba(0,0,0,.35);position:relative}
+.card .face{max-width:58ch}
+.card .big{font-family:var(--display);font-size:clamp(1.6rem,5vw,2.3rem);font-weight:800;letter-spacing:-.01em;line-height:1.15}
+.card .def{font-size:1.08rem}
+.card .corner{position:absolute;top:14px;left:16px;display:flex;gap:7px;align-items:center}
+.card .flipnote{position:absolute;bottom:12px;left:0;right:0;font-size:.8rem;color:var(--muted)}
+.fc-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.fc-actions .btn{padding:13px}
+.kbd{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-top:10px;text-align:center}
+.done{text-align:center;padding:40px 16px;background:var(--surface);border:1px solid var(--line);border-radius:18px}
+
+/* Quiz */
+.qbox{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}
+.qmeta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.qprompt{font-size:1.15rem;font-weight:700;margin:0 0 16px;max-width:65ch}
+.qprompt .ask{display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start}
+.opt .k{font-family:var(--mono);font-size:.78rem;border:1px solid var(--line);border-radius:6px;padding:1px 7px;flex:none;margin-top:2px}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.explain{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line)}
+.explain b.ok{color:var(--good)} .explain b.no{color:var(--bad)}
+.qnav{display:flex;justify-content:flex-end;margin-top:14px}
+.setup{display:grid;gap:16px}
+.setup p{margin:0;color:var(--muted);max-width:65ch}
+.score{font-family:var(--display);font-size:3rem;font-weight:800;font-variant-numeric:tabular-nums}
+.missed{display:grid;gap:8px;margin-top:14px;text-align:left}
+.missed div{border-left:3px solid var(--bad);padding:6px 12px;background:var(--surface-2);border-radius:0 8px 8px 0;font-size:.93rem}
+.empty{color:var(--muted);padding:20px 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="label">AP Psychology · Unit 1 · Biological bases of behavior</div>
+      <h1>Psych Unit 1 Study Kit</h1>
+    </div>
+    <div class="meter">
+      <div class="bar" aria-hidden="true"><i id="mbar" style="width:0%"></i></div>
+      <span><b id="mcount">0</b> of <b id="mtotal">0</b> terms marked “got it”</span>
+      <button class="btn small" id="reset">Reset progress</button>
+    </div>
+  </header>
+
+  <div class="sticky">
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="learn" aria-selected="true">Learn</button>
+      <button role="tab" data-tab="guide" aria-selected="false">Study guide</button>
+      <button role="tab" data-tab="cards" aria-selected="false">Flashcards</button>
+      <button role="tab" data-tab="quiz" aria-selected="false">Quiz</button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <main id="view"></main>
+</div>
+
+<script>
+const DECKS = [
+  {id:'neuron', name:'The Neuron', sub:'Parts of a neuron, how it fires, and two diseases that disrupt it.'},
+  {id:'nt', name:'Neurotransmitters', sub:'Excitatory vs. inhibitory, and what each chemical does — plus what too much or too little looks like.'},
+  {id:'ns', name:'Nervous & Endocrine Systems', sub:'How the nervous system is divided, the three neuron types, and the hormones you need to know.'},
+  {id:'brain', name:'The Brain', sub:'Old brain, limbic system, the four lobes (F-POT), lateralization, plasticity, and brain scans.'},
+  {id:'vision', name:'Vision', sub:'The path light takes, rods and cones, color theories, Gestalt grouping, and depth cues.'},
+  {id:'senses', name:'Hearing, Smell, Taste, Touch & more', sub:'Sound waves, hearing loss, balance, smell, taste, pain, and unusual perception.'}
+];
+
+// [deck, section, term, definition, hook?]
+const RAW = [
+['neuron','Parts of a neuron','Neuron','A nerve cell; the basic building block of the brain and nervous system. Hundreds of billions form networks throughout the body.'],
+['neuron','Parts of a neuron','Glial cells (glia)','Support cells in the brain that nourish and protect neurons. Your slides say there are about 50x more of them than neurons.','"Glia" = glue: they hold the system together.'],
+['neuron','Parts of a neuron','Dendrites','Branch-like structures extending from the cell body. Their receptors receive chemical signals from other neurons.','Dendrites = Detect.'],
+['neuron','Parts of a neuron','Soma','The cell body. Holds the nucleus, keeps the cell alive, and decides when the neuron will fire.'],
+['neuron','Parts of a neuron','Axon','The long pathway an electrical impulse travels down when the neuron fires.','Axon = Away from the cell body.'],
+['neuron','Parts of a neuron','Myelin sheath','Fatty coating that protects the axon and speeds up the electrical signal.','Like insulation on a wire.'],
+['neuron','Parts of a neuron','Terminal branches','The frayed ends of the axon. Each one ends in a terminal button.'],
+['neuron','Parts of a neuron','Terminal buttons','Knobs at the ends of the terminal branches that hold the vesicles.'],
+['neuron','Parts of a neuron','Vesicles','Tiny sacs in the terminal buttons that store neurotransmitters.'],
+['neuron','Parts of a neuron','Synapse','The gap between two neurons (also called the synaptic cleft or synaptic gap). Neurons never actually touch.'],
+['neuron','Firing a neuron','Resting potential','The neuron is not firing; its dendrites are waiting to receive neurotransmitters.'],
+['neuron','Firing a neuron','Threshold','The level of stimulation the dendrites must receive before the neuron will fire.'],
+['neuron','Firing a neuron','Action potential','The electrical signal that the soma starts once threshold is reached; it travels down the axon.'],
+['neuron','Firing a neuron','All-or-none principle','A neuron either fires completely or not at all. It never partially fires, and a stronger stimulus does not make a stronger firing.','Like a gun: you either pull the trigger or you don\'t.'],
+['neuron','Firing a neuron','Reuptake','Leftover neurotransmitters in the synapse get reabsorbed by the neuron that released them.'],
+['neuron','Firing a neuron','Refractory period','The recovery time after firing when the neuron cannot fire again, no matter how many neurotransmitters it receives.','Like a toilet: you have to wait to flush again.'],
+['neuron','Diseases','Multiple sclerosis (MS)','Disease caused by deterioration of the myelin sheath (demyelination). Causes trouble with movement and walking.','MS = Myelin Sheath.'],
+['neuron','Diseases','Myasthenia gravis','Autoimmune disorder where antibodies block or destroy the muscles\' receptor sites for acetylcholine, causing muscle weakness.'],
+
+['nt','Basics','Neurotransmitter','A chemical messenger released into the synapse that carries a signal from one neuron to the next.'],
+['nt','Basics','Excitatory','Describes a neurotransmitter that makes the next neuron more likely to fire.','Excite = Go.'],
+['nt','Basics','Inhibitory','Describes a neurotransmitter that keeps the next neuron from firing.','Inhibit = Stop.'],
+['nt','The chemicals','Acetylcholine (ACh)','Mainly controls movement (muscle action) and also plays a role in memory. Found in both the central and peripheral nervous systems. Too little is linked to Alzheimer\'s; too much causes muscle spasms; blocked receptors cause paralysis.','ACh = ACTion (muscles) + Alzheimer\'s.'],
+['nt','The chemicals','Dopamine','The "pleasure chemical": reward pathway, anticipating something good, movement, alertness, and motor coordination. Low levels are linked to Parkinson\'s and addictive behaviors; high levels are linked to schizophrenia.','Low = Parkinson\'s shakes. High = schizophrenia.'],
+['nt','The chemicals','Serotonin','Affects mood, emotion, appetite, and sleep. High levels mean more happiness; low levels are linked to depression, anger-control problems, and OCD.'],
+['nt','The chemicals','SSRI','Selective serotonin reuptake inhibitor. An antidepressant that blocks reuptake so serotonin stays in the synapse longer.'],
+['nt','The chemicals','Norepinephrine','Acts as both a neurotransmitter and a hormone (noradrenaline). Drives the sympathetic fight-or-flight response, plus focus, attention, and quick decisions. High levels are linked to developing fears; low levels to depression and ADHD.'],
+['nt','The chemicals','GABA','Gamma-aminobutyric acid: the primary inhibitory neurotransmitter. A natural tranquilizer that calms the nervous system. Too little is linked to anxiety disorders; too much causes sleepiness.','GABA = Gotta Always Be Asleep.'],
+['nt','The chemicals','Glutamate','The major excitatory neurotransmitter. Involved in thinking, memory, and learning. Too much is linked to high anxiety, OCD, and migraines.','Glutamate = Go.'],
+['nt','The chemicals','Endorphins','The brain\'s natural painkillers, released by the pituitary gland. Relieve pain and stress; example: runner\'s high.','"Endogenous morphine."'],
+['nt','The chemicals','Substance P','Involved in pain regulation (sending pain signals). Levels rise with stress, heat, and painful stimuli.','P = Pain.'],
+
+['ns','Functions & neurons','Three functions of the nervous system','Sensory input (gather info from the senses), integration (the brain processes it and decides), and motor output (signals go to muscles and glands).'],
+['ns','Functions & neurons','Sensory (afferent) neurons','Carry messages from sensory receptors in to the brain and spinal cord.','Afferent = Arrive.'],
+['ns','Functions & neurons','Motor (efferent) neurons','Carry signals from the brain and spinal cord out to muscles and organs.','Efferent = Exit.'],
+['ns','Functions & neurons','Interneurons','Relay neurons in the brain and spinal cord that connect sensory and motor neurons and pass information between them.','Inter = in between.'],
+['ns','Divisions','Central nervous system (CNS)','The brain and the spinal cord.'],
+['ns','Divisions','Spinal cord','The "highway" connecting the brain to the rest of the body; sends messages both ways.'],
+['ns','Divisions','Peripheral nervous system (PNS)','All the nerves outside the brain and spinal cord, connecting them to the rest of the body.'],
+['ns','Divisions','Nerves','Bundles of neurons that act like wires carrying messages to and from the brain and spinal cord.'],
+['ns','Divisions','Somatic nervous system','Part of the peripheral system that controls voluntary movements, like walking or picking up a pencil.','Soma = body you move on purpose.'],
+['ns','Divisions','Autonomic nervous system','Part of the peripheral system that controls involuntary actions like heartbeat and digestion. Split into sympathetic and parasympathetic.','Autonomic = automatic.'],
+['ns','Divisions','Sympathetic nervous system','Arouses the body: the fight, flight, or freeze response.','Sympathetic = Stressed.'],
+['ns','Divisions','Parasympathetic nervous system','Calms the body back down: rest and digest.','Parasympathetic = Peace (or a Parachute down).'],
+['ns','Divisions','Reflex','A simple, automatic response to a stimulus (like the knee-jerk), directed by the spinal cord instead of the brain, which makes it faster.'],
+['ns','Endocrine system','Endocrine system','The system of glands that releases and regulates hormones.'],
+['ns','Endocrine system','Hormones vs. neurotransmitters','Hormones travel through the bloodstream, so they act more slowly than neurotransmitters, but their effects last longer.'],
+['ns','Endocrine system','Pituitary gland','The "master gland." Regulates stress, growth, and reproduction and signals the other glands to release their hormones.'],
+['ns','Endocrine system','Adrenaline','Hormone from the adrenal glands (on top of the kidneys). Raises heart rate, blood pressure, and blood sugar for the fight-or-flight energy surge.'],
+['ns','Endocrine system','Ghrelin','Hunger hormone made in the stomach; tells the body you are hungry.','Ghrelin = Growling stomach.'],
+['ns','Endocrine system','Leptin','Hormone that tells the body you are full (satiety). Your slides say it is made in the small intestine.','Leptin = Leave the table.'],
+['ns','Endocrine system','Testosterone','Sex hormone made in the testes and ovaries; the hormone most responsible for sex drive. Men have more. Too much is linked to aggression.'],
+['ns','Endocrine system','Estrogen','Sex hormone important for reproduction; women have more of it.'],
+['ns','Endocrine system','Oxytocin','The "love" or social-bonding hormone. Made by the hypothalamus and released by the pituitary. Important in labor, mother–baby bonding, and bonding with friends and partners. Low levels are linked to postpartum depression.'],
+['ns','Endocrine system','Melatonin','Hormone from the pineal gland, released in response to darkness. Regulates circadian rhythm (sleep-wake cycle) and helps you sleep.'],
+
+['brain','Old brain','Brainstem','The medulla plus the pons; handles automatic survival functions.'],
+['brain','Old brain','Medulla','Base of the brainstem; controls life-sustaining functions like breathing and heartbeat.','Medulla = Most important (keeps you alive).'],
+['brain','Old brain','Pons','Connects the spinal cord to the brain; involved in automatic processes, especially the sleep-wake cycle.','Pons = bridge (French "pont").'],
+['brain','Old brain','Reticular formation','Network in the brainstem (part of the pons, per your slides) that controls arousal and consciousness. Damage can cause a coma.'],
+['brain','Old brain','Thalamus','Sits on top of the brainstem; the brain\'s sensory relay station. All senses except smell get routed through it.','Thalamus = sensory switchboard.'],
+['brain','Old brain','Cerebellum','"Little brain" at the back. Handles fine motor control, coordination, posture, and balance, plus learned motor skills like riding a bike. Alcohol strongly affects it.','Cerebellum = balance (think "bell" ringing while you wobble).'],
+['brain','Limbic system','Limbic system','Brain structures involved in emotion and long-term memory: the amygdala, hippocampus, and hypothalamus.'],
+['brain','Limbic system','Amygdala','Processes emotion, especially fear and aggression. Triggers fight-or-flight, helps read others\' emotions, and helps store emotional memories.','Two almonds of fear.'],
+['brain','Limbic system','Hippocampus','Helps store information into long-term memory. One of the first areas damaged by Alzheimer\'s.','A hippo never forgets.'],
+['brain','Limbic system','Hypothalamus','Regulates the autonomic nervous system and monitors body temperature, thirst, hunger, and sexual responses.','The 4 Fs: feeding, fighting, fleeing, and mating.'],
+['brain','Limbic system','Lateral hypothalamus (LH)','Part of the hypothalamus that triggers feelings of hunger. Damage → loss of hunger.','Lateral = Lunch.'],
+['brain','Limbic system','Ventromedial hypothalamus (VMH)','Part of the hypothalamus that signals fullness. Damage → overeating.','Ventromedial = Very full.'],
+['brain','Cerebral cortex','Cerebral cortex','The wrinkled outer layer of the brain, split into a left and right hemisphere. Its four lobes: frontal, parietal, occipital, temporal (F-POT).'],
+['brain','Cerebral cortex','Frontal lobe','Front of the brain; home of the prefrontal cortex, motor cortex, and Broca\'s area.'],
+['brain','Cerebral cortex','Prefrontal cortex','Front of the frontal lobe; executive functions — judgment, planning, reasoning, problem solving, moral judgment, and personality.'],
+['brain','Cerebral cortex','Motor cortex','Strip at the rear of the frontal lobe that controls voluntary movement.','Motor is in front of Sensory (somatosensory) — "M before S."'],
+['brain','Cerebral cortex','Broca\'s area','Left frontal lobe, next to the motor cortex; controls speech production.','Broca = broken speech.'],
+['brain','Cerebral cortex','Broca\'s aphasia','Difficulty producing speech; sentences are short and simple, often just a noun and a verb, but understanding is mostly fine.'],
+['brain','Cerebral cortex','Phineas Gage','Railroad worker who had an iron rod driven through his prefrontal cortex. His personality changed: irritable, profane, dishonest, poor emotional control.'],
+['brain','Cerebral cortex','Parietal lobe','Top of the brain; processes body sensations (touch, pressure, temperature, pain) and spatial orientation.'],
+['brain','Cerebral cortex','Somatosensory cortex','Strip in the parietal lobe, directly behind the motor cortex, that registers touch and body movement sensations.'],
+['brain','Cerebral cortex','Temporal lobe','Side of the brain, above the ears; hearing, language processing, and long-term memory storage.','Temporal = by your temples, near your ears.'],
+['brain','Cerebral cortex','Primary auditory cortex','Area in the temporal lobe where hearing is processed.'],
+['brain','Cerebral cortex','Wernicke\'s area','Temporal lobe area for comprehending written and spoken language.','Wernicke = words don\'t make sense.'],
+['brain','Cerebral cortex','Wernicke\'s aphasia','Difficulty understanding and expressing language; speech can flow but makes little sense.'],
+['brain','Cerebral cortex','Occipital lobe','Back of the brain; processes visual information. Has neurons that recognize lines, angles, shapes, and movement. Damage can cause blindness.','Occipital = Optical.'],
+['brain','Hemispheres','Corpus callosum','Large band of neural fibers connecting the left and right hemispheres so they can communicate.'],
+['brain','Hemispheres','Brain lateralization','The tendency for certain functions to be specialized to one side of the brain.'],
+['brain','Hemispheres','Contralateral control','Each side of the brain controls the opposite side of the body: right brain → left body, left brain → right body.'],
+['brain','Hemispheres','Left hemisphere','Speech, language, and comprehension; math calculations; time and sequencing; recognizing words, letters, and numbers; controls the right side of the body.','Left = Language and Logic.'],
+['brain','Hemispheres','Right hemisphere','Spatial ability; recognizing faces, places, and objects; perceiving and expressing emotion; tone and emphasis in speech; controls the left side of the body.'],
+['brain','Change & damage','Plasticity','The brain\'s ability to change — reorganizing after damage or building new pathways through experience. Example: in a blind Braille reader, touch takes over parts of the visual cortex.','Plastic = moldable.'],
+['brain','Change & damage','Neurogenesis','The formation of new neurons. Only happens in two areas (one for memory, one for smell); usually a destroyed neuron cannot be replaced.'],
+['brain','Brain scans','EEG','Electroencephalogram: electrodes on the scalp record the brain\'s electrical activity (brain waves). Used to find seizures.','E = Electrical.'],
+['brain','Brain scans','PET scan','Positron emission tomography: radioactive glucose is injected and the scan shows where it is being used — which regions are active.'],
+['brain','Brain scans','CT scan','X-rays that show brain structure — the shape and position of structures. Helps find tumors.'],
+['brain','Brain scans','MRI','Magnetic resonance imaging: strong magnetic pulses build a detailed picture of brain structure (tissue, tumors, clots).'],
+['brain','Brain scans','fMRI','Functional MRI: shows brain function by measuring blood flow and oxygen use. More precise than PET.','f = function.'],
+
+['vision','The eye','Cornea','Clear, protective outer layer where light first enters the eye.'],
+['vision','The eye','Iris','Colored muscle that surrounds the pupil and controls its size. Unique enough to identify you (iris scanners).'],
+['vision','The eye','Pupil','Small adjustable opening that lets light through.'],
+['vision','The eye','Lens','Transparent structure behind the pupil that changes shape to focus images on the retina.'],
+['vision','The eye','Accommodation','The lens changing shape to focus on near or far objects.'],
+['vision','The eye','Retina','Light-sensitive inner surface at the back of the eye containing rods and cones. Where transduction happens.'],
+['vision','The eye','Transduction','Converting one form of energy (like light) into neural impulses the brain can understand.'],
+['vision','The eye','Rods','Retina receptors for black-and-white vision; let you see in dim light.','Rods = Reduced light.'],
+['vision','The eye','Cones','Retina receptors for color and fine detail; work poorly in dim light.','Cones = Color.'],
+['vision','The eye','Dark adaptation','In darkness the pupils dilate to let more light reach the retina; it takes about 20 minutes.'],
+['vision','The eye','Bipolar cells','Connect the rods and cones to the ganglion cells.'],
+['vision','The eye','Ganglion cells','Cells whose axons bundle together to form the optic nerve.'],
+['vision','The eye','Optic nerve','Carries neural impulses from the eye to the brain.'],
+['vision','In the brain','Primary visual cortex','Where visual input is first processed; located in the occipital lobe.'],
+['vision','In the brain','Feature detectors','Neurons in the visual cortex that respond to specific features like shape, angle, or movement.'],
+['vision','In the brain','Parallel processing','Processing many aspects of a stimulus (color, motion, form, depth) at the same time, then combining them into one image.'],
+['vision','Color','Trichromatic theory','The retina has three types of color receptors — red, green, and blue — that combine to produce any color. Explains color at the retina level.','Tri = three cones.'],
+['vision','Color','Color blindness','Inability to see colors normally, usually from impaired red or green cones (rarely blue).'],
+['vision','Color','Opponent-process theory','Color is processed by opposing pairs — red/green, yellow/blue, white/black — and a cell can signal only one of each pair at a time. Explains color in the brain and afterimages.'],
+['vision','Color','Afterimage','A visual image that persists after the stimulus is removed — e.g., stare at green, then see red on a white wall.'],
+['vision','Color','Which color theory is right?','Both. Trichromatic explains how the retina detects color; opponent-process explains how the brain processes it.'],
+['vision','Gestalt','Gestalt','An organized whole. Gestalt psychologists said we combine pieces of information into meaningful wholes (you see a face, not a set of lines).'],
+['vision','Gestalt','Proximity','Grouping objects that are close together (how you see separate words on a page).'],
+['vision','Gestalt','Similarity','Grouping objects that look alike.'],
+['vision','Gestalt','Closure','Filling in gaps to see a complete, closed shape.'],
+['vision','Gestalt','Figure-ground','Organizing what you see into objects (figures) that stand out from their surroundings (ground).'],
+['vision','Depth','Depth perception','The ability to judge how far away an object is.'],
+['vision','Depth','Binocular cues','Depth cues that need both eyes.','Bi = two eyes.'],
+['vision','Depth','Retinal disparity','A binocular cue: because your eyes are about 2.5 inches apart, each retina gets a slightly different image; the bigger the difference, the closer the object.'],
+['vision','Depth','Monocular cues','Depth cues that work with just one eye; used for farther distances.','Mono = one eye.'],
+['vision','Depth','Relative size','Monocular cue: if two objects are assumed to be the same size, the one that looks smaller seems farther away.'],
+['vision','Depth','Interposition','Monocular cue: an object that blocks part of another is seen as closer.'],
+['vision','Depth','Linear perspective','Monocular cue: parallel lines seem to converge in the distance (train tracks).'],
+['vision','Depth','Relative clarity','Monocular cue: sharp, clear objects seem closer; hazy ones seem farther away.'],
+
+['senses','Hearing','Audition','The sense of hearing.'],
+['senses','Hearing','Amplitude','The height of a sound wave; determines loudness. High amplitude = loud.','Amplitude = Amplifier (volume).'],
+['senses','Hearing','Frequency','Number of wavelengths passing a point in a given time; determines pitch. High frequency = high pitch; low frequency = bass.'],
+['senses','Hearing','Sound localization','Telling where a sound comes from: the nearer ear hears it slightly louder and slightly sooner.'],
+['senses','Hearing','Eardrum','Membrane between the outer and middle ear that vibrates when sound waves hit it. (Standard ear part; check the ear diagram slide.)'],
+['senses','Hearing','Ossicles','Three tiny bones in the middle ear (hammer, anvil, stirrup) that pass vibrations to the cochlea. (Check the ear diagram slide.)'],
+['senses','Hearing','Cochlea','Snail-shaped, fluid-filled tube in the inner ear whose hair cells turn vibrations into neural signals. (Check the ear diagram slide.)'],
+['senses','Hearing','Conduction hearing loss','Damage to the parts that conduct sound through the outer and middle ear (eardrum, ossicles, auditory canal). Can be fixed with surgery.','Conduction = Correctable.'],
+['senses','Hearing','Sensorineural hearing loss','Nerve deafness: damage to the cochlea\'s hair cells or the auditory nerve (inner ear). Cannot be reversed.'],
+['senses','Hearing','Cochlear implant','Device wired into the cochlea that turns sounds into electrical signals sent up the auditory nerve. Used for sensorineural hearing loss.'],
+['senses','Body position','Vestibular sense','Senses the head\'s position and movement (balance) using fluid in the semicircular canals and vestibular sacs. Signals go to the cerebellum. The fluid keeps moving after you stop, which causes dizziness.','Vestibular = balance in the ear.'],
+['senses','Body position','Kinesthesis','Senses the position and movement of individual body parts using sensors in muscles, tendons, and joints; feeds the cerebellum.','Kinesthesis = kinetic body parts.'],
+['senses','Smell & taste','Olfaction','The sense of smell. Receptors at the top of the nasal cavity detect inhaled particles. Smell skips the thalamus and goes to areas connected to the limbic system.'],
+['senses','Smell & taste','Gustation','The sense of taste. The tongue has about 200 taste buds, each with 50–100 receptors; taste buds regenerate about every two weeks.'],
+['senses','Smell & taste','Five basic tastes','Sweet, sour, salty, bitter, and umami (savory/protein).'],
+['senses','Smell & taste','Supertasters','People with more taste buds than average, who experience tastes and pain more intensely (e.g., jalapeños burn more).'],
+['senses','Smell & taste','Sensory interaction','One sense influencing another — like smell affecting taste (holding your nose to take bad medicine).'],
+['senses','Touch & pain','Touch','A mix of four skin senses: pressure, warmth, cold, and pain.'],
+['senses','Touch & pain','Gate control theory','The spinal cord has a neurological "gate" that either blocks pain signals or lets them through to the brain. Distraction can close the gate.'],
+['senses','Touch & pain','Phantom limb','Feeling that an amputated limb is still there, because the sensory cortex area for that limb still has activity.'],
+['senses','Unusual perception','Synesthesia','When one sense triggers another — like hearing music or seeing a number and experiencing a color.'],
+['senses','Unusual perception','Prosopagnosia','Face blindness: the inability to recognize faces.']
+];
+
+const CARDS = RAW.map((r,i)=>({id:r[0]+'-'+i, d:r[0], s:r[1], t:r[2], x:r[3], h:r[4]||''}));
+
+const CHAINS = {
+  neuron:[
+    {label:'Path of a signal through a neuron', steps:['Dendrites','Soma','Axon (myelin)','Terminal branches','Terminal buttons / vesicles','Synapse','Next neuron\'s dendrites']},
+    {label:'Firing sequence', steps:['Resting potential','Threshold reached','Action potential','Neurotransmitters released','Reuptake','Refractory period','Back to resting']}
+  ],
+  vision:[
+    {label:'Path of light to the brain', steps:['Cornea','Pupil (sized by iris)','Lens','Retina: rods & cones','Bipolar cells','Ganglion cells','Optic nerve','Thalamus','Visual cortex (occipital)']}
+  ],
+  senses:[
+    {label:'Path of sound', steps:['Outer ear / auditory canal','Eardrum','Ossicles','Cochlea (hair cells)','Auditory nerve','Thalamus','Auditory cortex (temporal)']}
+  ]
+};
+const TREE = `Nervous system
+├── Central (CNS): brain + spinal cord
+└── Peripheral (PNS): all other nerves
+    ├── Somatic: voluntary movement
+    └── Autonomic: involuntary (heart, digestion)
+        ├── Sympathetic: fight / flight / freeze
+        └── Parasympathetic: rest and digest`;
+
+const WATCH = {
+  nt:['Excitatory vs. inhibitory list from your slides — Excitatory: glutamate (major), ACh, norepinephrine, substance P. Inhibitory: GABA (major), dopamine, serotonin, endorphins.','Your slide spells norepinephrine\'s hormone name "non-adrenaline." The real word is noradrenaline. Also, many textbooks say dopamine can act both ways; for your test, go with your teacher\'s list.'],
+  ns:['The melatonin slide says the pineal gland is "in the thalamus." It actually sits near the thalamus, deep in the brain.'],
+  senses:['The vestibular slide says the vestibular sacs are "of the cochlea." They sit right next to the cochlea in the inner ear but aren\'t part of it.','Parts of the ear and eye come from diagram slides with no text. If your test has a labeling question, look at those slides directly.'],
+  brain:['F-POT order front to back along the top: Frontal, Parietal, Occipital — with Temporal on the sides.','Scans: structure only = CT, MRI. Activity/function = PET, fMRI, EEG.']
+};
+
+const COMPARE_NT = [
+  ['Acetylcholine','Movement, memory','Alzheimer\'s','Muscle spasms'],
+  ['Dopamine','Reward, movement, alertness','Parkinson\'s, addiction','Schizophrenia'],
+  ['Serotonin','Mood, appetite, sleep','Depression, OCD, anger','Happiness'],
+  ['Norepinephrine','Fight-or-flight, focus','Depression, ADHD','Developing fears'],
+  ['GABA','Calming (main inhibitory)','Anxiety disorders','Sleepiness'],
+  ['Glutamate','Thinking, memory (main excitatory)','—','Anxiety, OCD, migraines'],
+  ['Endorphins','Natural painkiller','—','—'],
+  ['Substance P','Pain signals','—','—']
+];
+
+// Scenario questions: [deck, prompt, [options], correctIndex, explanation]
+const SCEN = [
+['neuron','A neuron gets stimulation that is just below threshold. What happens?',['It fires weakly','It does not fire','It fires more slowly','It enters the refractory period'],1,'All-or-none principle: no threshold, no action potential.'],
+['neuron','Right after firing, a neuron is flooded with neurotransmitters but still won\'t fire. Why?',['It\'s at resting potential','It\'s in the refractory period','Its myelin is damaged','Reuptake is blocked'],1,'During the refractory period the neuron cannot fire no matter how much it is stimulated.'],
+['neuron','A patient\'s signals travel slowly down the axon and they have trouble walking. Which part is most likely damaged?',['Dendrites','Vesicles','Myelin sheath','Soma'],2,'Myelin speeds the signal. Loss of myelin (demyelination) is multiple sclerosis.'],
+['nt','A drug blocks the reuptake of serotonin. What is it most likely used for?',['Parkinson\'s','Depression','Schizophrenia','Paralysis'],1,'That\'s an SSRI. Low serotonin is linked to depression.'],
+['nt','Patients with Parkinson\'s disease have a shortage of which neurotransmitter?',['Dopamine','GABA','Glutamate','Endorphins'],0,'Low dopamine → Parkinson\'s tremors. High dopamine is linked to schizophrenia.'],
+['nt','Someone has an anxiety disorder linked to a neurotransmitter that normally calms the nervous system. Which one is probably too low?',['Glutamate','Norepinephrine','GABA','Substance P'],2,'GABA is the main inhibitory neurotransmitter; too little → anxiety.'],
+['nt','A runner feels euphoric and pain-free at mile 10. Which chemical is responsible?',['Endorphins','Acetylcholine','Melatonin','Substance P'],0,'Endorphins are the body\'s natural painkillers — the runner\'s high.'],
+['nt','A poison blocks acetylcholine receptors. What is the most likely result?',['Insomnia','Paralysis','Hallucinations','Overeating'],1,'ACh drives muscle movement; blocked receptors → paralysis.'],
+['ns','You touch a hot stove and pull your hand back before you even feel the pain. What controlled this?',['The cerebellum','The spinal cord (a reflex)','The amygdala','The somatosensory cortex'],1,'Reflexes are directed by the spinal cord, which is why they are so fast.'],
+['ns','After a scare, your heart rate slows back to normal. Which division is at work?',['Sympathetic','Parasympathetic','Somatic','Central'],1,'Parasympathetic = rest and digest; it calms you down.'],
+['ns','Which neurons carry the message "this is hot" from your fingertip to your spinal cord?',['Motor (efferent)','Interneurons','Sensory (afferent)','Glial cells'],2,'Afferent = arrive. Sensory neurons carry info in toward the CNS.'],
+['ns','Why does the effect of a hormone last longer than a neurotransmitter\'s?',['Hormones are made in the brain only','Hormones travel through the bloodstream','Hormones are always excitatory','Hormones skip the synapse by using myelin'],1,'Hormones travel in the blood: slower, but longer-lasting.'],
+['ns','You haven\'t eaten in hours and your stomach is releasing a hormone telling you to eat. Which one?',['Leptin','Ghrelin','Oxytocin','Melatonin'],1,'Ghrelin = hungry (growling stomach). Leptin = full.'],
+['ns','Which gland is called the "master gland"?',['Adrenal','Pineal','Pituitary','Thyroid'],2,'The pituitary signals the other glands to release their hormones.'],
+['brain','A patient speaks fluently, but their sentences make no sense and they can\'t understand what others say. Which area is damaged?',['Broca\'s area','Wernicke\'s area','Motor cortex','Cerebellum'],1,'Wernicke\'s = comprehension. Broca\'s = producing speech.'],
+['brain','A stroke patient understands everything but can only say short phrases like "want... water." Where is the damage?',['Wernicke\'s area','Occipital lobe','Broca\'s area','Hippocampus'],2,'Broca\'s aphasia: trouble producing speech, understanding mostly intact.'],
+['brain','A rat with a damaged lateral hypothalamus will most likely:',['Overeat','Lose interest in eating','Lose its balance','Stop forming memories'],1,'LH = hunger. Damage → no hunger. VMH damage → overeating.'],
+['brain','Someone who drank too much alcohol can\'t walk a straight line. Which structure is most affected?',['Medulla','Cerebellum','Thalamus','Amygdala'],1,'The cerebellum controls balance and coordination, and alcohol hits it hard.'],
+['brain','A patient can\'t form new long-term memories after surgery. Which structure was most likely removed?',['Hippocampus','Pons','Corpus callosum','Occipital lobe'],0,'The hippocampus moves information into long-term memory.'],
+['brain','After brain damage, a person becomes impulsive, rude, and makes poor decisions, like Phineas Gage. Which area?',['Parietal lobe','Prefrontal cortex','Temporal lobe','Medulla'],1,'Prefrontal cortex = judgment, planning, personality.'],
+['brain','A researcher wants to see which brain areas are active while someone solves math problems, with the best precision. Which scan?',['CT','MRI','fMRI','X-ray'],2,'fMRI shows function through blood flow and is more precise than PET. CT and MRI only show structure.'],
+['brain','A stroke damages the left hemisphere\'s motor cortex. Which body part is most likely affected?',['Left arm','Right arm','Both legs','Neither — only speech'],1,'Contralateral control: the left brain controls the right side of the body.'],
+['brain','Damage to which structure could put someone into a coma?',['Reticular formation','Cerebellum','Amygdala','Corpus callosum'],0,'The reticular formation controls arousal and consciousness.'],
+['brain','A blind person reads Braille and the brain area for their reading finger expands into the visual cortex. This shows:',['Neurogenesis','Plasticity','Lateralization','Accommodation'],1,'Plasticity is the brain reorganizing based on experience or damage.'],
+['vision','You walk into a dark movie theater and can\'t see; after a while you can make out shapes but not colors. Which receptors are working?',['Cones','Rods','Bipolar cells','Feature detectors'],1,'Rods work in dim light but don\'t see color. Cones need brighter light.'],
+['vision','Stare at a green flag, then look at a white wall, and you see a red flag. Which theory explains this?',['Trichromatic','Opponent-process','Gate control','Gestalt'],1,'Opponent-process: tiring the green response leaves red firing — an afterimage.'],
+['vision','Railroad tracks look like they meet at the horizon. Which depth cue is this?',['Retinal disparity','Interposition','Linear perspective','Relative clarity'],2,'Linear perspective is a monocular cue: parallel lines converge in the distance.'],
+['vision','One car partly blocks your view of another, so you see the first car as closer. Which cue?',['Interposition','Relative size','Closure','Proximity'],0,'Interposition: whatever blocks the other object looks closer.'],
+['vision','You see a circle even though the drawing has small gaps in its outline. Which Gestalt principle?',['Similarity','Proximity','Closure','Figure-ground'],2,'Closure: we fill in gaps to see a complete shape.'],
+['vision','Where does transduction happen in vision?',['Cornea','Lens','Retina','Optic nerve'],2,'The retina\'s rods and cones turn light into neural impulses.'],
+['vision','Your eyes are about 2.5 inches apart, so each sees a slightly different image of a nearby object. This depth cue is:',['Relative size','Retinal disparity','Linear perspective','Accommodation'],1,'Retinal disparity is the binocular cue.'],
+['senses','A concert leaves a fan with permanent damage to the cochlea\'s hair cells. What type of hearing loss is this?',['Conduction — fixable with surgery','Sensorineural — irreversible','Conduction — irreversible','Vestibular'],1,'Inner-ear damage is sensorineural. A cochlear implant can help, but the damage can\'t be reversed.'],
+['senses','You spin in circles, stop, and still feel like the room is moving. Which sense is involved?',['Kinesthesis','Vestibular sense','Olfaction','Audition'],1,'The fluid in your semicircular canals keeps moving after you stop.'],
+['senses','Which sense does NOT get routed through the thalamus?',['Vision','Hearing','Touch','Smell'],3,'Smell goes straight to areas connected to the limbic system.'],
+['senses','You rub your stubbed toe and it hurts less. Which theory explains this?',['Gate control theory','Opponent-process theory','Trichromatic theory','All-or-none principle'],0,'Other activity can close the spinal cord\'s pain "gate."'],
+['senses','Food tastes bland when you have a stuffy nose. This is an example of:',['Synesthesia','Sensory interaction','Supertasting','Transduction'],1,'Sensory interaction: smell strongly influences taste.'],
+['senses','A sound wave with a very high amplitude will be heard as:',['High-pitched','Low-pitched','Loud','Soft'],2,'Amplitude = loudness. Frequency = pitch.'],
+['senses','With your eyes closed, you can still touch your nose with your finger. Which sense makes that possible?',['Vestibular sense','Kinesthesis','Gustation','Audition'],1,'Kinesthesis senses where your individual body parts are.']
+];
+
+const deckById = Object.fromEntries(DECKS.map(d=>[d.id,d]));
+const store = {
+  get(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+const S = {
+  tab: store.get('ps1-tab2','learn'),
+  li: store.get('ps1-li',0), done: store.get('ps1-done',[]), miss: store.get('ps1-miss',{}), L:null, showMap:false,
+  deck: store.get('ps1-deck','all'),
+  known: store.get('ps1-known',{}),
+  fc:null, quiz:null, fcFront: store.get('ps1-front','term'), fcOnlyUnknown:true
+};
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const inDeck = c=>S.deck==='all'||c.d===S.deck;
+const cardsNow = ()=>CARDS.filter(inDeck);
+const dotStyle = d=>`background:var(--d-${d})`;
+
+function setKnown(id,v){S.known[id]=v; if(!v) delete S.known[id]; store.set('ps1-known',S.known); renderMeter(); renderChips();}
+
+function renderMeter(){
+  const n = CARDS.filter(c=>S.known[c.id]).length;
+  $('#mcount').textContent=n; $('#mtotal').textContent=CARDS.length;
+  $('#mbar').style.width=(100*n/CARDS.length)+'%';
+}
+function renderChips(){
+  const opts=[{id:'all',name:'All decks'}].concat(DECKS);
+  $('#chips').innerHTML = opts.map(d=>{
+    const cs = d.id==='all'?CARDS:CARDS.filter(c=>c.d===d.id);
+    const k = cs.filter(c=>S.known[c.id]).length;
+    return `<button class="chip" data-deck="${d.id}" aria-pressed="${S.deck===d.id}">${d.id!=='all'?`<span class="dot" style="${dotStyle(d.id)}"></span>`:''}${esc(d.name)} <small>${k}/${cs.length}</small></button>`;
+  }).join('');
+}
+function renderTabs(){document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===S.tab))}
+
+/* ---------- Guide ---------- */
+function renderGuide(){
+  const decks = DECKS.filter(d=>S.deck==='all'||d.id===S.deck);
+  $('#view').innerHTML = decks.map(d=>{
+    const cs = CARDS.filter(c=>c.d===d.id);
+    const secs = [...new Set(cs.map(c=>c.s))];
+    let h = `<section class="deck" id="deck-${d.id}"><div class="deck-head"><span class="dot" style="${dotStyle(d.id)}"></span><h2>${esc(d.name)}</h2><span class="label">${cs.filter(c=>S.known[c.id]).length} of ${cs.length} known</span></div><p class="deck-sub">${esc(d.sub)}</p>`;
+    (CHAINS[d.id]||[]).forEach(ch=>{h+=`<div class="chain"><div class="label">${esc(ch.label)} · in order</div><ol>${ch.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol></div>`});
+    if(d.id==='ns') h+=`<div class="chain"><div class="label">How the nervous system divides</div><div class="tree">${esc(TREE)}</div></div>`;
+    secs.forEach(s=>{
+      h+=`<h3 class="sec">${esc(s)}</h3><div class="rows">`+cs.filter(c=>c.s===s).map(c=>`<div class="row"><div class="t">${esc(c.t)}</div><div class="x">${esc(c.x)}${c.h?`<span class="hook">Memory hook: ${esc(c.h)}</span>`:''}</div><button class="know" data-know="${c.id}" aria-pressed="${!!S.known[c.id]}">${S.known[c.id]?'✓ Got it':'Got it?'}</button></div>`).join('')+`</div>`;
+      if(d.id==='nt'&&s==='The chemicals'){
+        h+=`<div class="scroll"><table class="compare"><thead><tr><th>Neurotransmitter</th><th>Main job</th><th>Too little</th><th>Too much</th></tr></thead><tbody>${COMPARE_NT.map(r=>`<tr>${r.map((v,i)=>i?`<td>${esc(v)}</td>`:`<td><b>${esc(v)}</b></td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+      }
+    });
+    (WATCH[d.id]||[]).forEach(w=>h+=`<div class="watch"><b>Heads up</b>${esc(w)}</div>`);
+    return h+`</section>`;
+  }).join('');
+}
+
+/* ---------- Flashcards ---------- */
+function buildQueue(){
+  let cs = cardsNow();
+  if(S.fcOnlyUnknown){const u=cs.filter(c=>!S.known[c.id]); if(u.length) cs=u;}
+  S.fc = {q:shuffle(cs).map(c=>c.id), i:0, flipped:false, seen:0, total:cs.length};
+}
+function renderCards(){
+  if(!S.fc) buildQueue();
+  const f=S.fc;
+  const top = `<div class="fc-top"><span class="label">${f.q.length?`${Math.min(f.seen+1,f.total)} / ${f.total}`:''} ${S.fcOnlyUnknown?'· cards you don\'t know yet':'· all cards'}</span>
+    <div class="toggle">
+      <button class="btn small" data-act="front" aria-pressed="${S.fcFront==='def'}">${S.fcFront==='term'?'Show definition first':'Show term first'}</button>
+      <button class="btn small" data-act="only" aria-pressed="${!S.fcOnlyUnknown}">${S.fcOnlyUnknown?'Include known cards':'Only unknown cards'}</button>
+      <button class="btn small" data-act="shuffle">Shuffle</button>
+    </div></div>`;
+  if(!f.q.length){
+    const all = cardsNow().every(c=>S.known[c.id]);
+    $('#view').innerHTML = top+`<div class="done"><h2>${all?'You know every card in this set.':'Round done.'}</h2><p class="deck-sub" style="margin:10px auto 18px">${all?'Test yourself with the quiz, or include known cards to review again.':'Cards you marked “still learning” will come back in the next round.'}</p><div class="toggle" style="justify-content:center"><button class="btn primary" data-act="again">Start another round</button><button class="btn" data-goto="quiz">Take a quiz</button></div></div>`;
+    return;
+  }
+  const c = CARDS.find(x=>x.id===f.q[f.i]);
+  const termSide = `<div class="big">${esc(c.t)}</div>`;
+  const defSide = `<div class="def">${esc(c.x)}${c.h?`<span class="hook">Memory hook: ${esc(c.h)}</span>`:''}</div>`;
+  const showTerm = (S.fcFront==='term') !== f.flipped;
+  $('#view').innerHTML = top+`
+    <button class="card" data-act="flip" aria-label="Flip card">
+      <span class="corner"><span class="dot" style="${dotStyle(c.d)}"></span><span class="label">${esc(deckById[c.d].name)} · ${esc(c.s)}</span></span>
+      <div class="face">${showTerm?termSide:defSide}${f.flipped?`<div style="margin-top:14px" class="label">${showTerm?'':esc(c.t)}</div>`:''}</div>
+      <span class="flipnote">${f.flipped?'':'Tap to flip'}</span>
+    </button>
+    <div class="fc-actions">
+      <button class="btn bad" data-act="learning">Still learning</button>
+      <button class="btn good" data-act="got">Got it</button>
+    </div>
+    <div class="kbd">Keyboard: Space = flip · 1 = still learning · 2 = got it</div>`;
+}
+function fcAnswer(got){
+  const f=S.fc, id=f.q[f.i];
+  setKnown(id,got);
+  f.q.splice(f.i,1); f.seen++;
+  if(!got){ f.q.splice(Math.min(f.q.length,4),0,id); f.total++; }
+  f.flipped=false; if(f.i>=f.q.length) f.i=0;
+  renderCards();
+}
+
+/* ---------- Quiz ---------- */
+function genQuestion(c){
+  const pool = cardsNow().filter(x=>x.id!==c.id);
+  const same = shuffle(pool.filter(x=>x.d===c.d&&x.s===c.s));
+  const deck = shuffle(pool.filter(x=>x.d===c.d&&x.s!==c.s));
+  const rest = shuffle(CARDS.filter(x=>x.d!==c.d));
+  const distract = same.concat(deck,rest).slice(0,3);
+  const reverse = Math.random()<0.3;
+  const all = shuffle([c].concat(distract));
+  return reverse
+    ? {kind:'card', card:c, ask:'Which definition matches this term?', prompt:c.t, opts:all.map(x=>x.x), ans:all.indexOf(c), exp:`${c.t}: ${c.x}`}
+    : {kind:'card', card:c, ask:'Which term matches this definition?', prompt:c.x, opts:all.map(x=>x.t), ans:all.indexOf(c), exp:`${c.t}: ${c.x}`+(c.h?` (Hook: ${c.h})`:'')};
+}
+function startQuiz(n, onlyIds){
+  let cs = onlyIds?CARDS.filter(c=>onlyIds.includes(c.id)):cardsNow();
+  let sc = onlyIds?[]:SCEN.filter(s=>S.deck==='all'||s[0]===S.deck);
+  const nS = onlyIds?0:Math.min(sc.length, Math.round(n*0.4));
+  const unknownFirst = shuffle(cs.filter(c=>!S.known[c.id])).concat(shuffle(cs.filter(c=>S.known[c.id])));
+  const nC = onlyIds?cs.length:Math.min(unknownFirst.length, n-nS);
+  const qs = shuffle(
+    shuffle(sc).slice(0,nS).map(s=>{const o=shuffle(s[2].map((t,i)=>({t,i})));return {kind:'scen',deck:s[0],ask:'Apply it',prompt:s[1],opts:o.map(x=>x.t),ans:o.findIndex(x=>x.i===s[3]),exp:s[4]}})
+    .concat(unknownFirst.slice(0,nC).map(genQuestion))
+  );
+  S.quiz={qs,i:0,picked:null,right:0,missed:[],n:qs.length};
+  renderQuiz();
+}
+function renderQuiz(){
+  const Q=S.quiz;
+  if(!Q){
+    const scope = S.deck==='all'?'all six decks':deckById[S.deck].name;
+    $('#view').innerHTML=`<div class="qbox setup"><div><div class="label">Quiz · ${esc(scope)}</div><h2 style="margin-top:6px">Test yourself</h2></div>
+      <p>Each round mixes term questions (pulled first from cards you haven't marked “got it”) with scenario questions like the ones on AP tests. Anything you miss gets flagged so it comes back in flashcards.</p>
+      <div class="toggle"><button class="btn primary" data-quiz="10">10 questions</button><button class="btn" data-quiz="20">20 questions</button><button class="btn" data-quiz="40">40 questions</button></div>
+      <p style="font-size:.88rem">Change the deck with the chips above to quiz one topic at a time.</p></div>`;
+    return;
+  }
+  if(Q.i>=Q.qs.length){
+    const pct=Math.round(100*Q.right/Q.n);
+    const missedCards=[...new Set(Q.missed.filter(m=>m.card).map(m=>m.card.id))];
+    $('#view').innerHTML=`<div class="qbox" style="text-align:center"><div class="label">Round complete</div><div class="score">${Q.right}/${Q.n}</div><p class="deck-sub" style="margin:0 auto 16px">${pct>=90?'Excellent. You\'re test-ready on this set.':pct>=70?'Solid. Review the misses below and run it again.':'Keep going: flip through the flashcards for this deck, then try again.'}</p>
+      <div class="toggle" style="justify-content:center">${missedCards.length?`<button class="btn primary" data-act="retry">Retry the ${missedCards.length} missed terms</button>`:''}<button class="btn" data-act="newquiz">New round</button><button class="btn" data-goto="cards">Go to flashcards</button></div>
+      ${Q.missed.length?`<div class="missed">${Q.missed.map(m=>`<div>${esc(m.exp)}</div>`).join('')}</div>`:''}</div>`;
+    S.retryIds=missedCards; return;
+  }
+  const q=Q.qs[Q.i], d=q.card?q.card.d:q.deck;
+  const answered = Q.picked!==null;
+  $('#view').innerHTML=`<div class="qbox">
+    <div class="qmeta"><span class="label">Question ${Q.i+1} of ${Q.n}</span><span class="label"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d)}"></span>${esc(deckById[d].name)} · Score ${Q.right}</span></div>
+    <p class="qprompt"><span class="ask">${esc(q.ask)}</span>${esc(q.prompt)}</p>
+    <div class="opts">${q.opts.map((o,i)=>`<button class="opt ${answered&&i===q.ans?'right':''} ${answered&&i===Q.picked&&i!==q.ans?'wrong':''}" data-opt="${i}" ${answered?'disabled':''}><span class="k">${'ABCD'[i]}</span><span>${esc(o)}</span></button>`).join('')}</div>
+    ${answered?`<div class="explain"><b class="${Q.picked===q.ans?'ok':'no'}">${Q.picked===q.ans?'Correct.':'Not quite.'}</b> ${esc(q.exp)}</div><div class="qnav"><button class="btn primary" data-act="next">${Q.i+1<Q.n?'Next question':'See results'}</button></div>`:''}
+  </div><div class="kbd">Keyboard: A–D or 1–4 to answer · Enter = next</div>`;
+}
+function pick(i){
+  const Q=S.quiz; if(!Q||Q.picked!==null) return;
+  const q=Q.qs[Q.i]; Q.picked=i;
+  if(i===q.ans) Q.right++; else { Q.missed.push(q); if(q.card) setKnown(q.card.id,false); }
+  renderQuiz();
+}
+
+/* ---------- Learn (guided lessons) ---------- */
+const LESSONS=[];
+DECKS.forEach(d=>{
+  const cs=CARDS.filter(c=>c.d===d.id);
+  [...new Set(cs.map(c=>c.s))].forEach(s=>{
+    const sc=cs.filter(c=>c.s===s), n=Math.ceil(sc.length/5), size=Math.ceil(sc.length/n);
+    for(let k=0;k<n;k++) LESSONS.push({d:d.id,s,part:n>1?`part ${k+1} of ${n}`:'',ids:sc.slice(k*size,(k+1)*size).map(c=>c.id)});
+  });
+  LESSONS[LESSONS.length-1].checkpoint=true;
+});
+const CHAIN_AT={'neuron|Parts of a neuron':CHAINS.neuron[0],'neuron|Firing a neuron':CHAINS.neuron[1],'vision|The eye':CHAINS.vision[0],'senses|Hearing':CHAINS.senses[0]};
+if(S.li>=LESSONS.length) S.li=0;
+const cardById=id=>CARDS.find(c=>c.id===id);
+
+function learnQ(item, lesson){
+  if(item.type==='scen'){
+    const s=SCEN[item.idx], o=shuffle(s[2].map((t,i)=>({t,i})));
+    return {item,deck:s[0],ask:'Checkpoint · apply it',prompt:s[1],opts:o.map(x=>x.t),ans:o.findIndex(x=>x.i===s[3]),exp:s[4]};
+  }
+  const c=cardById(item.id);
+  const pick=(arr)=>shuffle(arr.filter(x=>x.id!==c.id));
+  const near=pick(lesson.ids.map(cardById)), sec=pick(CARDS.filter(x=>x.d===c.d&&x.s===c.s)), deck=pick(CARDS.filter(x=>x.d===c.d));
+  const seen=new Set(), distract=[];
+  near.concat(sec,deck).forEach(x=>{if(distract.length<3&&!seen.has(x.id)){seen.add(x.id);distract.push(x)}});
+  const all=shuffle([c].concat(distract)), reverse=Math.random()<0.35;
+  return {item,card:c,deck:c.d,ask:(item.review?'Review from earlier · ':'')+(reverse?'Which definition matches this term?':'Which term matches this definition?'),
+    prompt:reverse?c.t:c.x, opts:all.map(x=>reverse?x.x:x.t), ans:all.indexOf(c)};
+}
+function startLesson(li){S.li=li;store.set('ps1-li',li);S.L={phase:'teach'};S.showMap=false;renderLearn();window.scrollTo({top:0})}
+function beginLessonQuiz(){
+  const lesson=LESSONS[S.li];
+  const doneIds=S.done.filter(i=>i!==S.li).flatMap(i=>LESSONS[i].ids);
+  const weak=shuffle(doneIds.filter(id=>S.miss[id])), other=shuffle(doneIds.filter(id=>!S.miss[id]));
+  const reviews=weak.concat(other).slice(0,Math.min(3,doneIds.length)).map(id=>({type:'card',id,review:true}));
+  let q=shuffle(lesson.ids.map(id=>({type:'card',id})));
+  reviews.forEach(r=>q.splice(1+Math.floor(Math.random()*q.length),0,r));
+  if(lesson.checkpoint) q=q.concat(shuffle(SCEN.map((s,i)=>({type:'scen',idx:i})).filter(x=>SCEN[x.idx][0]===lesson.d)).slice(0,6));
+  S.L={phase:'quiz',queue:q,cur:null,picked:null,asked:0,first:0,firstTotal:q.length,missedIds:new Set(),scenMiss:[],tried:new Set()};
+  nextLearnQ();
+}
+function nextLearnQ(){
+  const L=S.L;
+  if(!L.queue.length){finishLesson();return}
+  const item=L.queue.shift(); L.cur=learnQ(item,LESSONS[S.li]); L.picked=null; renderLearn();
+}
+function learnPick(i){
+  const L=S.L; if(!L||L.phase!=='quiz'||L.picked!==null) return;
+  L.picked=i; const q=L.cur, ok=i===q.ans, key=q.item.type==='scen'?'s'+q.item.idx:q.item.id;
+  const firstTime=!L.tried.has(key); L.tried.add(key);
+  if(ok&&firstTime) L.first++;
+  if(q.card){
+    if(ok){ if(!L.missedIds.has(q.card.id)) setKnown(q.card.id,true); }
+    else{
+      L.missedIds.add(q.card.id); S.miss[q.card.id]=(S.miss[q.card.id]||0)+1; store.set('ps1-miss',S.miss); setKnown(q.card.id,false);
+      L.queue.splice(Math.min(L.queue.length,2),0,{...q.item});
+    }
+  } else if(!ok) L.scenMiss.push(q);
+  if(ok&&q.card&&S.miss[q.card.id]&&!L.missedIds.has(q.card.id)){S.miss[q.card.id]--;store.set('ps1-miss',S.miss)}
+  renderLearn();
+}
+function finishLesson(){
+  if(!S.done.includes(S.li)){S.done.push(S.li);store.set('ps1-done',S.done)}
+  S.L.phase='summary'; renderLearn();
+}
+function lessonTitle(i){const l=LESSONS[i];return `${l.s}${l.part?` (${l.part})`:''}`}
+function renderLearn(){
+  const lesson=LESSONS[S.li], deck=deckById[lesson.d];
+  if(!S.L) S.L={phase:'teach'};
+  const L=S.L;
+  const pct=Math.round(100*S.done.length/LESSONS.length);
+  let h=`<div class="qbox" style="margin-bottom:14px;padding:14px 18px">
+    <div class="qmeta" style="margin:0"><span class="label">Lesson ${S.li+1} of ${LESSONS.length} · ${S.done.length} done</span><button class="btn small" data-act="l-map">${S.showMap?'Hide lesson map':'Lesson map'}</button></div>
+    <div class="bar" style="margin-top:8px" aria-hidden="true"><i style="width:${pct}%"></i></div>
+    ${S.showMap?`<div style="margin-top:12px;display:grid;gap:14px">${DECKS.map(d=>`<div><div class="label" style="margin-bottom:6px"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d.id)}"></span>${esc(d.name)}</div><div class="chips">${LESSONS.map((l,i)=>l.d===d.id?`<button class="chip" data-lesson="${i}" aria-pressed="${i===S.li}">${S.done.includes(i)?'✓ ':''}${esc(lessonTitle(i))}</button>`:'').join('')}</div></div>`).join('')}</div>`:''}
+  </div>`;
+  const head=`<div class="deck-head"><span class="dot" style="${dotStyle(lesson.d)}"></span><span class="label">${esc(deck.name)}</span></div><h2 style="margin-bottom:4px">${esc(lessonTitle(S.li))}</h2>`;
+
+  if(L.phase==='teach'){
+    const ch=CHAIN_AT[lesson.d+'|'+lesson.s];
+    h+=`<div class="qbox">${head}<p class="deck-sub">Read these ${lesson.ids.length} terms. Say each one out loud or cover the definition and try to explain it. Then you'll be quizzed on them one at a time${S.done.length?', with a few review questions from earlier lessons mixed in':''}.</p>`;
+    if(ch) h+=`<div class="chain"><div class="label">${esc(ch.label)} · in order</div><ol>${ch.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol></div>`;
+    if(lesson.d==='ns'&&lesson.s==='Divisions') h+=`<div class="chain"><div class="label">How the nervous system divides</div><div class="tree">${esc(TREE)}</div></div>`;
+    h+=`<div class="rows">${lesson.ids.map(cardById).map(c=>`<div class="row" style="grid-template-columns:minmax(120px,190px) 1fr"><div class="t">${esc(c.t)}</div><div class="x">${esc(c.x)}${c.h?`<span class="hook">Memory hook: ${esc(c.h)}</span>`:''}</div></div>`).join('')}</div>`;
+    if(lesson.d==='nt'&&lesson.s==='The chemicals'&&lesson.ids.length&&LESSONS.filter(l=>l.d==='nt'&&l.s==='The chemicals').pop()===lesson)
+      h+=`<div class="scroll"><table class="compare"><thead><tr><th>Neurotransmitter</th><th>Main job</th><th>Too little</th><th>Too much</th></tr></thead><tbody>${COMPARE_NT.map(r=>`<tr>${r.map((v,i)=>i?`<td>${esc(v)}</td>`:`<td><b>${esc(v)}</b></td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    if(lesson.checkpoint) (WATCH[lesson.d]||[]).forEach(w=>h+=`<div class="watch"><b>Heads up</b>${esc(w)}</div>`);
+    if(lesson.checkpoint) h+=`<p class="deck-sub" style="margin-top:14px">This is the last lesson in ${esc(deck.name)}, so the quiz ends with scenario questions on the whole deck.</p>`;
+    h+=`<div class="qnav"><button class="btn primary" data-act="l-quiz">I've read them. Quiz me</button></div></div>`;
+  }
+  else if(L.phase==='quiz'){
+    const q=L.cur, answered=L.picked!==null, ok=L.picked===q.ans;
+    const left=L.queue.length+(answered?0:1);
+    h+=`<div class="qbox"><div class="qmeta"><span class="label">${esc(deck.name)} · ${esc(lessonTitle(S.li))}</span><span class="label">${left} left</span></div>
+      <p class="qprompt"><span class="ask">${esc(q.ask)}</span>${esc(q.prompt)}</p>
+      <div class="opts">${q.opts.map((o,i)=>`<button class="opt ${answered&&i===q.ans?'right':''} ${answered&&i===L.picked&&!ok?'wrong':''}" data-lopt="${i}" ${answered?'disabled':''}><span class="k">${'ABCD'[i]}</span><span>${esc(o)}</span></button>`).join('')}</div>
+      ${answered?`<div class="explain"><b class="${ok?'ok':'no'}">${ok?'Correct.':'Not quite.'}</b> ${q.card?`<b>${esc(q.card.t)}</b>: ${esc(q.card.x)}${q.card.h?`<span class="hook">Memory hook: ${esc(q.card.h)}</span>`:''}${!ok?`<div class="label" style="margin-top:8px">This one will come back in a moment</div>`:''}`:esc(q.exp)}</div>
+      <div class="qnav"><button class="btn primary" data-act="l-next">Next</button></div>`:''}
+    </div><div class="kbd">Keyboard: A–D or 1–4 to answer · Enter = next</div>`;
+  }
+  else {
+    const missed=[...L.missedIds].map(cardById), last=S.li===LESSONS.length-1, allDone=S.done.length===LESSONS.length;
+    h+=`<div class="qbox">${head}<div class="score" style="font-size:2.4rem">${L.first}/${L.firstTotal}</div><p class="deck-sub">right on the first try.${missed.length?' The terms below gave you trouble. They\'ll show up again as review questions in later lessons.':' Clean lesson.'}</p>
+      ${missed.length?`<div class="missed">${missed.map(c=>`<div><b>${esc(c.t)}</b>: ${esc(c.x)}</div>`).join('')}</div>`:''}
+      ${L.scenMiss.length?`<div class="missed" style="margin-top:8px">${L.scenMiss.map(q=>`<div>${esc(q.prompt)} <b>${esc(q.opts[q.ans])}</b>. ${esc(q.exp)}</div>`).join('')}</div>`:''}
+      ${allDone&&last?`<div class="watch" style="margin-top:16px"><b>You finished every lesson.</b>Now take a 40-question mixed quiz on everything and retry what you miss.</div>`:''}
+      <div class="qnav" style="gap:8px;flex-wrap:wrap"><button class="btn" data-act="l-redo">Redo this lesson</button>${last?`<button class="btn primary" data-act="l-final">Take the final mixed quiz</button>`:`<button class="btn primary" data-act="l-nextlesson">Next lesson: ${esc(lessonTitle(S.li+1))}</button>`}</div></div>`;
+  }
+  $('#view').innerHTML=h;
+}
+
+/* ---------- Wiring ---------- */
+function render(){renderTabs();renderChips();renderMeter(); if(S.tab==='learn')renderLearn(); else if(S.tab==='guide')renderGuide(); else if(S.tab==='cards')renderCards(); else renderQuiz();}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button'); if(!t) return;
+  if(t.dataset.tab){S.tab=t.dataset.tab;store.set('ps1-tab2',S.tab);render();window.scrollTo({top:0});return}
+  if(t.dataset.goto){S.tab=t.dataset.goto;store.set('ps1-tab2',S.tab);if(S.tab==='cards')S.fc=null;if(S.tab==='quiz')S.quiz=null;render();return}
+  if(t.dataset.lesson!==undefined){startLesson(+t.dataset.lesson);return}
+  if(t.dataset.lopt!==undefined){learnPick(+t.dataset.lopt);return}
+  if(t.dataset.deck){S.deck=t.dataset.deck;store.set('ps1-deck',S.deck);S.fc=null;S.quiz=null;
+    if(S.tab==='learn'&&S.deck!=='all'){const ls=LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===S.deck);startLesson(ls.find(i=>!S.done.includes(i))??ls[0]);renderChips();return}
+    render();return}
+  if(t.dataset.act&&t.dataset.act.startsWith('l-')){
+    const a=t.dataset.act;
+    if(a==='l-map'){S.showMap=!S.showMap;renderLearn()}
+    else if(a==='l-quiz'){beginLessonQuiz();window.scrollTo({top:0})}
+    else if(a==='l-next'){nextLearnQ()}
+    else if(a==='l-nextlesson'){startLesson(S.li+1)}
+    else if(a==='l-redo'){startLesson(S.li)}
+    else if(a==='l-final'){S.deck='all';store.set('ps1-deck','all');S.tab='quiz';store.set('ps1-tab2','quiz');render();startQuiz(40)}
+    return;
+  }
+  if(t.dataset.know){const id=t.dataset.know;setKnown(id,!S.known[id]);t.setAttribute('aria-pressed',!!S.known[id]);t.textContent=S.known[id]?'✓ Got it':'Got it?';return}
+  if(t.dataset.quiz){startQuiz(+t.dataset.quiz);return}
+  if(t.dataset.opt!==undefined){pick(+t.dataset.opt);return}
+  const a=t.dataset.act;
+  if(a==='flip'){S.fc.flipped=!S.fc.flipped;renderCards()}
+  else if(a==='got')fcAnswer(true);
+  else if(a==='learning')fcAnswer(false);
+  else if(a==='shuffle'||a==='again'){S.fc=null;renderCards()}
+  else if(a==='front'){S.fcFront=S.fcFront==='term'?'def':'term';store.set('ps1-front',S.fcFront);S.fc.flipped=false;renderCards()}
+  else if(a==='only'){S.fcOnlyUnknown=!S.fcOnlyUnknown;S.fc=null;renderCards()}
+  else if(a==='next'){S.quiz.i++;S.quiz.picked=null;renderQuiz();window.scrollTo({top:0})}
+  else if(a==='retry'){startQuiz(0,S.retryIds)}
+  else if(a==='newquiz'){S.quiz=null;renderQuiz()}
+});
+$('#reset').addEventListener('click',e=>{
+  const b=e.currentTarget;
+  if(b.dataset.confirm){S.known={};store.set('ps1-known',{});S.fc=null;S.done=[];S.miss={};S.li=0;S.L=null;store.set('ps1-done',[]);store.set('ps1-miss',{});store.set('ps1-li',0);b.textContent='Reset progress';delete b.dataset.confirm;render();}
+  else{b.dataset.confirm='1';b.textContent='Tap again to confirm';setTimeout(()=>{if(b.dataset.confirm){delete b.dataset.confirm;b.textContent='Reset progress'}},3000)}
+});
+document.addEventListener('keydown',e=>{
+  if(e.target.closest('input,textarea')) return;
+  if(S.tab==='learn'&&S.L){
+    const L=S.L;
+    if(L.phase==='quiz'){
+      const m={a:0,b:1,c:2,d:3,'1':0,'2':1,'3':2,'4':3}[e.key.toLowerCase()];
+      if(m!==undefined&&L.picked===null)learnPick(m);
+      else if(e.key==='Enter'&&L.picked!==null){e.preventDefault();nextLearnQ()}
+    }
+    return;
+  }
+  if(S.tab==='cards'&&S.fc&&S.fc.q.length){
+    if(e.code==='Space'){e.preventDefault();S.fc.flipped=!S.fc.flipped;renderCards()}
+    else if(e.key==='1')fcAnswer(false); else if(e.key==='2')fcAnswer(true);
+  } else if(S.tab==='quiz'&&S.quiz&&S.quiz.i<S.quiz.qs.length){
+    const m={a:0,b:1,c:2,d:3,'1':0,'2':1,'3':2,'4':3}[e.key.toLowerCase()];
+    if(m!==undefined&&S.quiz.picked===null)pick(m);
+    else if(e.key==='Enter'&&S.quiz.picked!==null){S.quiz.i++;S.quiz.picked=null;renderQuiz()}
+  }
+});
+render();
+</script>
+
+</body></html>
