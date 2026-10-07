@@ -114,6 +114,9 @@ header.top{display:grid;gap:14px;margin-bottom:18px}
 .opt .k{font-family:var(--mono);font-size:.78rem;border:1px solid var(--line);border-radius:6px;padding:1px 7px;flex:none;margin-top:2px}
 .opt.right{border-color:var(--good);background:var(--good-soft)}
 .opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt.sel .k{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.45;cursor:default}
 .opt:disabled{cursor:default}
 .explain{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line)}
 .explain b.ok{color:var(--good)} .explain b.no{color:var(--bad)}
@@ -556,17 +559,38 @@ function fcAnswer(got){
 }
 
 /* ---------- Quiz ---------- */
-function genQuestion(c){
-  const pool = cardsNow().filter(x=>x.id!==c.id);
+function genQuestion(c, pool, nOpts){
+  pool = (pool||cardsNow()).filter(x=>x.id!==c.id); nOpts = nOpts||4;
   const same = shuffle(pool.filter(x=>x.d===c.d&&x.s===c.s));
   const deck = shuffle(pool.filter(x=>x.d===c.d&&x.s!==c.s));
-  const rest = shuffle(CARDS.filter(x=>x.d!==c.d&&inAll(x.d)));
-  const distract = same.concat(deck,rest).slice(0,3);
+  const rest = shuffle(pool.filter(x=>x.d!==c.d)).concat(shuffle(CARDS.filter(x=>x.d!==c.d&&inAll(x.d))));
+  const seen = new Set([c.id]), distract = [];
+  same.concat(deck,rest).forEach(x=>{if(distract.length<nOpts-1&&!seen.has(x.id)){seen.add(x.id);distract.push(x)}});
   const dir = S.set.quizDir, reverse = dir==='term'?true:dir==='def'?false:Math.random()<0.3;
   const all = shuffle([c].concat(distract));
   return reverse
-    ? {kind:'card', card:c, ask:'Which definition matches this term?', prompt:c.t, opts:all.map(x=>x.x), ans:all.indexOf(c), exp:`${c.t}: ${c.x}`}
-    : {kind:'card', card:c, ask:'Which term matches this definition?', prompt:c.x, opts:all.map(x=>x.t), ans:all.indexOf(c), exp:`${c.t}: ${c.x}`+(c.h&&S.set.hooks?` (Hook: ${c.h})`:'')};
+    ? {kind:'card', type:'mc', card:c, ask:'Which definition matches this term?', prompt:c.t, opts:all.map(x=>x.x), ans:all.indexOf(c), exp:`${c.t}: ${c.x}`}
+    : {kind:'card', type:'mc', card:c, ask:'Which term matches this definition?', prompt:c.x, opts:all.map(x=>x.t), ans:all.indexOf(c), exp:`${c.t}: ${c.x}`+(c.h&&S.set.hooks?` (Hook: ${c.h})`:'')};
+}
+// True/false: half the time the definition shown belongs to a different, nearby term.
+function tfQuestion(c, pool){
+  let shown=c;
+  if(Math.random()<0.5){
+    const near=shuffle(pool.filter(x=>x.id!==c.id&&x.d===c.d&&x.s===c.s)).concat(shuffle(pool.filter(x=>x.id!==c.id&&x.d===c.d)),shuffle(pool.filter(x=>x.id!==c.id)));
+    shown=near.find(x=>x.x!==c.x)||c;
+  }
+  return {kind:'card', type:'tf', card:c, ask:'True or false?', prompt:`${c.t}: ${shown.x}`, opts:['True','False'], ans:shown===c?0:1,
+    exp:shown===c?`True. ${c.t}: ${c.x}`:`False. That describes ${shown.t}. ${c.t}: ${c.x}`};
+}
+function scenQuestion(s){
+  const o=shuffle(s[2].map((t,i)=>({t,i})));
+  return {kind:'scen', type:'scen', deck:s[0], ask:'Apply it', prompt:s[1], opts:o.map(x=>x.t), ans:o.findIndex(x=>x.i===s[3]), exp:s[4]};
+}
+const TYPE_NAME={mc:'Multiple choice',tf:'True / false',scen:'Scenarios'};
+function newQuiz(qs, extra){
+  S.quizNote='';
+  S.quiz=Object.assign({qs,i:0,picked:null,right:0,missed:[],res:[],n:qs.length,answers:[]},extra||{});
+  renderQuiz();
 }
 function startQuiz(n, onlyIds){
   let cs = onlyIds?CARDS.filter(c=>onlyIds.includes(c.id)):cardsNow();
@@ -576,67 +600,139 @@ function startQuiz(n, onlyIds){
   const nS = onlyIds||mix==='terms'?0:Math.min(sc.length, mix==='scen'?n:Math.round(n*0.4));
   const order = focus==='random'?shuffle(cs):shuffle(cs.filter(c=>!S.known[c.id])).concat(shuffle(cs.filter(c=>S.known[c.id])));
   const nC = onlyIds?cs.length:mix==='scen'?0:Math.min(order.length, n-nS);
-  const qs = shuffle(
-    shuffle(sc).slice(0,nS).map(s=>{const o=shuffle(s[2].map((t,i)=>({t,i})));return {kind:'scen',deck:s[0],ask:'Apply it',prompt:s[1],opts:o.map(x=>x.t),ans:o.findIndex(x=>x.i===s[3]),exp:s[4]}})
-    .concat(order.slice(0,nC).map(genQuestion))
-  );
+  const qs = shuffle(shuffle(sc).slice(0,nS).map(scenQuestion).concat(order.slice(0,nC).map(c=>genQuestion(c))));
   if(!qs.length){S.quiz=null;S.quizNote=focus==='weak'?'No trouble terms in this set yet. Terms you miss in Learn lessons show up here. Change "Focus" in Settings to quiz everything.':'No questions match your settings for this deck. Try a different question type in Settings.';renderQuiz();return}
-  S.quizNote='';
-  S.quiz={qs,i:0,picked:null,right:0,missed:[],n:qs.length};
-  renderQuiz();
+  newQuiz(qs);
 }
+
+/* Custom test builder: its own saved config, separate from progress. */
+const DEF_TEST = {decks:DECKS.filter(d=>!d.opt).map(d=>d.id), mc:15, tf:5, scen:5, choices:4, feedback:'end', order:'mixed'};
+S.test = Object.assign({}, DEF_TEST, store.get('ps1-test',{}));
+S.test.decks = S.test.decks.filter(id=>deckById[id]);
+const saveTest = ()=>store.set('ps1-test',S.test);
+const testPool = ()=>({cards:CARDS.filter(c=>S.test.decks.includes(c.d)), scen:SCEN.filter(s=>S.test.decks.includes(s[0]))});
+function syncTestInputs(){
+  [['mc','tmc'],['tf','ttf'],['scen','tscen']].forEach(([k,id])=>{const el=$('#'+id); if(el) S.test[k]=Math.max(0,Math.min(200,parseInt(el.value,10)||0));});
+  saveTest();
+}
+function startTest(){
+  syncTestInputs();
+  const T=S.test, P=testPool();
+  const mcN=Math.min(T.mc,P.cards.length), scN=Math.min(T.scen,P.scen.length);
+  // Use different terms for multiple choice and true/false when there are enough to go around.
+  const deal=shuffle(P.cards), mcCards=deal.slice(0,mcN), left=deal.slice(mcN);
+  const tfCards=left.concat(shuffle(mcCards)).slice(0,Math.min(T.tf,P.cards.length));
+  const groups={mc:mcCards.map(c=>genQuestion(c,P.cards,T.choices)), tf:tfCards.map(c=>tfQuestion(c,P.cards)), scen:shuffle(P.scen).slice(0,scN).map(scenQuestion)};
+  const qs=T.order==='grouped'?groups.mc.concat(groups.tf,groups.scen):shuffle(groups.mc.concat(groups.tf,groups.scen));
+  if(!qs.length){S.quiz=null;S.quizNote=!T.decks.length?'Pick at least one topic for your test.':'Your test has 0 questions. Set at least one question count above 0.';renderQuiz();return}
+  const short=(T.mc>mcN||T.scen>scN||T.tf>tfCards.length)?`Some counts were higher than these topics have, so the test uses all available: ${mcN} multiple choice, ${tfCards.length} true/false, ${scN} scenario.`:'';
+  newQuiz(qs,{test:true, atEnd:T.feedback==='end', short, decks:T.decks.slice()});
+}
+function gradeTest(){
+  const Q=S.quiz;
+  Q.qs.forEach((q,i)=>{const a=Q.answers[i]; recordAnswer(q, a===undefined?null:a);});
+  Q.i=Q.n; renderQuiz();
+}
+function recordAnswer(q, a){
+  const Q=S.quiz, ok=a===q.ans;
+  Q.res.push({q,ok,a});
+  if(ok) Q.right++; else { Q.missed.push(Object.assign({},q,{yours:a})); if(q.card) setKnown(q.card.id,false); }
+}
+
 let qTimer=null;
 function clearQTimer(){clearInterval(qTimer);qTimer=null}
+// Per question normally; in "answers at the end" mode the same setting becomes a whole-test limit.
 function startQTimer(){
-  const Q=S.quiz, idx=Q.i;
-  if(Q.deadlineFor!==idx){Q.deadlineFor=idx;Q.deadline=Date.now()+S.set.timer*1000}
+  const Q=S.quiz, idx=Q.i, whole=Q.atEnd;
+  if(whole){ if(!Q.deadline) Q.deadline=Date.now()+S.set.timer*1000*Q.n; }
+  else if(Q.deadlineFor!==idx){Q.deadlineFor=idx;Q.deadline=Date.now()+S.set.timer*1000}
   const tick=()=>{
-    if(S.tab!=='quiz'||S.quiz!==Q||Q.i!==idx||Q.picked!==null){clearQTimer();return}
-    const left=Math.max(0,Math.ceil((Q.deadline-Date.now())/1000)), el=$('#qtime');
-    if(el){el.textContent=left+'s';el.classList.toggle('low',left<=5)}
-    if(left<=0){clearQTimer();pick(-1)}
+    if(S.tab!=='quiz'||S.quiz!==Q||Q.i>=Q.n||(!whole&&(Q.i!==idx||Q.picked!==null))){clearQTimer();return}
+    const s=Math.max(0,Math.ceil((Q.deadline-Date.now())/1000)), el=$('#qtime');
+    if(el){el.textContent=whole?`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')} left`:s+'s';el.classList.toggle('low',whole?s<=30:s<=5)}
+    if(s<=0){clearQTimer(); whole?gradeTest():pick(-1)}
   };
-  tick(); if(Q.picked===null) qTimer=setInterval(tick,250);
+  tick(); if(S.quiz===Q&&Q.i<Q.n&&(whole||Q.picked===null)) qTimer=setInterval(tick,250);
 }
 const MIX_NAME={mixed:'term and scenario questions',terms:'term questions only',scen:'scenario questions only'};
+const seg=(k,opts)=>`<div class="seg">${opts.map(([v,l])=>`<button class="btn small" data-tset="${k}" data-val="${esc(JSON.stringify(v))}" aria-pressed="${S.test[k]===v}">${esc(l)}</button>`).join('')}</div>`;
+function renderBuilder(){
+  const T=S.test, P=testPool();
+  const num=(id,k,max,label)=>`<label class="set-row" for="${id}"><span class="label">${label}</span><span style="display:flex;gap:8px;align-items:center"><input id="${id}" class="qcount" type="number" min="0" max="200" value="${T[k]}" inputmode="numeric"><small style="color:var(--muted)">of ${max}</small></span></label>`;
+  return `<div class="qbox setup" style="margin-top:16px"><div><div class="label">Custom test</div><h2 style="margin-top:6px">Build a test</h2></div>
+    <p>Pick any topics, choose how many of each kind of question, and take it like the real thing.</p>
+    <div class="set-row"><div class="label">Topics</div><div class="chips">${DECKS.map(d=>`<button class="chip" data-tdeck="${d.id}" aria-pressed="${T.decks.includes(d.id)}"><span class="dot" style="${dotStyle(d.id)}"></span>${esc(d.name)}</button>`).join('')}</div>
+      <div class="toggle"><button class="btn small" data-act="t-core">All main topics</button><button class="btn small" data-act="t-every">Everything</button><button class="btn small" data-act="t-none">Clear</button></div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px 26px">${num('tmc','mc',P.cards.length,'Multiple choice')}${num('ttf','tf',P.cards.length,'True / false')}${num('tscen','scen',P.scen.length,'Scenarios')}</div>
+    <div class="set-row"><div class="label">Answer choices (multiple choice)</div>${seg('choices',[[3,'3'],[4,'4'],[5,'5']])}<p>Scenario questions always have 4.</p></div>
+    <div class="set-row"><div class="label">Show answers</div>${seg('feedback',[['end','At the end, like a real test'],['each','After each question']])}${T.feedback==='end'?'<p>You can go back and change answers before you finish.</p>':''}</div>
+    <div class="set-row"><div class="label">Question order</div>${seg('order',[['mixed','Mixed'],['grouped','Grouped by type']])}</div>
+    <div class="set-row"><div class="label">Time limit</div><p>${S.set.timer?(T.feedback==='end'?`${S.set.timer}s per question, added up into one limit for the whole test.`:`${S.set.timer}s per question.`):'Off.'} <button class="btn small" data-tab="settings">Change in Settings</button></p></div>
+    <div><button class="btn primary" data-act="t-start">Start test</button></div></div>`;
+}
 function renderQuiz(){
   clearQTimer();
+  $('#chips').hidden=!!(S.quiz&&S.quiz.test);
   const Q=S.quiz;
   if(!Q){
     const scope = S.deck==='all'?'all decks':deckById[S.deck].name;
     const last = store.get('ps1-qcount',15);
-    $('#view').innerHTML=`<div class="qbox setup"><div><div class="label">Quiz · ${esc(scope)}</div><h2 style="margin-top:6px">Test yourself</h2></div>
-      ${S.quizNote?`<div class="watch" style="margin:0"><b>Nothing to quiz</b>${esc(S.quizNote)}</div>`:''}
+    $('#view').innerHTML=`${S.quizNote?`<div class="watch" style="margin:0 0 14px"><b>Nothing to quiz</b>${esc(S.quizNote)}</div>`:''}<div class="qbox setup"><div><div class="label">Quick quiz · ${esc(scope)}</div><h2 style="margin-top:6px">Test yourself</h2></div>
       <p>Each round mixes term questions (pulled first from cards you haven't marked “got it”) with scenario questions like the ones on AP tests. Anything you miss gets flagged so it comes back in flashcards.</p>
       <div class="toggle"><button class="btn primary" data-quiz="10">10 questions</button><button class="btn" data-quiz="20">20 questions</button><button class="btn" data-quiz="40">40 questions</button></div>
       <div class="toggle" style="align-items:center"><label for="qcount" style="color:var(--muted)">Custom:</label><input id="qcount" class="qcount" type="number" min="1" max="200" value="${+last||15}" inputmode="numeric"><button class="btn" data-act="customquiz">Start</button></div>
       <p style="font-size:.88rem">Current settings: ${esc(MIX_NAME[S.set.quizMix])}${S.set.quizFocus==='weak'?', trouble terms only':S.set.quizFocus==='random'?', random order':''}${S.set.timer?`, ${S.set.timer}s per question`:''}. <button class="btn small" data-tab="settings">Change in Settings</button></p>
-      <p style="font-size:.88rem">Change the deck with the chips above to quiz one topic at a time.</p></div>`;
+      <p style="font-size:.88rem">Change the deck with the chips above to quiz one topic at a time.</p></div>${renderBuilder()}`;
     return;
   }
   if(Q.i>=Q.qs.length){
-    const pct=Math.round(100*Q.right/Q.n);
+    const pct=Q.n?Math.round(100*Q.right/Q.n):0;
     const missedCards=[...new Set(Q.missed.filter(m=>m.card).map(m=>m.card.id))];
-    $('#view').innerHTML=`<div class="qbox" style="text-align:center"><div class="label">Round complete</div><div class="score">${Q.right}/${Q.n}</div><p class="deck-sub" style="margin:0 auto 16px">${pct>=90?'Excellent. You\'re test-ready on this set.':pct>=70?'Solid. Review the misses below and run it again.':'Keep going: flip through the flashcards for this deck, then try again.'}</p>
-      <div class="toggle" style="justify-content:center">${missedCards.length?`<button class="btn primary" data-act="retry">Retry the ${missedCards.length} missed terms</button>`:''}<button class="btn" data-act="newquiz">New round</button><button class="btn" data-goto="cards">Go to flashcards</button></div>
-      ${Q.missed.length?`<div class="missed">${Q.missed.map(m=>`<div>${esc(m.exp)}</div>`).join('')}</div>`:''}</div>`;
+    const tally=key=>{const m={};Q.res.forEach(r=>{const k=key(r.q);m[k]=m[k]||[0,0];m[k][1]++;if(r.ok)m[k][0]++});return m};
+    const byType=tally(q=>q.type), byDeck=tally(q=>q.card?q.card.d:q.deck);
+    const rows=(m,name)=>Object.entries(m).map(([k,[r,t]])=>`<tr><td>${esc(name(k))}</td><td>${r}/${t}</td><td>${Math.round(100*r/t)}%</td></tr>`).join('');
+    const breakdown=Q.test?`<div class="scroll" style="text-align:left"><table class="compare" style="min-width:0"><thead><tr><th>By question type</th><th>Score</th><th></th></tr></thead><tbody>${rows(byType,k=>TYPE_NAME[k])}</tbody><thead><tr><th>By topic</th><th>Score</th><th></th></tr></thead><tbody>${rows(byDeck,k=>deckById[k].name)}</tbody></table></div>`:'';
+    const yours=m=>m.yours===null||m.yours===undefined?'No answer':m.yours===-1?'Ran out of time':m.opts[m.yours];
+    $('#view').innerHTML=`<div class="qbox" style="text-align:center"><div class="label">${Q.test?'Test complete':'Round complete'}</div><div class="score">${Q.right}/${Q.n}</div><p class="deck-sub" style="margin:0 auto 16px">${pct}% · ${pct>=90?'Excellent. You\'re test-ready on this set.':pct>=70?'Solid. Review the misses below and run it again.':'Keep going: flip through the flashcards for these topics, then try again.'}</p>
+      ${Q.short?`<div class="watch" style="text-align:left;margin:0 0 14px">${esc(Q.short)}</div>`:''}
+      <div class="toggle" style="justify-content:center">${missedCards.length?`<button class="btn primary" data-act="retry">Retry the ${missedCards.length} missed terms</button>`:''}${Q.test?`<button class="btn" data-act="t-start">Same settings, new test</button>`:''}<button class="btn" data-act="newquiz">${Q.test?'Change test':'New round'}</button><button class="btn" data-goto="cards">Go to flashcards</button></div>
+      ${breakdown}
+      ${Q.missed.length?`<div class="missed">${Q.missed.map(m=>`<div><b>${esc(m.prompt.length>140?m.prompt.slice(0,140)+'…':m.prompt)}</b><br>Your answer: ${esc(yours(m))} · Correct: ${esc(m.opts[m.ans])}${m.type==='mc'?'':`<br>${esc(m.exp)}`}</div>`).join('')}</div>`:''}</div>`;
     S.retryIds=missedCards; return;
   }
   const q=Q.qs[Q.i], d=q.card?q.card.d:q.deck;
-  const answered = Q.picked!==null;
+  const atEnd=!!Q.atEnd, sel=Q.answers[Q.i];
+  const answered = !atEnd&&Q.picked!==null;
+  const timerOn = S.set.timer&&(atEnd||!answered);
+  const answeredCount=Q.answers.filter(a=>a!==undefined).length;
   $('#view').innerHTML=`<div class="qbox">
-    <div class="qmeta"><span class="label">Question ${Q.i+1} of ${Q.n}${S.set.timer&&!answered?` · <span class="timer" id="qtime" aria-live="off"></span>`:''}</span><span class="label"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d)}"></span>${esc(deckById[d].name)} · Score ${Q.right}</span></div>
+    <div class="qmeta"><span class="label">Question ${Q.i+1} of ${Q.n}${q.type?` · ${TYPE_NAME[q.type]}`:''}${timerOn?` · <span class="timer" id="qtime" aria-live="off"></span>`:''}</span><span class="label"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d)}"></span>${esc(deckById[d].name)}${atEnd?` · ${answeredCount} answered`:` · Score ${Q.right}`}</span></div>
     <p class="qprompt"><span class="ask">${esc(q.ask)}</span>${esc(q.prompt)}</p>
-    <div class="opts">${q.opts.map((o,i)=>`<button class="opt ${answered&&i===q.ans?'right':''} ${answered&&i===Q.picked&&i!==q.ans?'wrong':''}" data-opt="${i}" ${answered?'disabled':''}><span class="k">${'ABCD'[i]}</span><span>${esc(o)}</span></button>`).join('')}</div>
+    <div class="opts">${q.opts.map((o,i)=>`<button class="opt ${answered&&i===q.ans?'right':''} ${answered&&i===Q.picked&&i!==q.ans?'wrong':''} ${atEnd&&i===sel?'sel':''}" data-opt="${i}" ${answered?'disabled':''} ${atEnd?`aria-pressed="${i===sel}"`:''}><span class="k">${'ABCDE'[i]}</span><span>${esc(o)}</span></button>`).join('')}</div>
     ${answered?`<div class="explain"><b class="${Q.picked===q.ans?'ok':'no'}">${Q.picked===q.ans?'Correct.':Q.picked===-1?'Time\'s up.':'Not quite.'}</b> ${esc(q.exp)}</div><div class="qnav"><button class="btn primary" data-act="next">${Q.i+1<Q.n?'Next question':'See results'}</button></div>`:''}
-  </div><div class="kbd">Keyboard: A–D or 1–4 to answer · Enter = next</div>`;
-  if(S.set.timer&&!answered) startQTimer();
+    ${atEnd?`<div class="qnav" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><button class="btn" data-act="t-back" ${Q.i?'':'disabled'}>Back</button><span style="display:flex;gap:8px;flex-wrap:wrap">${Q.i+1<Q.n?`<button class="btn" data-act="t-finish">Finish early</button><button class="btn primary" data-act="t-next">${sel===undefined?'Skip':'Next'}</button>`:`<button class="btn primary" data-act="t-finish">Finish and grade</button>`}</span></div>`:''}
+  </div><div class="kbd">Keyboard: ${'ABCDE'.slice(0,q.opts.length).split('').join('/')} or 1–${q.opts.length} to answer · Enter = next${atEnd?' · ← = back':''}</div>`;
+  if(timerOn) startQTimer();
 }
 function pick(i){
-  const Q=S.quiz; if(!Q||Q.picked!==null) return;
-  const q=Q.qs[Q.i]; Q.picked=i;
-  if(i===q.ans) Q.right++; else { Q.missed.push(q); if(q.card) setKnown(q.card.id,false); }
+  const Q=S.quiz; if(!Q||Q.i>=Q.n) return;
+  const q=Q.qs[Q.i];
+  if(i!==-1&&(i<0||i>=q.opts.length)) return;
+  if(Q.atEnd){ if(i===-1) return; Q.answers[Q.i]=i; renderQuiz(); return; }
+  if(Q.picked!==null) return;
+  Q.picked=i; recordAnswer(q,i);
   renderQuiz();
+}
+function testNav(step){
+  const Q=S.quiz; if(!Q||!Q.atEnd) return;
+  const to=Q.i+step; if(to<0) return;
+  if(to>=Q.n){ finishTest(); return; }
+  Q.i=to; renderQuiz(); window.scrollTo({top:0});
+}
+function finishTest(){
+  const Q=S.quiz, blank=Q.n-Q.answers.filter(a=>a!==undefined).length;
+  if(blank&&!confirm(`You left ${blank} question${blank>1?'s':''} blank. Finish and grade anyway?`)) return;
+  gradeTest(); window.scrollTo({top:0});
 }
 
 /* ---------- Learn (guided lessons) ---------- */
@@ -805,8 +901,8 @@ function importProgress(file){
 }
 
 /* ---------- Wiring ---------- */
-function render(){renderTabs();renderChips();renderMeter();$('#chips').hidden=S.tab==='settings'; if(S.tab==='learn')renderLearn(); else if(S.tab==='guide')renderGuide(); else if(S.tab==='cards')renderCards(); else if(S.tab==='settings')renderSettings(); else renderQuiz();}
-document.addEventListener('change',e=>{if(e.target.id==='importFile'&&e.target.files[0]) importProgress(e.target.files[0])});
+function render(){renderTabs();renderChips();renderMeter();$('#chips').hidden=S.tab==='settings'||(S.tab==='quiz'&&!!(S.quiz&&S.quiz.test)); if(S.tab==='learn')renderLearn(); else if(S.tab==='guide')renderGuide(); else if(S.tab==='cards')renderCards(); else if(S.tab==='settings')renderSettings(); else renderQuiz();}
+document.addEventListener('change',e=>{if(e.target.id==='importFile'&&e.target.files[0]) importProgress(e.target.files[0]); else if(['tmc','ttf','tscen'].includes(e.target.id)) syncTestInputs();});
 document.addEventListener('click',e=>{
   const t=e.target.closest('button'); if(!t) return;
   if(t.dataset.tab){S.tab=t.dataset.tab;store.set('ps1-tab2',S.tab);render();window.scrollTo({top:0});return}
@@ -825,6 +921,20 @@ document.addEventListener('click',e=>{
     else if(a==='l-redo'){startLesson(S.li)}
     else if(a==='l-final'){S.deck='all';store.set('ps1-deck','all');S.tab='quiz';store.set('ps1-tab2','quiz');render();startQuiz(40)}
     return;
+  }
+  if(t.dataset.tdeck||t.dataset.tset||(t.dataset.act||'').startsWith('t-')){
+    if($('#tmc')) syncTestInputs();
+    const T=S.test, a=t.dataset.act;
+    if(t.dataset.tdeck){const id=t.dataset.tdeck; T.decks=T.decks.includes(id)?T.decks.filter(x=>x!==id):DECKS.map(d=>d.id).filter(x=>x===id||T.decks.includes(x))}
+    else if(t.dataset.tset) T[t.dataset.tset]=JSON.parse(t.dataset.val);
+    else if(a==='t-core') T.decks=DECKS.filter(d=>!d.opt).map(d=>d.id);
+    else if(a==='t-every') T.decks=DECKS.map(d=>d.id);
+    else if(a==='t-none') T.decks=[];
+    else if(a==='t-start'){startTest();window.scrollTo({top:0});return}
+    else if(a==='t-next'){testNav(1);return}
+    else if(a==='t-back'){testNav(-1);return}
+    else if(a==='t-finish'){finishTest();return}
+    saveTest(); S.quizNote=''; renderQuiz(); return;
   }
   if(t.dataset.set){S.set[t.dataset.set]=JSON.parse(t.dataset.val);saveSet();applySet();S.fc=null;S.quiz=null;S.quizNote='';render();return}
   if(t.dataset.know){const id=t.dataset.know;setKnown(id,!S.known[id]);t.setAttribute('aria-pressed',!!S.known[id]);t.textContent=S.known[id]?'✓ Got it':'Got it?';return}
@@ -865,8 +975,13 @@ document.addEventListener('keydown',e=>{
     if(e.code==='Space'){e.preventDefault();S.fc.flipped=!S.fc.flipped;renderCards()}
     else if(e.key==='1')fcAnswer(false); else if(e.key==='2')fcAnswer(true);
   } else if(S.tab==='quiz'&&S.quiz&&S.quiz.i<S.quiz.qs.length){
-    const m={a:0,b:1,c:2,d:3,'1':0,'2':1,'3':2,'4':3}[e.key.toLowerCase()];
-    if(m!==undefined&&S.quiz.picked===null)pick(m);
+    const m={a:0,b:1,c:2,d:3,e:4,'1':0,'2':1,'3':2,'4':3,'5':4}[e.key.toLowerCase()];
+    if(S.quiz.atEnd){
+      if(m!==undefined)pick(m);
+      else if(e.key==='Enter'){e.preventDefault();testNav(1)}
+      else if(e.key==='ArrowLeft')testNav(-1);
+    }
+    else if(m!==undefined&&S.quiz.picked===null)pick(m);
     else if(e.key==='Enter'&&S.quiz.picked!==null){S.quiz.i++;S.quiz.picked=null;renderQuiz()}
   }
 });
