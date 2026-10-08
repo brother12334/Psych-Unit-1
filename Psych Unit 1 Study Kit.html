@@ -440,6 +440,98 @@ const SCEN = [
 ['split','A friend understands every word of your sarcastic "Oh, great" but misses that you meant it sarcastically. Which hemisphere handles that part of language?',['Left — words and definitions','Right — tone, inflection, and context','Left — calculation','Neither; it\'s the cerebellum'],1,'Left = the words. Right = tone and context.']
 ];
 
+// Exam-style bank: hand-written questions in the style of the unit test (scenarios, "which best describes",
+// full-sentence options with tempting distractors). Same shape as SCEN: [deck, stem, [options], correctIndex, explanation]
+const EXAM = [
+['neuron','Maria\'s neurologist explains that the fatty coating around her axons is breaking down, slowing her neural signals and making walking difficult. Maria most likely has:',['Myasthenia gravis','Multiple sclerosis','Parkinson\'s disease','Alzheimer\'s disease'],1,'MS is the breakdown of the myelin sheath (demyelination). Myasthenia gravis is the trap: it blocks acetylcholine receptors at the muscles and doesn\'t damage myelin.'],
+['neuron','Which of the following best describes the all-or-none principle?',['A stronger stimulus causes a neuron to fire with greater intensity.','Once threshold is reached, a neuron fires completely; below threshold it does not fire at all.','A neuron must receive signals from all of its dendrites before it can fire.','A neuron releases either all of its neurotransmitters or none during reuptake.'],1,'A neuron\'s firing strength never changes. It either reaches threshold and fires fully, or it doesn\'t fire.'],
+['neuron','A new drug stops the sending neuron from reabsorbing leftover neurotransmitters in the synapse. Which process is the drug blocking?',['Reuptake','The action potential','The refractory period','Threshold'],0,'Reuptake is the sending neuron reabsorbing leftover neurotransmitters. SSRIs work by blocking it.'],
+['neuron','Which sequence correctly describes the path of a signal through a single neuron?',['Axon → soma → dendrites → terminal buttons','Dendrites → soma → axon → terminal buttons','Soma → dendrites → terminal buttons → axon','Terminal buttons → axon → soma → dendrites'],1,'Dendrites detect the message, the soma decides to fire, the impulse travels down the axon, and terminal buttons release neurotransmitters.'],
+['neuron','Which of the following best describes the function of glial cells?',['They carry electrical impulses down the axon.','They support, nourish, and protect neurons.','They store neurotransmitters in vesicles.','They form the gap between two neurons.'],1,'Glia are support cells ("glue"). They don\'t send the signal themselves.'],
+['neuron','Antibodies in Jordan\'s body are blocking his muscles\' receptor sites for acetylcholine, and his muscles are growing weak. Jordan most likely has:',['Multiple sclerosis','Myasthenia gravis','Parkinson\'s disease','Schizophrenia'],1,'Myasthenia gravis is an autoimmune disorder that blocks or destroys ACh receptors at the muscles. MS is the trap: it attacks myelin.'],
+['neuron','Which of the following best explains why neurons use chemical messengers to communicate with each other?',['Neurons are physically connected, so chemicals flow directly between them.','A small gap separates neurons, so neurotransmitters carry the signal across the synapse.','The myelin sheath blocks electrical signals from reaching the dendrites.','Dendrites can only detect electrical signals, not chemical ones.'],1,'Neurons never touch. The electrical impulse stops at the terminal buttons, and neurotransmitters cross the synaptic gap.'],
+['neuron','Immediately after firing, a neuron will not fire again no matter how much it is stimulated. Which of the following best describes this?',['It is at resting potential and waiting for stimulation.','It is in the refractory period and recovering.','Its threshold has permanently increased.','Its myelin sheath has been damaged.'],1,'The refractory period is the recovery time after firing, like waiting for a toilet to refill before you can flush again.'],
+['neuron','Where are neurotransmitters stored before they are released into the synapse?',['In the dendrites','In the soma','In vesicles inside the terminal buttons','In the myelin sheath'],2,'Vesicles are tiny sacs in the terminal buttons that hold neurotransmitters until the neuron fires.'],
+
+['nt','Ella has been diagnosed with depression. Her doctor prescribes a medication that keeps serotonin in the synapse longer. Which type of drug is this?',['An SSRI','A GABA blocker','An acetylcholine blocker','An endorphin inhibitor'],0,'SSRI = selective serotonin reuptake inhibitor. Blocking reuptake leaves more serotonin in the synapse.'],
+['nt','A patient with Parkinson\'s disease has tremors and trouble starting movements. A shortage of which neurotransmitter is most responsible?',['Serotonin','Dopamine','GABA','Glutamate'],1,'Low dopamine → Parkinson\'s. High dopamine → schizophrenia.'],
+['nt','Excess activity of which neurotransmitter has been linked to schizophrenia?',['Dopamine','GABA','Endorphins','Acetylcholine'],0,'Too much dopamine is linked to schizophrenia; too little to Parkinson\'s.'],
+['nt','Which of the following best describes the role of GABA?',['It is the main excitatory neurotransmitter and is involved in memory.','It is the main inhibitory neurotransmitter and calms the nervous system.','It sends hunger signals to the brain.','It is the body\'s natural painkiller.'],1,'GABA is the brakes. Glutamate (the main excitatory one) is the trap.'],
+['nt','Low levels of acetylcholine are most closely associated with which disorder?',['Alzheimer\'s disease','Parkinson\'s disease','Schizophrenia','Anxiety disorders'],0,'ACh helps with memory and movement; too little is linked to Alzheimer\'s. Parkinson\'s is dopamine.'],
+['nt','After finishing a marathon, Kai feels euphoric and barely notices the blisters on his feet. Which neurotransmitter best explains this?',['Endorphins','Substance P','Glutamate','Norepinephrine'],0,'Endorphins are natural painkillers (runner\'s high). Substance P is the trap: it sends pain signals.'],
+['nt','Which neurotransmitter is the brain\'s major excitatory neurotransmitter and, in excess, is linked to migraines?',['Glutamate','GABA','Serotonin','Dopamine'],0,'Glutamate = go. Too much is linked to anxiety, OCD, and migraines.'],
+['nt','Sam\'s doctor suspects his trouble focusing is related to low levels of a chemical that also drives the fight-or-flight response. Which one?',['Norepinephrine','GABA','Endorphins','Acetylcholine'],0,'Norepinephrine handles fight-or-flight plus focus and attention; low levels are linked to ADHD and depression.'],
+['nt','Which of the following correctly pairs a neurotransmitter with its function?',['Serotonin — muscle movement','Acetylcholine — muscle movement and memory','Endorphins — sending pain signals','GABA — the major excitatory neurotransmitter'],1,'ACh = action (muscles) and memory. Serotonin is mood, endorphins relieve pain, and GABA is inhibitory.'],
+['nt','Which of the following best explains the difference between excitatory and inhibitory neurotransmitters?',['Excitatory ones make the receiving neuron more likely to fire; inhibitory ones make it less likely to fire.','Excitatory ones work only in the brain; inhibitory ones work only in the spinal cord.','Excitatory ones are hormones; inhibitory ones are neurotransmitters.','Excitatory ones speed up reuptake; inhibitory ones slow it down.'],0,'Excite = go, inhibit = stop. It\'s about the next neuron\'s chance of firing.'],
+
+['ns','While hiking, Leah spots a rattlesnake. Her heart races, her pupils dilate, and her digestion slows. Which division of the nervous system is responsible?',['Parasympathetic','Sympathetic','Somatic','Central'],1,'Sympathetic = stressed: fight, flight, or freeze.'],
+['ns','After the snake slithers away, Leah\'s heart rate and breathing gradually return to normal. Which division is now most active?',['Sympathetic','Somatic','Parasympathetic','Central'],2,'Parasympathetic = rest and digest; it calms the body back down.'],
+['ns','Which of the following is an example of the somatic nervous system at work?',['Your heart speeding up before a test','Your stomach digesting lunch','Raising your hand to answer a question','Your pupils shrinking in bright light'],2,'Somatic = voluntary movement. The others are automatic, so they\'re autonomic.'],
+['ns','When the doctor taps Luis\'s knee, his leg kicks before his brain even registers the tap. Which of the following best explains why the response is so fast?',['The signal goes to the spinal cord and straight back out, without waiting for the brain.','Motor neurons are always faster than sensory neurons.','The cerebellum processes all reflexes instantly.','Hormones carry the signal directly to the leg.'],0,'Reflexes are directed by the spinal cord, which cuts out the trip to the brain.'],
+['ns','Which type of neuron carries messages from the brain and spinal cord out to the muscles?',['Sensory (afferent) neurons','Motor (efferent) neurons','Interneurons','Glial cells'],1,'Efferent = exit. Afferent = arrive.'],
+['ns','Which of the following best describes the role of interneurons?',['They relay messages between sensory and motor neurons within the brain and spinal cord.','They carry messages from the senses to the brain.','They carry messages from the brain to the muscles.','They insulate axons to speed up signals.'],0,'Inter = in between. They connect sensory input to motor output inside the CNS.'],
+['ns','Which of the following best explains how the endocrine system differs from the nervous system?',['Hormones travel through the bloodstream, so they act more slowly but their effects last longer.','Hormones travel along axons, so they act faster than neurotransmitters.','The endocrine system controls only voluntary movement.','Hormones act only inside the brain.'],0,'Blood is slower than nerves, but hormone effects linger.'],
+['ns','Which gland is called the "master gland" because it signals other glands to release their hormones?',['Pineal gland','Adrenal gland','Pituitary gland','Thyroid gland'],2,'The pituitary regulates growth, stress, and reproduction and directs the other glands.'],
+['ns','After a big Thanksgiving dinner, Aiden feels full and stops eating. Which hormone is most responsible for this signal?',['Ghrelin','Leptin','Oxytocin','Melatonin'],1,'Leptin = leave the table (full). Ghrelin = growling stomach (hungry).'],
+['ns','A new mother feels a strong bond with her baby soon after giving birth. Which hormone plays the biggest role in this bonding?',['Oxytocin','Testosterone','Adrenaline','Ghrelin'],0,'Oxytocin is the bonding hormone: labor, mother–baby bonding, and close relationships.'],
+['ns','Jet lag throws off Mia\'s sleep-wake cycle. Which hormone, released by the pineal gland in response to darkness, regulates this cycle?',['Melatonin','Leptin','Estrogen','Adrenaline'],0,'Melatonin regulates the circadian rhythm and helps you sleep.'],
+['ns','During a scary movie, Ben\'s adrenal glands release a hormone that raises his heart rate and blood sugar. Which hormone is it?',['Adrenaline','Melatonin','Oxytocin','Leptin'],0,'Adrenaline from the adrenal glands powers the fight-or-flight energy surge.'],
+
+['brain','Which of the following best describes what Phineas Gage\'s injury taught psychologists?',['The frontal lobe plays a major role in personality and controlling behavior.','The occipital lobe is responsible for processing vision.','The cerebellum controls balance and coordination.','The temporal lobe is needed to understand speech.'],0,'After the rod went through his prefrontal cortex, Gage became impulsive, profane, and irritable: his personality changed, not his movement or senses.'],
+['brain','Which of the following scenarios best illustrates neuroplasticity?',['After a stroke, a patient regains the ability to walk through months of therapy as other brain areas take over.','A student drinks coffee to stay alert while studying.','A runner\'s heart rate speeds up during a race.','A person blinks when dust blows toward their eyes.'],0,'Plasticity is the brain reorganizing itself. The others are a drug effect, the sympathetic system, and a reflex.'],
+['brain','Which of the following functions is most closely associated with the limbic system?',['Regulating emotions, forming memories, and survival drives like hunger','Coordinating balance and fine motor movement','Controlling breathing and heartbeat','Processing visual information'],0,'Limbic = amygdala (emotion), hippocampus (memory), hypothalamus (drives). Breathing and heartbeat are the medulla, part of the brainstem.'],
+['brain','Which of the following best describes the primary function of the cerebellum?',['Coordinating voluntary movement, balance, and posture','Regulating emotions and forming memories','Controlling hunger, thirst, and body temperature','Producing speech'],0,'The cerebellum ("little brain") handles balance, coordination, and learned motor skills.'],
+['brain','Which part of the brain plays a crucial role in controlling arousal and attention, and if damaged could leave a person in a coma?',['Hippocampus','Thalamus','Reticular formation','Hypothalamus'],2,'The reticular formation controls arousal and consciousness. The hypothalamus is the trap: it handles hunger, thirst, temperature, and the 4 Fs.'],
+['brain','Which part of the brainstem is most involved in regulating the sleep-wake cycle?',['Pons','Medulla','Cerebellum','Amygdala'],0,'The pons connects the spinal cord to the brain and helps regulate sleep. The medulla handles breathing and heartbeat.'],
+['brain','A gymnast\'s fall damages her medulla. Which function is most at risk?',['Breathing and heartbeat','Recognizing faces','Forming new memories','Producing speech'],0,'The medulla controls life-sustaining functions, which is why medulla damage can be fatal.'],
+['brain','After a stroke, Mr. Lee understands everything his family says, but he speaks slowly in short, broken phrases like "want... coffee." Which area was most likely damaged?',['Wernicke\'s area','Broca\'s area','Occipital lobe','Cerebellum'],1,'Broca\'s = broken speech production, with understanding mostly intact.'],
+['brain','After a head injury, Ana speaks fluently, but her sentences make little sense and she can\'t follow what others say. Which area was most likely damaged?',['Broca\'s area','Wernicke\'s area','Motor cortex','Amygdala'],1,'Wernicke\'s = understanding language. The speech flows but doesn\'t make sense.'],
+['brain','Which lobe contains the somatosensory cortex, which processes touch, temperature, and pain?',['Parietal lobe','Frontal lobe','Occipital lobe','Temporal lobe'],0,'The somatosensory cortex is in the parietal lobe, right behind the motor cortex (in the frontal lobe).'],
+['brain','A tumor in the temporal lobe would most likely affect a person\'s:',['Hearing and understanding of language','Vision','Balance','Breathing'],0,'The temporal lobe holds the auditory cortex and Wernicke\'s area.'],
+['brain','A stroke damages the motor cortex in Tom\'s left hemisphere. Which of the following is most likely?',['Weakness or paralysis on the right side of his body','Weakness or paralysis on the left side of his body','Blindness in both eyes','Loss of hearing in his left ear'],0,'Contralateral control: the left brain controls the right side of the body.'],
+['brain','Which of the following best describes the role of the thalamus?',['It relays incoming sensory information (except smell) to the right areas of the cortex.','It stores long-term memories.','It controls hunger and thirst.','It coordinates balance.'],0,'The thalamus is the sensory switchboard. Smell is the one sense that skips it.'],
+['brain','Which brain structure is most involved in fear and aggression?',['Hippocampus','Amygdala','Pons','Cerebellum'],1,'The amygdala processes fear and aggression and triggers fight-or-flight.'],
+['brain','After surgery, a patient remembers his childhood clearly but cannot form any new long-term memories. Which structure was most likely removed?',['Amygdala','Hippocampus','Cerebellum','Thalamus'],1,'The hippocampus moves new information into long-term memory. Old memories are stored elsewhere, so they survive.'],
+['brain','A rat stops eating after damage to part of its hypothalamus. Which part was most likely damaged?',['Lateral hypothalamus','Ventromedial hypothalamus','Amygdala','Hippocampus'],0,'Lateral = lunch (hunger). Damage to the ventromedial hypothalamus causes overeating instead.'],
+['brain','Which part of the brain regulates body temperature, hunger, and thirst?',['Hypothalamus','Thalamus','Medulla','Cerebellum'],0,'Hypothalamus: temperature, thirst, hunger, and sexual responses. Don\'t mix it up with the thalamus, the sensory relay.'],
+['brain','Which of the following best describes the role of the prefrontal cortex?',['Planning, judgment, decision making, and personality','Processing visual information','Coordinating balance','Relaying sensory information'],0,'The prefrontal cortex handles executive functions; it was Phineas Gage\'s injury.'],
+['brain','A doctor wants to check for a tumor quickly by looking at the shape of a patient\'s brain structures, not their activity. Which scan fits best?',['fMRI','PET scan','CT scan','EEG'],2,'CT (and MRI) show structure. fMRI, PET, and EEG show activity.'],
+['brain','A researcher wants to see which brain areas become more active when people look at photos of their friends, as precisely as possible. Which technique is best?',['CT scan','MRI','fMRI','X-ray'],2,'fMRI shows function through blood flow and is more precise than PET.'],
+['brain','Which technique records brain waves through electrodes placed on the scalp and is often used to detect seizures?',['EEG','PET scan','MRI','CT scan'],0,'EEG = electrical activity.'],
+['brain','Doctors sometimes cut the corpus callosum in patients with severe epilepsy. Which of the following best describes the purpose of this surgery?',['To keep seizures from spreading from one hemisphere to the other','To speed up communication between the hemispheres','To improve memory and learning','To reduce activity in the frontal lobe'],0,'The corpus callosum connects the hemispheres. Cutting it stops seizure activity from crossing over.'],
+['brain','Which statement about the two hemispheres is most accurate?',['The left hemisphere is usually dominant for language, and each hemisphere controls the opposite side of the body.','The right hemisphere controls the right side of the body.','Language is processed equally by both hemispheres.','The corpus callosum controls movement on both sides of the body.'],0,'Left = language. Each side of the brain controls the opposite side of the body.'],
+['brain','Which of the following best explains why young children often recover better from brain injuries than adults do?',['Children\'s brains are more plastic, so other areas can take over lost functions more easily.','Children can grow new neurons anywhere in the brain.','Children do not use their cerebral cortex yet.','Children\'s neurons do not have myelin.'],0,'Plasticity is greatest in childhood. Neurogenesis happens in only a couple of areas, so B is a trap.'],
+['brain','Which of the following correctly matches a brain structure with its function?',['Medulla — breathing and heartbeat','Hippocampus — balance','Cerebellum — fear','Amygdala — vision'],0,'Hippocampus = memory, cerebellum = balance, amygdala = fear, occipital lobe = vision.'],
+['brain','Which part of the brain is primarily responsible for processing visual information?',['Frontal lobe','Parietal lobe','Temporal lobe','Occipital lobe'],3,'Occipital = optical, at the back of the brain.'],
+
+['vision','Which of the following best explains why it is hard to see colors in a dimly lit room?',['Cones need more light to work, and rods, which work in dim light, don\'t detect color.','Rods detect color only in bright light.','The lens can\'t focus in dim light.','The optic nerve shuts off in darkness.'],0,'Rods = reduced light, black and white. Cones = color, need brighter light.'],
+['vision','Which of the following correctly describes the path of light through the eye?',['Cornea → pupil → lens → retina','Lens → cornea → retina → pupil','Retina → lens → pupil → cornea','Pupil → retina → cornea → lens'],0,'Light enters through the cornea, passes the pupil, is focused by the lens, and lands on the retina.'],
+['vision','Which theory best explains why a person with red-green color blindness has trouble telling red from green?',['Trichromatic theory','Opponent-process theory','Gate control theory','Feature detection'],0,'Trichromatic theory: red, green, and blue cones. Color blindness usually comes from impaired red or green cones.'],
+['vision','Which of the following is a monocular depth cue?',['Retinal disparity','Linear perspective','Comparing the slightly different images from each eye','Using both eyes to judge how close something is'],1,'Linear perspective works with one eye. The other three all need both eyes (binocular).'],
+['vision','Which Gestalt principle explains why you see the letters on a page as separate words rather than one long string?',['Proximity','Similarity','Closure','Figure-ground'],0,'Proximity: things close together get grouped together.'],
+['vision','Every player on one team wears red, so you see them as one group separate from the team in blue. Which Gestalt principle is this?',['Similarity','Proximity','Closure','Figure-ground'],0,'Similarity: things that look alike get grouped together.'],
+['vision','Which part of the eye changes shape to focus images on near or far objects?',['Lens','Iris','Cornea','Retina'],0,'That shape change is called accommodation.'],
+['vision','Which of the following best describes feature detectors?',['Neurons in the visual cortex that respond to specific features like edges, angles, and movement','Cells in the retina that detect color','The muscle that controls pupil size','Neurons that carry signals from the eye to the brain'],0,'Feature detectors are in the visual cortex, not the eye.'],
+['vision','In a painting, a distant mountain looks hazy and blurry, so viewers see it as far away. Which depth cue is the artist using?',['Relative clarity','Interposition','Retinal disparity','Linear perspective'],0,'Relative clarity: sharp objects seem close, hazy ones seem far.'],
+['vision','Which of the following best describes transduction in vision?',['Rods and cones in the retina convert light energy into neural impulses.','The lens bends light so it focuses on the retina.','The optic nerve carries signals to the occipital lobe.','The iris controls how much light enters the eye.'],0,'Transduction = converting energy into neural signals, and it happens in the retina.'],
+
+['senses','An older adult\'s eardrum and middle-ear bones are damaged, but the cochlea is healthy. What type of hearing loss is this, and can it be treated?',['Conduction hearing loss; it can often be fixed with surgery','Sensorineural hearing loss; it cannot be reversed','Conduction hearing loss; it can never be treated','Sensorineural hearing loss; it can be fixed with surgery'],0,'Conduction = the parts that conduct sound (eardrum, ossicles). It\'s correctable. Sensorineural is the cochlea or auditory nerve.'],
+['senses','Which treatment would most likely help someone whose hearing loss comes from damaged hair cells in the cochlea?',['A cochlear implant','Surgery to repair the ossicles','Glasses with stronger lenses','Medication that raises serotonin'],0,'Hair-cell damage is sensorineural. A cochlear implant sends signals straight to the auditory nerve.'],
+['senses','Two sounds are equally loud, but one is a high whistle and the other a low drum. What property of the sound waves is different?',['Frequency','Amplitude','Loudness','Localization'],0,'Frequency = pitch. Amplitude = loudness, and the question says they\'re equally loud.'],
+['senses','A gymnast can do a backflip with her eyes closed because she senses where her arms and legs are. Which sense makes this possible?',['Kinesthesis','Vestibular sense','Olfaction','Gustation'],0,'Kinesthesis senses the position of body parts. The vestibular sense is about the head\'s position and balance.'],
+['senses','The smell of fresh cookies instantly brings back a vivid childhood memory. Which of the following best explains why?',['Smell signals go straight to brain areas connected to the limbic system, which handles emotion and memory.','Smell is processed in the occipital lobe.','The thalamus amplifies smell signals before they reach the cortex.','Taste buds store memories of familiar foods.'],0,'Smell is the only sense that skips the thalamus. It connects directly to emotion and memory areas.'],
+['senses','Which of the following best describes gate control theory?',['The spinal cord has a neurological "gate" that can block pain signals or let them reach the brain.','Pain is felt only when all four skin senses are activated at once.','The thalamus decides which pains are real.','Pain receptors stop firing after a few seconds.'],0,'Distraction or rubbing the spot can close the gate.'],
+['senses','Years after losing his arm, Marcus still feels an itch in his missing hand. This is called:',['Phantom limb sensation','Synesthesia','Prosopagnosia','Sensory interaction'],0,'The sensory cortex area for the missing limb is still active.'],
+['senses','Whenever Priya hears a trumpet, she also sees the color orange. This is an example of:',['Synesthesia','Sensory interaction','Prosopagnosia','Kinesthesis'],0,'Synesthesia is one sense triggering another. Sensory interaction is the trap: one sense influencing another, like smell and taste.'],
+['senses','A person with prosopagnosia would have the most trouble:',['Recognizing a friend\'s face','Tasting bitter foods','Keeping their balance','Hearing high-pitched sounds'],0,'Prosopagnosia = face blindness.'],
+['senses','Jamal finds jalapeños unbearably hot, while his friend barely notices them. Jamal is most likely:',['A supertaster','Experiencing synesthesia','Experiencing sensory interaction','Experiencing phantom limb sensation'],0,'Supertasters have more taste buds and feel tastes and pain more intensely.'],
+['senses','Which of the following is one of the five basic tastes?',['Umami','Spicy','Cold','Minty'],0,'The five are sweet, sour, salty, bitter, and umami. "Spicy" is actually pain.'],
+
+['split','A split-brain patient holds a hidden key in her left hand and can\'t see it. Asked what she is holding, which of the following is most likely?',['She can\'t name it, but she can pick out the key with her left hand.','She names it right away.','She can point to the key only with her right hand.','She can\'t identify it in any way.'],0,'Touch from the left hand goes to the right hemisphere, which can\'t speak but controls the left hand.'],
+['split','Which of the following best describes what research on split-brain patients revealed?',['The two hemispheres specialize in different functions, such as language in the left hemisphere.','Both hemispheres have identical abilities.','Cutting the corpus callosum causes paralysis.','The right hemisphere controls language.'],0,'Split-brain studies showed lateralization, like language on the left side.'],
+['split','A split-brain patient looks at the center of the word HEART, so "HE" is in his left visual field and "ART" is in his right. Asked what word he saw, he will most likely say:',['"Art"','"He"','"Heart"','Nothing at all'],0,'"ART" reaches the left hemisphere, which can speak. "HE" reaches only the right hemisphere, so he could point to it with his left hand but not say it.']
+];
+
 const deckById = Object.fromEntries(DECKS.map(d=>[d.id,d]));
 const store = {
   get(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}},
@@ -586,7 +678,11 @@ function scenQuestion(s){
   const o=shuffle(s[2].map((t,i)=>({t,i})));
   return {kind:'scen', type:'scen', deck:s[0], ask:'Apply it', prompt:s[1], opts:o.map(x=>x.t), ans:o.findIndex(x=>x.i===s[3]), exp:s[4]};
 }
-const TYPE_NAME={mc:'Multiple choice',tf:'True / false',scen:'Scenarios'};
+function examQuestion(e){
+  const o=shuffle(e[2].map((t,i)=>({t,i})));
+  return {kind:'scen', type:'exam', deck:e[0], ask:'Choose the best answer', prompt:e[1], opts:o.map(x=>x.t), ans:o.findIndex(x=>x.i===e[3]), exp:e[4]};
+}
+const TYPE_NAME={exam:'Exam-style',mc:'Multiple choice',tf:'True / false',scen:'Scenarios'};
 function newQuiz(qs, extra){
   S.quizNote='';
   S.quiz=Object.assign({qs,i:0,picked:null,right:0,missed:[],res:[],n:qs.length,answers:[]},extra||{});
@@ -606,27 +702,28 @@ function startQuiz(n, onlyIds){
 }
 
 /* Custom test builder: its own saved config, separate from progress. */
-const DEF_TEST = {decks:DECKS.filter(d=>!d.opt).map(d=>d.id), mc:15, tf:5, scen:5, choices:4, feedback:'end', order:'mixed'};
+const DEF_TEST = {decks:DECKS.filter(d=>!d.opt).map(d=>d.id), exam:10, mc:15, tf:5, scen:5, choices:4, feedback:'end', order:'mixed'};
 S.test = Object.assign({}, DEF_TEST, store.get('ps1-test',{}));
 S.test.decks = S.test.decks.filter(id=>deckById[id]);
 const saveTest = ()=>store.set('ps1-test',S.test);
-const testPool = ()=>({cards:CARDS.filter(c=>S.test.decks.includes(c.d)), scen:SCEN.filter(s=>S.test.decks.includes(s[0]))});
+const testPool = (decks=S.test.decks)=>({cards:CARDS.filter(c=>decks.includes(c.d)), scen:SCEN.filter(s=>decks.includes(s[0])), exam:EXAM.filter(e=>decks.includes(e[0]))});
 function syncTestInputs(){
-  [['mc','tmc'],['tf','ttf'],['scen','tscen']].forEach(([k,id])=>{const el=$('#'+id); if(el) S.test[k]=Math.max(0,Math.min(200,parseInt(el.value,10)||0));});
+  [['exam','texam'],['mc','tmc'],['tf','ttf'],['scen','tscen']].forEach(([k,id])=>{const el=$('#'+id); if(el) S.test[k]=Math.max(0,Math.min(200,parseInt(el.value,10)||0));});
   saveTest();
 }
-function startTest(){
-  syncTestInputs();
-  const T=S.test, P=testPool();
-  const mcN=Math.min(T.mc,P.cards.length), scN=Math.min(T.scen,P.scen.length);
+// cfg is passed for Exam mode and "same settings" reruns; otherwise use the builder's saved config.
+function startTest(cfg){
+  if(!cfg) syncTestInputs();
+  const T=Object.assign({}, cfg||S.test), P=testPool(T.decks);
+  const mcN=Math.min(T.mc,P.cards.length), scN=Math.min(T.scen,P.scen.length), exN=Math.min(T.exam||0,P.exam.length);
   // Use different terms for multiple choice and true/false when there are enough to go around.
   const deal=shuffle(P.cards), mcCards=deal.slice(0,mcN), left=deal.slice(mcN);
   const tfCards=left.concat(shuffle(mcCards)).slice(0,Math.min(T.tf,P.cards.length));
-  const groups={mc:mcCards.map(c=>genQuestion(c,P.cards,T.choices)), tf:tfCards.map(c=>tfQuestion(c,P.cards)), scen:shuffle(P.scen).slice(0,scN).map(scenQuestion)};
-  const qs=T.order==='grouped'?groups.mc.concat(groups.tf,groups.scen):shuffle(groups.mc.concat(groups.tf,groups.scen));
+  const groups={mc:mcCards.map(c=>genQuestion(c,P.cards,T.choices)), tf:tfCards.map(c=>tfQuestion(c,P.cards)), scen:shuffle(P.scen).slice(0,scN).map(scenQuestion), exam:shuffle(P.exam).slice(0,exN).map(examQuestion)};
+  const qs=T.order==='grouped'?groups.exam.concat(groups.mc,groups.tf,groups.scen):shuffle(groups.exam.concat(groups.mc,groups.tf,groups.scen));
   if(!qs.length){S.quiz=null;S.quizNote=!T.decks.length?'Pick at least one topic for your test.':'Your test has 0 questions. Set at least one question count above 0.';renderQuiz();return}
-  const short=(T.mc>mcN||T.scen>scN||T.tf>tfCards.length)?`Some counts were higher than these topics have, so the test uses all available: ${mcN} multiple choice, ${tfCards.length} true/false, ${scN} scenario.`:'';
-  newQuiz(qs,{test:true, atEnd:T.feedback==='end', short, decks:T.decks.slice()});
+  const short=!T.examMode&&((T.exam||0)>exN||T.mc>mcN||T.scen>scN||T.tf>tfCards.length)?`Some counts were higher than these topics have, so the test uses all available: ${exN} exam-style, ${mcN} multiple choice, ${tfCards.length} true/false, ${scN} scenario.`:'';
+  newQuiz(qs,{test:true, atEnd:T.feedback==='end', short, decks:T.decks.slice(), cfg:T});
 }
 function gradeTest(){
   const Q=S.quiz;
@@ -656,14 +753,26 @@ function startQTimer(){
 }
 const MIX_NAME={mixed:'term and scenario questions',terms:'term questions only',scen:'scenario questions only'};
 const seg=(k,opts)=>`<div class="seg">${opts.map(([v,l])=>`<button class="btn small" data-tset="${k}" data-val="${esc(JSON.stringify(v))}" aria-pressed="${S.test[k]===v}">${esc(l)}</button>`).join('')}</div>`;
+function examCfg(n){
+  const decks=S.test.decks.length?S.test.decks:DEF_TEST.decks, P=testPool(decks);
+  const total=P.exam.length+P.scen.length, take=Math.min(n||total,total), ex=Math.min(P.exam.length,Math.round(take*0.75));
+  return {decks, exam:ex, scen:Math.min(P.scen.length,take-ex), mc:0, tf:0, choices:4, feedback:'end', order:'mixed', examMode:true};
+}
+function renderExamCard(){
+  const decks=S.test.decks.length?S.test.decks:DEF_TEST.decks, P=testPool(decks), total=P.exam.length+P.scen.length;
+  const names=decks.length===DECKS.length?'every topic':decks.length===DEF_TEST.decks.length&&DEF_TEST.decks.every(d=>decks.includes(d))?'all main topics':decks.map(d=>deckById[d].name).join(', ');
+  return `<div class="qbox setup" style="margin-bottom:16px;border-color:var(--accent)"><div><div class="label">Exam mode · hardest</div><h2 style="margin-top:6px">Practice exam</h2></div>
+    <p>Questions written like the real unit test: scenarios, "which best describes," and answer choices built to trip you up. Answers are shown at the end, with an explanation of each trap. Covers ${esc(names)} (change topics in Build a test below).</p>
+    <div class="toggle">${[15,30].filter(n=>n<total).map((n,i)=>`<button class="btn ${i?'':'primary'}" data-act="exam" data-n="${n}">${n} questions</button>`).join('')}<button class="btn ${total<=15?'primary':''}" data-act="exam" data-n="0">All ${total}</button></div></div>`;
+}
 function renderBuilder(){
   const T=S.test, P=testPool();
   const num=(id,k,max,label)=>`<label class="set-row" for="${id}"><span class="label">${label}</span><span style="display:flex;gap:8px;align-items:center"><input id="${id}" class="qcount" type="number" min="0" max="200" value="${T[k]}" inputmode="numeric"><small style="color:var(--muted)">of ${max}</small></span></label>`;
   return `<div class="qbox setup" style="margin-top:16px"><div><div class="label">Custom test</div><h2 style="margin-top:6px">Build a test</h2></div>
-    <p>Pick any topics, choose how many of each kind of question, and take it like the real thing.</p>
+    <p>Pick any topics, choose how many of each kind of question, and take it like the real thing. Exam-style questions are hand-written to match the unit test; the other types are built from the flashcards.</p>
     <div class="set-row"><div class="label">Topics</div><div class="chips">${DECKS.map(d=>`<button class="chip" data-tdeck="${d.id}" aria-pressed="${T.decks.includes(d.id)}"><span class="dot" style="${dotStyle(d.id)}"></span>${esc(d.name)}</button>`).join('')}</div>
       <div class="toggle"><button class="btn small" data-act="t-core">All main topics</button><button class="btn small" data-act="t-every">Everything</button><button class="btn small" data-act="t-none">Clear</button></div></div>
-    <div style="display:flex;flex-wrap:wrap;gap:16px 26px">${num('tmc','mc',P.cards.length,'Multiple choice')}${num('ttf','tf',P.cards.length,'True / false')}${num('tscen','scen',P.scen.length,'Scenarios')}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px 26px">${num('texam','exam',P.exam.length,'Exam-style')}${num('tmc','mc',P.cards.length,'Multiple choice')}${num('ttf','tf',P.cards.length,'True / false')}${num('tscen','scen',P.scen.length,'Scenarios')}</div>
     <div class="set-row"><div class="label">Answer choices (multiple choice)</div>${seg('choices',[[3,'3'],[4,'4'],[5,'5']])}<p>Scenario questions always have 4.</p></div>
     <div class="set-row"><div class="label">Show answers</div>${seg('feedback',[['end','At the end, like a real test'],['each','After each question']])}${T.feedback==='end'?'<p>You can go back and change answers before you finish.</p>':''}</div>
     <div class="set-row"><div class="label">Question order</div>${seg('order',[['mixed','Mixed'],['grouped','Grouped by type']])}</div>
@@ -677,7 +786,7 @@ function renderQuiz(){
   if(!Q){
     const scope = S.deck==='all'?'all decks':deckById[S.deck].name;
     const last = store.get('ps1-qcount',15);
-    $('#view').innerHTML=`${S.quizNote?`<div class="watch" style="margin:0 0 14px"><b>Nothing to quiz</b>${esc(S.quizNote)}</div>`:''}<div class="qbox setup"><div><div class="label">Quick quiz · ${esc(scope)}</div><h2 style="margin-top:6px">Test yourself</h2></div>
+    $('#view').innerHTML=`${S.quizNote?`<div class="watch" style="margin:0 0 14px"><b>Nothing to quiz</b>${esc(S.quizNote)}</div>`:''}${renderExamCard()}<div class="qbox setup"><div><div class="label">Quick quiz · ${esc(scope)}</div><h2 style="margin-top:6px">Test yourself</h2></div>
       <p>Each round mixes term questions (pulled first from cards you haven't marked “got it”) with scenario questions like the ones on AP tests. Anything you miss gets flagged so it comes back in flashcards.</p>
       <div class="toggle"><button class="btn primary" data-quiz="10">10 questions</button><button class="btn" data-quiz="20">20 questions</button><button class="btn" data-quiz="40">40 questions</button></div>
       <div class="toggle" style="align-items:center"><label for="qcount" style="color:var(--muted)">Custom:</label><input id="qcount" class="qcount" type="number" min="1" max="200" value="${+last||15}" inputmode="numeric"><button class="btn" data-act="customquiz">Start</button></div>
@@ -695,7 +804,7 @@ function renderQuiz(){
     const yours=m=>m.yours===null||m.yours===undefined?'No answer':m.yours===-1?'Ran out of time':m.opts[m.yours];
     $('#view').innerHTML=`<div class="qbox" style="text-align:center"><div class="label">${Q.test?'Test complete':'Round complete'}</div><div class="score">${Q.right}/${Q.n}</div><p class="deck-sub" style="margin:0 auto 16px">${pct}% · ${pct>=90?'Excellent. You\'re test-ready on this set.':pct>=70?'Solid. Review the misses below and run it again.':'Keep going: flip through the flashcards for these topics, then try again.'}</p>
       ${Q.short?`<div class="watch" style="text-align:left;margin:0 0 14px">${esc(Q.short)}</div>`:''}
-      <div class="toggle" style="justify-content:center">${missedCards.length?`<button class="btn primary" data-act="retry">Retry the ${missedCards.length} missed terms</button>`:''}${Q.test?`<button class="btn" data-act="t-start">Same settings, new test</button>`:''}<button class="btn" data-act="newquiz">${Q.test?'Change test':'New round'}</button><button class="btn" data-goto="cards">Go to flashcards</button></div>
+      <div class="toggle" style="justify-content:center">${missedCards.length?`<button class="btn primary" data-act="retry">Retry the ${missedCards.length} missed terms</button>`:''}${Q.test?`<button class="btn" data-act="t-again">Same settings, new test</button>`:''}<button class="btn" data-act="newquiz">${Q.test?'Change test':'New round'}</button><button class="btn" data-goto="cards">Go to flashcards</button></div>
       ${breakdown}
       ${Q.missed.length?`<div class="missed">${Q.missed.map(m=>`<div><b>${esc(m.prompt.length>140?m.prompt.slice(0,140)+'…':m.prompt)}</b><br>Your answer: ${esc(yours(m))} · Correct: ${esc(m.opts[m.ans])}${m.type==='mc'?'':`<br>${esc(m.exp)}`}</div>`).join('')}</div>`:''}</div>`;
     S.retryIds=missedCards; return;
@@ -931,6 +1040,7 @@ document.addEventListener('click',e=>{
     else if(a==='t-every') T.decks=DECKS.map(d=>d.id);
     else if(a==='t-none') T.decks=[];
     else if(a==='t-start'){startTest();window.scrollTo({top:0});return}
+    else if(a==='t-again'){startTest(S.quiz&&S.quiz.cfg);window.scrollTo({top:0});return}
     else if(a==='t-next'){testNav(1);return}
     else if(a==='t-back'){testNav(-1);return}
     else if(a==='t-finish'){finishTest();return}
@@ -950,6 +1060,7 @@ document.addEventListener('click',e=>{
   else if(a==='next'){S.quiz.i++;S.quiz.picked=null;renderQuiz();window.scrollTo({top:0})}
   else if(a==='retry'){startQuiz(0,S.retryIds)}
   else if(a==='newquiz'){S.quiz=null;renderQuiz()}
+  else if(a==='exam'){startTest(examCfg(+t.dataset.n));window.scrollTo({top:0})}
   else if(a==='customquiz'){const n=Math.max(1,Math.min(200,parseInt($('#qcount').value,10)||15));store.set('ps1-qcount',n);startQuiz(n)}
   else if(a==='export')exportProgress();
   else if(a==='import')$('#importFile').click();
