@@ -9,7 +9,7 @@
   --bg:#f2f4f7; --surface:#ffffff; --surface-2:#f8f9fb; --ink:#15202b; --muted:#566373; --line:#d8dee6;
   --accent:#2a55c8; --accent-ink:#ffffff; --accent-soft:#e2e9fb;
   --good:#1d7f55; --good-soft:#dcf1e7; --bad:#b93a26; --bad-soft:#f9e1dc; --warn-soft:#fbf1cf; --warn-ink:#6b5208;
-  --d-neuron:#c2410c; --d-nt:#7c3aed; --d-ns:#0f766e; --d-brain:#be185d; --d-vision:#1d4ed8; --d-senses:#a16207; --d-split:#4d7c0f;
+  --d-neuron:#c2410c; --d-nt:#7c3aed; --d-ns:#0f766e; --d-brain:#be185d; --d-vision:#1d4ed8; --d-senses:#a16207; --d-split:#4d7c0f; --d-sleep:#c026d3;
   --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
   --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -19,13 +19,13 @@
   --bg:#0e141b; --surface:#161f29; --surface-2:#1b2633; --ink:#e7ecf1; --muted:#97a4b2; --line:#2a3745;
   --accent:#86a6ff; --accent-ink:#0e141b; --accent-soft:#1c2a47;
   --good:#52c98f; --good-soft:#143326; --bad:#ff8d76; --bad-soft:#3a1d18; --warn-soft:#3a3115; --warn-ink:#f1d675;
-  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635;
+  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635; --d-sleep:#e879f9;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0e141b; --surface:#161f29; --surface-2:#1b2633; --ink:#e7ecf1; --muted:#97a4b2; --line:#2a3745;
   --accent:#86a6ff; --accent-ink:#0e141b; --accent-soft:#1c2a47;
   --good:#52c98f; --good-soft:#143326; --bad:#ff8d76; --bad-soft:#3a1d18; --warn-soft:#3a3115; --warn-ink:#f1d675;
-  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635;
+  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635; --d-sleep:#e879f9;
   color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.55}
@@ -177,8 +177,11 @@ const DECKS = [
   {id:'vision', name:'Vision', sub:'The path light takes, rods and cones, color theories, Gestalt grouping, and depth cues.'},
   {id:'senses', name:'Hearing, Smell, Taste, Touch & more', sub:'Sound waves, hearing loss, balance, smell, taste, pain, and unusual perception.'},
   // Optional decks stay out of "All decks", the main progress meter, and the final mixed quiz. Keep them last so saved card/lesson ids never shift.
-  {id:'split', opt:true, name:'Optional: Split Brain', sub:'Optional extra from the Brain Lateralization & Split Brain slides. Your teacher said it may help on the test. Builds on the Hemispheres section of The Brain.'}
+  {id:'split', opt:true, name:'Optional: Split Brain', sub:'Optional extra from the Brain Lateralization & Split Brain slides. Your teacher said it may help on the test. Builds on the Hemispheres section of The Brain.'},
+  {id:'sleep', name:'Sleep, Consciousness & Drugs', sub:'Everything on the Sleep, Consciousness, and Drugs slides: sleep, circadian rhythm, sleep loss, sleep disorders, how drugs work, the four drug categories, and addiction.'}
 ];
+// Storage order above must never change (saved lessons are numbered by it). This is the order decks are shown in.
+const DECK_VIEW = DECKS.filter(d=>!d.opt).concat(DECKS.filter(d=>d.opt));
 
 // [deck, section, term, definition, hook?]
 const RAW = [
@@ -344,7 +347,57 @@ const RAW = [
 ['split','Split-brain patients','Object flashed to the left visual field','Reaches only the right hemisphere. The patient says they saw "nothing," but can point to it or draw it with the left hand.','Left field → left hand, no words.'],
 ['split','Hemisphere styles','Trees vs. forest','The left hemisphere focuses on details and pieces (the "trees"). The right hemisphere sees the big picture and wholes, including the self (the "forest").'],
 ['split','Hemisphere styles','Words vs. tone','In language, the left hemisphere handles words and their literal definitions. The right hemisphere handles tone, inflection, and context.'],
-['split','Hemisphere styles','Logic vs. intuition','Left: thoughts, logic, linear and literal thinking, calculation. Right: feelings, intuition, inferences and associations, perception.']
+['split','Hemisphere styles','Logic vs. intuition','Left: thoughts, logic, linear and literal thinking, calculation. Right: feelings, intuition, inferences and associations, perception.'],
+// Sleep, Consciousness & Drugs: only what's on the slides. Appended last; ids come from position.
+['sleep','Sleep & consciousness','Sleep','An altered state of consciousness. It is not a period of dormancy where your body and brain shut off: even when you are sound asleep, your brain is still active.'],
+['sleep','Sleep & consciousness','Dreaming','Everyone dreams every night.'],
+['sleep','Sleep & consciousness','Sleep stages','Sleep has four stages: NREM 1 (Stage 1), NREM 2 (Stage 2), NREM 3 (Stage 3), and REM sleep.','Three NREM stages, then REM.'],
+['sleep','Circadian rhythm','Circadian rhythm','The biological clock: regular bodily rhythms that occur on a 24-hour cycle. The body is roughly synchronized with the 24-hour cycle of day and night.'],
+['sleep','Circadian rhythm','Body temperature cycle','Body temperature increases throughout the day, dips in the afternoon, and is lowest at night.'],
+['sleep','Circadian rhythm','Teens and young adults','Most are evening-energized, with performance improving across the day.'],
+['sleep','Circadian rhythm','Older adults','Most are morning people, with energy declining as the day goes on.'],
+['sleep','Circadian rhythm','Artificial light','Light from cell phones, lamps, and other devices can interfere with circadian rhythms.'],
+['sleep','Effects of sleep loss','Sleep loss: brain','Diminished attentional focus and memory consolidation, and increased risk of depression.'],
+['sleep','Effects of sleep loss','Sleep loss: immune system','Suppression of immune cell production and increased risk of viral infections, such as colds.'],
+['sleep','Effects of sleep loss','Sleep loss: stomach and fat cells','Increased hunger-arousing ghrelin and decreased hunger-suppressing leptin, plus increased fat cell production and greater risk of obesity.','Ghrelin = growling stomach goes up; Leptin = leave the table goes down.'],
+['sleep','Effects of sleep loss','Sleep loss: heart','Increased risk of high blood pressure.'],
+['sleep','Effects of sleep loss','Sleep loss: muscles and joints','Muscles: reduced strength and slower reaction time and motor learning. Joints: increased inflammation and arthritis.'],
+['sleep','Sleep disorders','Insomnia','Can\'t sleep.'],
+['sleep','Sleep disorders','Sleep apnea','You stop breathing in your sleep.','Apnea = no air.'],
+['sleep','Sleep disorders','Night terrors','Not nightmares: intense fear or terror where you wake up screaming or crying, with no recollection the following morning. Happen in Stage 3.'],
+['sleep','Sleep disorders','Sleepwalking','A sleep disorder: walking while asleep.'],
+['sleep','Sleep disorders','Narcolepsy','You fall asleep spontaneously.','Narco = sleep attack.'],
+['sleep','How drugs work','Psychoactive drugs','Chemical substances that alter perceptions and mood. They affect the synapses of neurons and the functioning of neurotransmitters.'],
+['sleep','How drugs work','Agonist','A drug that fits into receptors and mimics a neurotransmitter, increasing its effects. Example: opiates mimic and increase the effects of endorphins.','Agonist = Acts like it.'],
+['sleep','How drugs work','Antagonist','A drug that blocks the effects of a neurotransmitter. Example from your slides: cocaine blocks the reuptake of dopamine.','Antagonist = Against it.'],
+['sleep','How drugs work','Reuptake inhibitor','A drug that blocks reuptake, so the neurotransmitter isn\'t reabsorbed. Your slides\' example: cocaine blocks the reuptake of dopamine.'],
+['sleep','How drugs work','Four categories of psychoactive drugs','Depressants, stimulants, hallucinogens, and opioids.'],
+['sleep','Depressants','Depressants','Drugs that slow you down by reducing neural activity. Examples: alcohol, barbiturates, sedatives, benzodiazepines.','Depress = press down.'],
+['sleep','Depressants','Alcohol','A depressant that calms the nervous system. It\'s perceived as a stimulant because people do crazy things, but it intensifies the effects of GABA (sluggish movements, slurred speech) and reduces glutamate (slower reactions, impaired judgment).'],
+['sleep','Depressants','Barbiturates / sedatives','Also called "downers." Used to treat insomnia; effects are similar to alcohol. They mess with sleep patterns and cause dependence. They increase GABA, which has a calming effect.'],
+['sleep','Depressants','Benzodiazepines','Valium and Xanax. Anti-anxiety drugs that calm the nervous system. They depress heartbeat and breathing.'],
+['sleep','Stimulants','Stimulants','Drugs that excite the central nervous system. Examples: caffeine, nicotine, cocaine, amphetamines, meth.'],
+['sleep','Stimulants','Caffeine','Naturally occurring (coffee, tea, chocolate); increases alertness. In high doses it can cause anxiety, heart palpitations, and insomnia.'],
+['sleep','Stimulants','Nicotine','A highly addictive stimulant. Depending on the amount of time smoked, it can have stimulating or sedative effects. Withdrawal symptoms: irritability, headaches, nervousness.'],
+['sleep','Stimulants','Cocaine','Blocks reabsorption of dopamine to produce increased alertness, euphoria, and motivation. Followed by a huge crash with anxiety, depression, and strong cravings.'],
+['sleep','Stimulants','Amphetamines','Mimic epinephrine/adrenaline. Increase alertness and feelings of well-being and give a sense of euphoria, followed by a huge crash. Leads to a cycle of addiction. Meth and ecstasy/MDMA are forms.'],
+['sleep','Hallucinogens','Hallucinogens','Substances that distort visual and auditory perception. Examples: LSD, marijuana.'],
+['sleep','Hallucinogens','LSD','Produces hallucinations and delusions, like a psychotic state. Can result in psychosis, memory loss, paranoia, panic attacks, nightmares, and aggression.'],
+['sleep','Hallucinogens','THC','The active ingredient in marijuana. Can produce mild hallucinations, euphoria, relaxation, a sense of wellbeing, and a distortion of time.'],
+['sleep','Hallucinogens','Ecstasy (MDMA)','Considered both a stimulant and a hallucinogen. Produces a euphoric high and can damage serotonin-producing neurons, resulting in a permanent deflation of mood and impairment of memory.'],
+['sleep','Opioids','Opioids','Drugs derived from the opium poppy that lessen pain and anxiety. Examples: heroin, codeine, morphine, methadone, OxyContin, oxycodone.'],
+['sleep','Opioids','How opioids work','They act as agonists for endorphins, which reduce pain and increase positive feelings. With continued use, the brain stops producing dopamine and endorphins.'],
+['sleep','Opioids','Results of opioid use','Dependence, tolerance, withdrawal, and physiological and psychological addiction.'],
+['sleep','Addiction','Substance use','Using a substance, but it doesn\'t interfere with daily functioning.'],
+['sleep','Addiction','Substance abuse','A pattern of use that inhibits the ability to function, often puts the user in danger, and results in legal difficulties.'],
+['sleep','Addiction','Tolerance','A need for larger amounts of the drug to experience the same effects.'],
+['sleep','Addiction','Addiction','The user craves the drug and continues to use it despite adverse consequences. Users want the drug more than they like the drug. Includes withdrawal symptoms.','Want it more than you like it.'],
+['sleep','Addiction','Withdrawal','The discomfort and distress that follow discontinuing an addictive drug. Can be physiological and/or psychological.'],
+['sleep','Substance use disorder','Substance use disorder','A disorder characterized by continued substance craving and use despite significant life disruption and/or physical risk. Diagnosed with 11 DSM-5 criteria.'],
+['sleep','Substance use disorder','Severity levels','Per your slide: mild = 3 criteria met, moderate = 4 or 5, severe = 6 or more.'],
+['sleep','Substance use disorder','Criteria: losing control','Taking the substance in larger amounts or for longer than you meant to; wanting to cut down or stop but not managing to; spending a lot of time getting, using, or recovering from it; cravings and urges to use it.'],
+['sleep','Substance use disorder','Criteria: life problems','Not doing what you should at work, home, or school; continuing even when it causes relationship problems; giving up important social, occupational, or recreational activities.'],
+['sleep','Substance use disorder','Criteria: risk and the body','Using again and again even when it puts you in danger; continuing even when you know it caused or worsened a physical or psychological problem; tolerance; withdrawal symptoms relieved by taking more.']
 ];
 
 const CARDS = RAW.map((r,i)=>({id:r[0]+'-'+i, d:r[0], s:r[1], t:r[2], x:r[3], h:r[4]||''}));
@@ -363,6 +416,9 @@ const CHAINS = {
   split:[
     {label:'Word flashed to the right visual field', steps:['Right visual field','Optic chiasm (crosses)','Left hemisphere','Can say it','Right hand can point / draw']},
     {label:'Word flashed to the left visual field', steps:['Left visual field','Optic chiasm (crosses)','Right hemisphere','Says "nothing"','Left hand can point / draw']}
+  ],
+  sleep:[
+    {label:'Sleep stages', steps:['NREM 1 (Stage 1)','NREM 2 (Stage 2)','NREM 3 (Stage 3): night terrors','REM sleep']}
   ]
 };
 const TREE = `Nervous system
@@ -378,9 +434,20 @@ const WATCH = {
   ns:['The melatonin slide says the pineal gland is "in the thalamus." It actually sits near the thalamus, deep in the brain.'],
   senses:['The vestibular slide says the vestibular sacs are "of the cochlea." They sit right next to the cochlea in the inner ear but aren\'t part of it.','Parts of the ear and eye come from diagram slides with no text. If your test has a labeling question, look at those slides directly.'],
   brain:['F-POT order front to back along the top: Frontal, Parietal, Occipital — with Temporal on the sides.','Scans: structure only = CT, MRI. Activity/function = PET, fMRI, EEG.'],
-  split:['Two-step trick: (1) the visual field goes to the opposite hemisphere, (2) that hemisphere controls the opposite hand. Only the left hemisphere can say what it saw.','The slide on the left visual field says the patient can draw or point "with the right hand." Its own picture shows the left hand drawing, and the left hand is correct: the left visual field reaches only the right hemisphere, which controls the left hand.']
+  split:['Two-step trick: (1) the visual field goes to the opposite hemisphere, (2) that hemisphere controls the opposite hand. Only the left hemisphere can say what it saw.','The slide on the left visual field says the patient can draw or point "with the right hand." Its own picture shows the left hand drawing, and the left hand is correct: the left visual field reaches only the right hemisphere, which controls the left hand.'],
+  sleep:['Your slides list the four sleep stages by name only (the details were in the video). The one stage fact on the slides: night terrors happen in Stage 3.','Ecstasy/MDMA shows up twice on your slides: as a form of amphetamine (stimulant) and as a hallucinogen. It counts as both.','Alcohol is a depressant, even though people think it\'s a stimulant because of the crazy things people do when drinking.']
 };
 
+const TABLES = {
+  'nt|The chemicals': {head:['Neurotransmitter','Main job','Too little','Too much'], rows:()=>COMPARE_NT},
+  'sleep|How drugs work': {head:['Category','What it does','Examples','How it works'], rows:()=>[
+    ['Depressants','Slow you down; reduce neural activity','Alcohol, barbiturates, sedatives, benzodiazepines (Valium, Xanax)','Increase GABA (alcohol also reduces glutamate)'],
+    ['Stimulants','Excite the central nervous system','Caffeine, nicotine, cocaine, amphetamines, meth','Cocaine blocks dopamine reuptake; amphetamines mimic adrenaline'],
+    ['Hallucinogens','Distort visual and auditory perception','LSD, marijuana (THC), ecstasy/MDMA','Ecstasy can damage serotonin-producing neurons'],
+    ['Opioids','Lessen pain and anxiety','Heroin, codeine, morphine, methadone, OxyContin, oxycodone','Agonists for endorphins']
+  ]}
+};
+const tableHtml = key=>{const t=TABLES[key]; return t?`<div class="scroll"><table class="compare"><thead><tr>${t.head.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${t.rows().map(r=>`<tr>${r.map((v,i)=>i?`<td>${esc(v)}</td>`:`<td><b>${esc(v)}</b></td>`).join('')}</tr>`).join('')}</tbody></table></div>`:''};
 const COMPARE_NT = [
   ['Acetylcholine','Movement, memory','Alzheimer\'s','Muscle spasms'],
   ['Dopamine','Reward, movement, alertness','Parkinson\'s, addiction','Schizophrenia'],
@@ -437,7 +504,15 @@ const SCEN = [
 ['split','The word FACE is flashed to a split-brain patient\'s right visual field. What does he say he saw?',['"Face"','"Nothing"','He can only draw it with his left hand','He sees it in both hemispheres'],0,'Right visual field → left hemisphere, which is dominant for language, so he can say it.'],
 ['split','Why would a surgeon cut a patient\'s corpus callosum?',['To treat Broca\'s aphasia','To stop severe seizures from spreading between hemispheres','To improve memory','To restore vision'],1,'The surgery is a last resort for severe seizures. The side effect is that the hemispheres can no longer share information.'],
 ['split','In a split-brain patient, information from the right visual field goes only to the:',['Right hemisphere','Left hemisphere','Cerebellum','Both hemispheres equally'],1,'Visual fields cross at the optic chiasm: right field → left hemisphere.'],
-['split','A friend understands every word of your sarcastic "Oh, great" but misses that you meant it sarcastically. Which hemisphere handles that part of language?',['Left — words and definitions','Right — tone, inflection, and context','Left — calculation','Neither; it\'s the cerebellum'],1,'Left = the words. Right = tone and context.']
+['split','A friend understands every word of your sarcastic "Oh, great" but misses that you meant it sarcastically. Which hemisphere handles that part of language?',['Left — words and definitions','Right — tone, inflection, and context','Left — calculation','Neither; it\'s the cerebellum'],1,'Left = the words. Right = tone and context.'],
+['sleep','Jake scrolls on his phone in bed every night, and now he can\'t fall asleep at his usual time. What is most likely interfering?',['Artificial light disrupting his circadian rhythm','Sleep apnea','Narcolepsy','Night terrors'],0,'Light from phones, lamps, and other devices can interfere with circadian rhythms.'],
+['sleep','A child wakes up screaming and crying in terror, but the next morning remembers nothing. This is most likely:',['A nightmare','A night terror','Narcolepsy','Insomnia'],1,'Night terrors are not nightmares: intense fear, screaming or crying, no memory the next morning. They happen in Stage 3.'],
+['sleep','A drug fits into endorphin receptors and mimics endorphins, increasing their effects. The drug is acting as:',['An agonist','An antagonist','A depressant','A hallucinogen'],0,'Agonists mimic a neurotransmitter and increase its effects, like opiates with endorphins.'],
+['sleep','Ava used to need one cup of coffee to feel alert. Now she needs three to get the same effect. This is:',['Tolerance','Withdrawal','Substance abuse','Insomnia'],0,'Tolerance: needing larger amounts of a drug to get the same effect.'],
+['sleep','When Leo quits smoking, he becomes irritable, gets headaches, and feels nervous. He is experiencing:',['Tolerance','Withdrawal','Narcolepsy','A hallucination'],1,'Those are the nicotine withdrawal symptoms on your slides.'],
+['sleep','Which category do benzodiazepines like Valium and Xanax belong to?',['Depressants','Stimulants','Hallucinogens','Opioids'],0,'Benzodiazepines calm the nervous system and depress heartbeat and breathing.'],
+['sleep','A drug intensifies the effects of GABA and reduces glutamate, causing slurred speech and poor judgment. Which drug is it?',['Alcohol','Cocaine','LSD','Caffeine'],0,'Alcohol: more GABA → sluggish, slurred speech; less glutamate → slow reactions, impaired judgment.'],
+['sleep','After pulling an all-nighter, Sam feels unusually hungry all day. Which change best explains this?',['More ghrelin and less leptin','More leptin and less ghrelin','More endorphins','Less GABA'],0,'Sleep loss increases hunger-arousing ghrelin and decreases hunger-suppressing leptin.']
 ];
 
 // Exam-style bank: hand-written questions in the style of the unit test (scenarios, "which best describes",
@@ -529,7 +604,36 @@ const EXAM = [
 
 ['split','A split-brain patient holds a hidden key in her left hand and can\'t see it. Asked what she is holding, which of the following is most likely?',['She can\'t name it, but she can pick out the key with her left hand.','She names it right away.','She can point to the key only with her right hand.','She can\'t identify it in any way.'],0,'Touch from the left hand goes to the right hemisphere, which can\'t speak but controls the left hand.'],
 ['split','Which of the following best describes what research on split-brain patients revealed?',['The two hemispheres specialize in different functions, such as language in the left hemisphere.','Both hemispheres have identical abilities.','Cutting the corpus callosum causes paralysis.','The right hemisphere controls language.'],0,'Split-brain studies showed lateralization, like language on the left side.'],
-['split','A split-brain patient looks at the center of the word HEART, so "HE" is in his left visual field and "ART" is in his right. Asked what word he saw, he will most likely say:',['"Art"','"He"','"Heart"','Nothing at all'],0,'"ART" reaches the left hemisphere, which can speak. "HE" reaches only the right hemisphere, so he could point to it with his left hand but not say it.']
+['split','A split-brain patient looks at the center of the word HEART, so "HE" is in his left visual field and "ART" is in his right. Asked what word he saw, he will most likely say:',['"Art"','"He"','"Heart"','Nothing at all'],0,'"ART" reaches the left hemisphere, which can speak. "HE" reaches only the right hemisphere, so he could point to it with his left hand but not say it.'],
+
+['sleep','Which statement about sleep is most accurate?',['Sleep is an altered state of consciousness, and the brain stays active even during sound sleep.','During sleep, the body and brain shut off until morning.','Only some people dream, and only on some nights.','Sleep is a period of dormancy for both the body and the brain.'],0,'Your slides: sleep is NOT dormancy; the brain is still active, and everyone dreams every night.'],
+['sleep','Which of the following best describes the circadian rhythm?',['The body\'s biological clock: regular rhythms on a 24-hour cycle, synced with day and night','The order of the four sleep stages','A disorder in which people fall asleep suddenly','A drug\'s effect on dopamine'],0,'Circadian rhythm = the biological clock on a 24-hour cycle.'],
+['sleep','Tia, 16, struggles in her first-period class but feels sharp by evening. Her grandfather is up at dawn and fades by dinner. Which of the following best explains this?',['Most teens are evening-energized, while most older adults are morning people.','Tia has narcolepsy and her grandfather has insomnia.','Older adults don\'t have circadian rhythms.','Teens\' body temperature is highest in the morning.'],0,'Teens and young adults improve across the day; older adults lose energy as the day goes on.'],
+['sleep','Which of the following correctly describes body temperature across the day?',['It rises through the day, dips in the afternoon, and is lowest at night.','It is highest at night and lowest in the morning.','It stays the same all day.','It is lowest in the afternoon and highest at night.'],0,'Body temperature increases throughout the day, dips in the afternoon, and is lowest at night.'],
+['sleep','Which of the following is an effect of sleep loss?',['Suppressed immune cell production and more colds','Lower risk of high blood pressure','Better memory consolidation','Faster reaction time'],0,'Sleep loss weakens the immune system, raises blood pressure risk, and hurts memory and reaction time.'],
+['sleep','Which of the following best explains why ongoing sleep loss is linked to obesity?',['It raises hunger-arousing ghrelin, lowers hunger-suppressing leptin, and increases fat cell production.','It raises leptin, which makes people hungrier.','It increases GABA, which slows metabolism.','It blocks the reuptake of dopamine.'],0,'Ghrelin up, leptin down, more fat cells → greater risk of obesity.'],
+['sleep','A student who has been sleeping only four hours a night has trouble focusing in class and remembering what she studied. Which effect of sleep loss is this?',['Diminished attentional focus and memory consolidation','Increased inflammation in the joints','Increased leptin','Narcolepsy'],0,'Brain effects of sleep loss: less focus, weaker memory consolidation, higher risk of depression.'],
+['sleep','Darnell\'s wife notices that he stops breathing several times during the night while he sleeps. Darnell most likely has:',['Sleep apnea','Narcolepsy','Insomnia','Night terrors'],0,'Sleep apnea = you stop breathing in your sleep.'],
+['sleep','In the middle of a conversation, Rosa suddenly falls asleep without warning. She most likely has:',['Narcolepsy','Insomnia','Sleep apnea','Sleepwalking'],0,'Narcolepsy = falling asleep spontaneously. Insomnia is the opposite: you can\'t sleep.'],
+['sleep','Which of the following correctly describes night terrors?',['Intense fear and screaming or crying during Stage 3, usually not remembered the next morning','Bad dreams that are remembered in detail the next morning','Suddenly falling asleep during the day','Stopping breathing during sleep'],0,'Night terrors are not nightmares: Stage 3, intense terror, no recollection in the morning.'],
+['sleep','Which of the following best describes an agonist?',['A drug that fits into receptors, mimics a neurotransmitter, and increases its effects','A drug that blocks the effects of a neurotransmitter','A drug that only affects the body, not the brain','The discomfort after stopping a drug'],0,'Agonist = acts like the neurotransmitter. Example: opiates mimic endorphins.'],
+['sleep','Which of the following best describes an antagonist?',['A drug that blocks the effects of a neurotransmitter','A drug that mimics a neurotransmitter and increases its effects','A drug made from the opium poppy','A drug that only works on hormones'],0,'Antagonist = against it. Your slides\' example: cocaine blocking dopamine reuptake.'],
+['sleep','Cocaine produces alertness, euphoria, and motivation by:',['Blocking the reabsorption (reuptake) of dopamine','Mimicking endorphins','Increasing GABA','Damaging serotonin-producing neurons'],0,'Cocaine blocks dopamine reuptake, then comes a huge crash with anxiety, depression, and cravings.'],
+['sleep','People at a party get loud and do wild things after drinking, so some assume alcohol is a stimulant. Which of the following best explains why it is actually a depressant?',['It intensifies GABA and reduces glutamate, slowing neural activity, reactions, and judgment.','It blocks the reuptake of dopamine.','It mimics adrenaline.','It distorts visual and auditory perception.'],0,'Depressants reduce neural activity. Alcohol only seems like a stimulant because of how people act.'],
+['sleep','A doctor prescribes a "downer" to treat a patient\'s insomnia. It increases GABA and has effects similar to alcohol. Which type of drug is it most likely?',['A barbiturate/sedative','A stimulant','A hallucinogen','An amphetamine'],0,'Barbiturates/sedatives: "downers," used for insomnia, alcohol-like, increase GABA, and cause dependence.'],
+['sleep','Which drug mimics adrenaline, gives a sense of euphoria followed by a huge crash, and leads to a cycle of addiction?',['Amphetamines','Benzodiazepines','LSD','Codeine'],0,'Amphetamines mimic epinephrine/adrenaline. Meth and ecstasy are forms.'],
+['sleep','Which substance is considered both a stimulant and a hallucinogen?',['Ecstasy (MDMA)','Caffeine','Alcohol','Morphine'],0,'Ecstasy/MDMA is on your slides as a form of amphetamine and as a hallucinogen.'],
+['sleep','Heavy ecstasy use can permanently lower a person\'s mood and impair memory. Which of the following best explains why?',['It can damage serotonin-producing neurons.','It increases GABA and slows neural activity.','It acts as an agonist for endorphins.','It blocks the reuptake of dopamine.'],0,'Ecstasy can damage serotonin-producing neurons → permanent deflation of mood and memory problems.'],
+['sleep','Which drug produces hallucinations and delusions like a psychotic state and can lead to paranoia and panic attacks?',['LSD','THC','Caffeine','Codeine'],0,'LSD can result in psychosis, memory loss, paranoia, panic attacks, nightmares, and aggression.'],
+['sleep','THC, the active ingredient in marijuana, is most likely to produce:',['Mild hallucinations, relaxation, and a distorted sense of time','Severe insomnia and heart palpitations','Depressed heartbeat and breathing','A huge crash with strong cravings'],0,'THC: mild hallucinations, euphoria, relaxation, wellbeing, and time distortion.'],
+['sleep','Which of the following best explains why opioids such as heroin relieve pain?',['They act as agonists for endorphins, reducing pain and increasing positive feelings.','They block the reuptake of dopamine.','They increase glutamate.','They distort visual and auditory perception.'],0,'Opioids are endorphin agonists.'],
+['sleep','With continued opioid use, the brain stops producing its own dopamine and endorphins. This most directly leads to:',['Dependence, tolerance, and withdrawal','Better natural pain control','Narcolepsy','Improved memory'],0,'Opioids result in dependence, tolerance, withdrawal, and physiological and psychological addiction.'],
+['sleep','Which of the following correctly matches a drug with its category?',['Caffeine — stimulant','Benzodiazepines — stimulant','LSD — opioid','Codeine — depressant'],0,'Benzodiazepines are depressants, LSD is a hallucinogen, and codeine is an opioid.'],
+['sleep','Which of the following best describes the difference between substance use and substance abuse?',['Use doesn\'t interfere with daily functioning; abuse is a pattern that hurts functioning, can be dangerous, and leads to legal trouble.','Use involves illegal drugs; abuse involves legal drugs.','Use happens daily; abuse happens only occasionally.','There is no difference between them.'],0,'Substance use = no interference with daily life. Substance abuse = it inhibits functioning.'],
+['sleep','Nina says, "I don\'t even enjoy it anymore, but I can\'t stop wanting it." This best describes:',['Addiction','Tolerance','Substance use','Withdrawal'],0,'Addiction: users want the drug more than they like the drug, and keep using despite consequences.'],
+['sleep','Withdrawal is best described as:',['The discomfort and distress that follow stopping an addictive drug, which can be physiological and/or psychological','Needing more of a drug to get the same effect','Using a drug without it affecting daily life','The euphoria right after taking a drug'],0,'Withdrawal can be physiological, psychological, or both. "Needing more" is tolerance.'],
+['sleep','A person meets 7 of the DSM-5 criteria for substance use disorder. The disorder would be classified as:',['Mild','Moderate','Severe','Not a disorder'],2,'Your slide: mild = 3, moderate = 4 or 5, severe = 6 or more.'],
+['sleep','Which of the following is one of the DSM-5 criteria for substance use disorder?',['Wanting to cut down or stop using but not managing to','Using a substance once at a party','Drinking coffee in the morning','Taking medicine exactly as prescribed'],0,'"Wanting to cut down or stop but not managing to" is criterion 2 on the slide\'s list of 11.']
 ];
 
 const deckById = Object.fromEntries(DECKS.map(d=>[d.id,d]));
@@ -572,7 +676,7 @@ function renderMeter(){
   $('#mbar').style.width=(100*n/CORE_CARDS.length)+'%';
 }
 function renderChips(){
-  const opts=[{id:'all',name:'All decks'}].concat(DECKS);
+  const opts=[{id:'all',name:'All decks'}].concat(DECK_VIEW);
   $('#chips').innerHTML = opts.map(d=>{
     const cs = d.id==='all'?CARDS.filter(c=>inAll(c.d)):CARDS.filter(c=>c.d===d.id);
     const k = cs.filter(c=>S.known[c.id]).length;
@@ -583,7 +687,7 @@ function renderTabs(){document.querySelectorAll('.tabs button').forEach(b=>b.set
 
 /* ---------- Guide ---------- */
 function renderGuide(){
-  const decks = DECKS.filter(d=>S.deck==='all'?inAll(d.id):d.id===S.deck);
+  const decks = DECK_VIEW.filter(d=>S.deck==='all'?inAll(d.id):d.id===S.deck);
   $('#view').innerHTML = decks.map(d=>{
     const cs = CARDS.filter(c=>c.d===d.id);
     const secs = [...new Set(cs.map(c=>c.s))];
@@ -592,9 +696,7 @@ function renderGuide(){
     if(d.id==='ns') h+=`<div class="chain"><div class="label">How the nervous system divides</div><div class="tree">${esc(TREE)}</div></div>`;
     secs.forEach(s=>{
       h+=`<h3 class="sec">${esc(s)}</h3><div class="rows">`+cs.filter(c=>c.s===s).map(c=>`<div class="row"><div class="t">${esc(c.t)}</div><div class="x">${esc(c.x)}${hookHtml(c)}</div><button class="know" data-know="${c.id}" aria-pressed="${!!S.known[c.id]}">${S.known[c.id]?'✓ Got it':'Got it?'}</button></div>`).join('')+`</div>`;
-      if(d.id==='nt'&&s==='The chemicals'){
-        h+=`<div class="scroll"><table class="compare"><thead><tr><th>Neurotransmitter</th><th>Main job</th><th>Too little</th><th>Too much</th></tr></thead><tbody>${COMPARE_NT.map(r=>`<tr>${r.map((v,i)=>i?`<td>${esc(v)}</td>`:`<td><b>${esc(v)}</b></td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-      }
+      h+=tableHtml(d.id+'|'+s);
     });
     (WATCH[d.id]||[]).forEach(w=>h+=`<div class="watch"><b>Heads up</b>${esc(w)}</div>`);
     return h+`</section>`;
@@ -770,7 +872,7 @@ function renderBuilder(){
   const num=(id,k,max,label)=>`<label class="set-row" for="${id}"><span class="label">${label}</span><span style="display:flex;gap:8px;align-items:center"><input id="${id}" class="qcount" type="number" min="0" max="200" value="${T[k]}" inputmode="numeric"><small style="color:var(--muted)">of ${max}</small></span></label>`;
   return `<div class="qbox setup" style="margin-top:16px"><div><div class="label">Custom test</div><h2 style="margin-top:6px">Build a test</h2></div>
     <p>Pick any topics, choose how many of each kind of question, and take it like the real thing. Exam-style questions are hand-written to match the unit test; the other types are built from the flashcards.</p>
-    <div class="set-row"><div class="label">Topics</div><div class="chips">${DECKS.map(d=>`<button class="chip" data-tdeck="${d.id}" aria-pressed="${T.decks.includes(d.id)}"><span class="dot" style="${dotStyle(d.id)}"></span>${esc(d.name)}</button>`).join('')}</div>
+    <div class="set-row"><div class="label">Topics</div><div class="chips">${DECK_VIEW.map(d=>`<button class="chip" data-tdeck="${d.id}" aria-pressed="${T.decks.includes(d.id)}"><span class="dot" style="${dotStyle(d.id)}"></span>${esc(d.name)}</button>`).join('')}</div>
       <div class="toggle"><button class="btn small" data-act="t-core">All main topics</button><button class="btn small" data-act="t-every">Everything</button><button class="btn small" data-act="t-none">Clear</button></div></div>
     <div style="display:flex;flex-wrap:wrap;gap:16px 26px">${num('texam','exam',P.exam.length,'Exam-style')}${num('tmc','mc',P.cards.length,'Multiple choice')}${num('ttf','tf',P.cards.length,'True / false')}${num('tscen','scen',P.scen.length,'Scenarios')}</div>
     <div class="set-row"><div class="label">Answer choices (multiple choice)</div>${seg('choices',[[3,'3'],[4,'4'],[5,'5']])}<p>Scenario questions always have 4.</p></div>
@@ -854,9 +956,9 @@ DECKS.forEach(d=>{
   });
   LESSONS[LESSONS.length-1].checkpoint=true;
 });
-const CHAIN_AT={'neuron|Parts of a neuron':CHAINS.neuron[0],'neuron|Firing a neuron':CHAINS.neuron[1],'vision|The eye':CHAINS.vision[0],'senses|Hearing':CHAINS.senses[0]};
+const CHAIN_AT={'neuron|Parts of a neuron':CHAINS.neuron[0],'neuron|Firing a neuron':CHAINS.neuron[1],'vision|The eye':CHAINS.vision[0],'senses|Hearing':CHAINS.senses[0],'sleep|Sleep & consciousness':CHAINS.sleep[0]};
 // Optional lessons come after every core lesson, so saved lesson numbers stay the same.
-const CORE_LESSONS=LESSONS.map((l,i)=>i).filter(i=>!deckById[LESSONS[i].d].opt), LAST_CORE=CORE_LESSONS[CORE_LESSONS.length-1];
+const CORE_LESSONS=DECK_VIEW.filter(d=>!d.opt).flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id)), LAST_CORE=CORE_LESSONS[CORE_LESSONS.length-1];
 if(S.li>=LESSONS.length) S.li=0;
 const cardById=id=>CARDS.find(c=>c.id===id);
 
@@ -918,9 +1020,9 @@ function renderLearn(){
   const coreDone=S.done.filter(i=>CORE_LESSONS.includes(i)).length, pct=Math.round(100*coreDone/CORE_LESSONS.length);
   const optLs=LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===lesson.d);
   let h=`<div class="qbox" style="margin-bottom:14px;padding:14px 18px">
-    <div class="qmeta" style="margin:0"><span class="label">${deck.opt?`Optional lesson ${optLs.indexOf(S.li)+1} of ${optLs.length}`:`Lesson ${S.li+1} of ${CORE_LESSONS.length}`} · ${coreDone} done</span><button class="btn small" data-act="l-map">${S.showMap?'Hide lesson map':'Lesson map'}</button></div>
+    <div class="qmeta" style="margin:0"><span class="label">${deck.opt?`Optional lesson ${optLs.indexOf(S.li)+1} of ${optLs.length}`:`Lesson ${CORE_LESSONS.indexOf(S.li)+1} of ${CORE_LESSONS.length}`} · ${coreDone} done</span><button class="btn small" data-act="l-map">${S.showMap?'Hide lesson map':'Lesson map'}</button></div>
     <div class="bar" style="margin-top:8px" aria-hidden="true"><i style="width:${pct}%"></i></div>
-    ${S.showMap?`<div style="margin-top:12px;display:grid;gap:14px">${DECKS.map(d=>`<div><div class="label" style="margin-bottom:6px"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d.id)}"></span>${esc(d.name)}</div><div class="chips">${LESSONS.map((l,i)=>l.d===d.id?`<button class="chip" data-lesson="${i}" aria-pressed="${i===S.li}">${S.done.includes(i)?'✓ ':''}${esc(lessonTitle(i))}</button>`:'').join('')}</div></div>`).join('')}</div>`:''}
+    ${S.showMap?`<div style="margin-top:12px;display:grid;gap:14px">${DECK_VIEW.map(d=>`<div><div class="label" style="margin-bottom:6px"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d.id)}"></span>${esc(d.name)}</div><div class="chips">${LESSONS.map((l,i)=>l.d===d.id?`<button class="chip" data-lesson="${i}" aria-pressed="${i===S.li}">${S.done.includes(i)?'✓ ':''}${esc(lessonTitle(i))}</button>`:'').join('')}</div></div>`).join('')}</div>`:''}
   </div>`;
   const head=`<div class="deck-head"><span class="dot" style="${dotStyle(lesson.d)}"></span><span class="label">${esc(deck.name)}</span></div><h2 style="margin-bottom:4px">${esc(lessonTitle(S.li))}</h2>`;
 
@@ -930,8 +1032,7 @@ function renderLearn(){
     chs.forEach(ch=>h+=`<div class="chain"><div class="label">${esc(ch.label)} · in order</div><ol>${ch.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol></div>`);
     if(lesson.d==='ns'&&lesson.s==='Divisions') h+=`<div class="chain"><div class="label">How the nervous system divides</div><div class="tree">${esc(TREE)}</div></div>`;
     h+=`<div class="rows">${lesson.ids.map(cardById).map(c=>`<div class="row" style="grid-template-columns:minmax(120px,190px) 1fr"><div class="t">${esc(c.t)}</div><div class="x">${esc(c.x)}${hookHtml(c)}</div></div>`).join('')}</div>`;
-    if(lesson.d==='nt'&&lesson.s==='The chemicals'&&lesson.ids.length&&LESSONS.filter(l=>l.d==='nt'&&l.s==='The chemicals').pop()===lesson)
-      h+=`<div class="scroll"><table class="compare"><thead><tr><th>Neurotransmitter</th><th>Main job</th><th>Too little</th><th>Too much</th></tr></thead><tbody>${COMPARE_NT.map(r=>`<tr>${r.map((v,i)=>i?`<td>${esc(v)}</td>`:`<td><b>${esc(v)}</b></td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    if(LESSONS.filter(l=>l.d===lesson.d&&l.s===lesson.s).pop()===lesson) h+=tableHtml(lesson.d+'|'+lesson.s);
     if(lesson.checkpoint) (WATCH[lesson.d]||[]).forEach(w=>h+=`<div class="watch"><b>Heads up</b>${esc(w)}</div>`);
     if(lesson.checkpoint) h+=`<p class="deck-sub" style="margin-top:14px">This is the last lesson in ${esc(deck.name)}, so the quiz ends with scenario questions on the whole deck.</p>`;
     h+=`<div class="qnav"><button class="btn primary" data-act="l-quiz">I've read them. Quiz me</button></div></div>`;
@@ -947,13 +1048,17 @@ function renderLearn(){
     </div><div class="kbd">Keyboard: A–D or 1–4 to answer · Enter = next</div>`;
   }
   else {
-    const missed=[...L.missedIds].map(cardById), last=S.li===LAST_CORE||S.li===LESSONS.length-1, allDone=coreDone===CORE_LESSONS.length;
-    const optNext=S.li===LAST_CORE&&S.li+1<LESSONS.length?`<button class="btn" data-act="l-nextlesson">Optional: ${esc(deckById[LESSONS[S.li+1].d].name.replace(/^Optional: /,''))}</button>`:'';
+    const missed=[...L.missedIds].map(cardById), allDone=coreDone===CORE_LESSONS.length;
+    // Next core lesson in study order; optional lessons are offered as a side button, never in the way.
+    const order=DECK_VIEW.flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id)), pos=order.indexOf(S.li);
+    const nextIdx=order.slice(pos+1).find(i=>!deckById[LESSONS[i].d].opt||deck.opt), last=nextIdx===undefined;
+    const optStart=!deck.opt?LESSONS.findIndex(l=>deckById[l.d].opt):-1;
+    const optNext=S.li===LAST_CORE&&optStart>=0?`<button class="btn" data-lesson="${optStart}">Optional: ${esc(deckById[LESSONS[optStart].d].name.replace(/^Optional: /,''))}</button>`:'';
     h+=`<div class="qbox">${head}<div class="score" style="font-size:2.4rem">${L.first}/${L.firstTotal}</div><p class="deck-sub">right on the first try.${missed.length?' The terms below gave you trouble. They\'ll show up again as review questions in later lessons.':' Clean lesson.'}</p>
       ${missed.length?`<div class="missed">${missed.map(c=>`<div><b>${esc(c.t)}</b>: ${esc(c.x)}</div>`).join('')}</div>`:''}
       ${L.scenMiss.length?`<div class="missed" style="margin-top:8px">${L.scenMiss.map(q=>`<div>${esc(q.prompt)} <b>${esc(q.opts[q.ans])}</b>. ${esc(q.exp)}</div>`).join('')}</div>`:''}
       ${allDone&&last?`<div class="watch" style="margin-top:16px"><b>You finished every lesson.</b>Now take a 40-question mixed quiz on everything and retry what you miss.</div>`:''}
-      <div class="qnav" style="gap:8px;flex-wrap:wrap"><button class="btn" data-act="l-redo">Redo this lesson</button>${last?`${optNext}<button class="btn primary" data-act="l-final">Take the final mixed quiz</button>`:`<button class="btn primary" data-act="l-nextlesson">Next lesson: ${esc(lessonTitle(S.li+1))}</button>`}</div></div>`;
+      <div class="qnav" style="gap:8px;flex-wrap:wrap"><button class="btn" data-act="l-redo">Redo this lesson</button>${last?`${optNext}<button class="btn primary" data-act="l-final">Take the final mixed quiz</button>`:`<button class="btn primary" data-lesson="${nextIdx}">Next lesson: ${esc(lessonTitle(nextIdx))}</button>`}</div></div>`;
   }
   $('#view').innerHTML=h;
 }
