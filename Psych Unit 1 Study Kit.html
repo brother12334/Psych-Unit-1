@@ -9,7 +9,7 @@
   --bg:#f2f4f7; --surface:#ffffff; --surface-2:#f8f9fb; --ink:#15202b; --muted:#566373; --line:#d8dee6;
   --accent:#2a55c8; --accent-ink:#ffffff; --accent-soft:#e2e9fb;
   --good:#1d7f55; --good-soft:#dcf1e7; --bad:#b93a26; --bad-soft:#f9e1dc; --warn-soft:#fbf1cf; --warn-ink:#6b5208;
-  --d-neuron:#c2410c; --d-nt:#7c3aed; --d-ns:#0f766e; --d-brain:#be185d; --d-vision:#1d4ed8; --d-senses:#a16207; --d-split:#4d7c0f; --d-sleep:#c026d3;
+  --d-neuron:#c2410c; --d-nt:#7c3aed; --d-ns:#0f766e; --d-brain:#be185d; --d-vision:#1d4ed8; --d-senses:#a16207; --d-split:#4d7c0f; --d-sleep:#c026d3; --d-perception:#0e7490;
   --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
   --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -19,13 +19,13 @@
   --bg:#0e141b; --surface:#161f29; --surface-2:#1b2633; --ink:#e7ecf1; --muted:#97a4b2; --line:#2a3745;
   --accent:#86a6ff; --accent-ink:#0e141b; --accent-soft:#1c2a47;
   --good:#52c98f; --good-soft:#143326; --bad:#ff8d76; --bad-soft:#3a1d18; --warn-soft:#3a3115; --warn-ink:#f1d675;
-  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635; --d-sleep:#e879f9;
+  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635; --d-sleep:#e879f9; --d-perception:#22d3ee;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0e141b; --surface:#161f29; --surface-2:#1b2633; --ink:#e7ecf1; --muted:#97a4b2; --line:#2a3745;
   --accent:#86a6ff; --accent-ink:#0e141b; --accent-soft:#1c2a47;
   --good:#52c98f; --good-soft:#143326; --bad:#ff8d76; --bad-soft:#3a1d18; --warn-soft:#3a3115; --warn-ink:#f1d675;
-  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635; --d-sleep:#e879f9;
+  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635; --d-sleep:#e879f9; --d-perception:#22d3ee;
   color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.55}
@@ -178,7 +178,8 @@ const DECKS = [
   {id:'senses', name:'Hearing, Smell, Taste, Touch & more', sub:'Sound waves, hearing loss, balance, smell, taste, pain, and unusual perception.'},
   // Optional decks stay out of "All decks", the main progress meter, and the final mixed quiz. Keep them last so saved card/lesson ids never shift.
   {id:'split', opt:true, name:'Optional: Split Brain', sub:'Optional extra from the Brain Lateralization & Split Brain slides. Your teacher said it may help on the test. Builds on the Hemispheres section of The Brain.'},
-  {id:'sleep', name:'Sleep, Consciousness & Drugs', sub:'Everything on the Sleep, Consciousness, and Drugs slides: sleep, circadian rhythm, sleep loss, sleep disorders, how drugs work, the four drug categories, and addiction.'}
+  {id:'sleep', name:'Sleep, Consciousness & Drugs', sub:'Everything on the Sleep, Consciousness, and Drugs slides: sleep, circadian rhythm, sleep loss, sleep disorders, how drugs work, the four drug categories, and addiction.'},
+  {id:'perception', name:'Perception', sub:'Everything on the Perception slides: attention and what we miss, top-down vs. bottom-up processing, thresholds and Weber\'s law, and ESP.'}
 ];
 // Storage order above must never change (saved lessons are numbered by it). This is the order decks are shown in.
 const DECK_VIEW = DECKS.filter(d=>!d.opt).concat(DECKS.filter(d=>d.opt));
@@ -397,7 +398,33 @@ const RAW = [
 ['sleep','Substance use disorder','Severity levels','Per your slide: mild = 3 criteria met, moderate = 4 or 5, severe = 6 or more.'],
 ['sleep','Substance use disorder','Criteria: losing control','Taking the substance in larger amounts or for longer than you meant to; wanting to cut down or stop but not managing to; spending a lot of time getting, using, or recovering from it; cravings and urges to use it.'],
 ['sleep','Substance use disorder','Criteria: life problems','Not doing what you should at work, home, or school; continuing even when it causes relationship problems; giving up important social, occupational, or recreational activities.'],
-['sleep','Substance use disorder','Criteria: risk and the body','Using again and again even when it puts you in danger; continuing even when you know it caused or worsened a physical or psychological problem; tolerance; withdrawal symptoms relieved by taking more.']
+['sleep','Substance use disorder','Criteria: risk and the body','Using again and again even when it puts you in danger; continuing even when you know it caused or worsened a physical or psychological problem; tolerance; withdrawal symptoms relieved by taking more.'],
+
+// Perception: only what's on the slides. Appended last; ids come from position.
+['perception','Attention','Selective attention','Focusing your conscious awareness on a particular stimulus and NOT something else.'],
+['perception','Attention','Stroop effect','Delayed reaction time when you must say the color of a word but not the name of the word. Example from your slides: the word GREEN printed in purple, where you have to say "purple."','The word fights the color.'],
+['perception','Attention','Change blindness','Failing to notice changes in the environment because your attention is directed elsewhere.','Missed a CHANGE.'],
+['perception','Attention','Inattentional blindness','Failing to see visible objects when your attention is directed elsewhere.','Missed a THING that was right there.'],
+['perception','Attention','Change vs. inattentional blindness','Both happen because attention is directed elsewhere. Change blindness = not noticing that something changed. Inattentional blindness = not seeing a visible object at all.'],
+['perception','Attention','Cocktail party effect','The ability to focus auditory attention on a particular voice or sound while filtering out others. In a crowded room, you can focus on the voice of the one person you\'re talking with.'],
+['perception','Attention','Hearing your name','Part of the cocktail party effect: when we hear our name, our brain can register it even amongst background noise.'],
+['perception','Attention','Pop-out phenomenon','Something different popping out to get our attention, like the one laughing face in the cartoon of a crying movie audience on your slides.'],
+['perception','Top-down vs. bottom-up','Bottom-up processing','Sensory receptors throughout the body register information about the external environment and send it up to the brain for processing. This is sensation.','Bottom-up = from the body up = sensation.'],
+['perception','Top-down vs. bottom-up','Top-down processing','Using your knowledge, experience, or context to understand and interpret sensory perceptions. This is perception.','Top-down = your brain\'s knowledge comes down = perception.'],
+['perception','Top-down vs. bottom-up','Reading scrambled words','You can read words with scrambled middle letters as long as the first and last letters are in the right place, because the mind reads the word as a whole, not every letter by itself. An example of top-down processing.'],
+['perception','Top-down vs. bottom-up','The handwriting example','Being aware of squiggles like "15" in a messy note is bottom-up (sensation). Knowing what the squiggles mean is top-down (perception).'],
+['perception','Thresholds','Absolute threshold','The weakest amount of a stimulus that a person can detect 50% of the time: the moment when you notice something.'],
+['perception','Thresholds','Absolute threshold examples','Hearing a watch ticking 20 feet away; tasting one teaspoon of salt dissolved in two gallons of water; the volume of the music in your car.'],
+['perception','Thresholds','Difference threshold (just noticeable difference)','The minimum amount something needs to change before a person notices the change 50% of the time.','JND = just noticeable difference.'],
+['perception','Thresholds','JND example','Car music on level 5: you probably can\'t notice a change to 6, but you probably can notice a change from 5 to 10.'],
+['perception','Thresholds','Weber\'s law','For an average person to perceive a difference, two stimuli must differ by a constant percentage, not a constant amount.','Weber = percentage.'],
+['perception','Thresholds','Weber\'s law examples','Add 1 ounce to a 10-ounce weight and you will detect the difference; add 1 ounce to a 100-ounce weight and you likely won\'t. Weight must change by 2% to notice a difference.'],
+['perception','Extrasensory perception','Extrasensory perception (ESP)','The claim of perceiving without the senses: telepathy, clairvoyance, and precognition. There is no scientific basis for it.'],
+['perception','Extrasensory perception','Telepathy','Mind-to-mind communication.','Tele-path = sending a message down a path to another mind.'],
+['perception','Extrasensory perception','Clairvoyance','Perceiving events you didn\'t actually witness, like knowing where a body is buried or how someone was murdered.','Clair-voyance = "clear seeing" of something you weren\'t there for.'],
+['perception','Extrasensory perception','Precognition','Perceiving future events.','Pre = before it happens.'],
+['perception','Extrasensory perception','Psychics and the police','Psychic visions given to police are no more accurate than guesses made by others.'],
+['perception','Extrasensory perception','Why psychics seem accurate','Psychics make so many predictions that one of them is bound to be correct at some point, and people focus on the 1 or 2 correct predictions and forget most of the incorrect ones.']
 ];
 
 const CARDS = RAW.map((r,i)=>({id:r[0]+'-'+i, d:r[0], s:r[1], t:r[2], x:r[3], h:r[4]||''}));
@@ -435,7 +462,8 @@ const WATCH = {
   senses:['The vestibular slide says the vestibular sacs are "of the cochlea." They sit right next to the cochlea in the inner ear but aren\'t part of it.','Parts of the ear and eye come from diagram slides with no text. If your test has a labeling question, look at those slides directly.'],
   brain:['F-POT order front to back along the top: Frontal, Parietal, Occipital — with Temporal on the sides.','Scans: structure only = CT, MRI. Activity/function = PET, fMRI, EEG.'],
   split:['Two-step trick: (1) the visual field goes to the opposite hemisphere, (2) that hemisphere controls the opposite hand. Only the left hemisphere can say what it saw.','The slide on the left visual field says the patient can draw or point "with the right hand." Its own picture shows the left hand drawing, and the left hand is correct: the left visual field reaches only the right hemisphere, which controls the left hand.'],
-  sleep:['Your slides list the four sleep stages by name only (the details were in the video). The one stage fact on the slides: night terrors happen in Stage 3.','Ecstasy/MDMA shows up twice on your slides: as a form of amphetamine (stimulant) and as a hallucinogen. It counts as both.','Alcohol is a depressant, even though people think it\'s a stimulant because of the crazy things people do when drinking.']
+  sleep:['Your slides list the four sleep stages by name only (the details were in the video). The one stage fact on the slides: night terrors happen in Stage 3.','Ecstasy/MDMA shows up twice on your slides: as a form of amphetamine (stimulant) and as a hallucinogen. It counts as both.','Alcohol is a depressant, even though people think it\'s a stimulant because of the crazy things people do when drinking.'],
+  perception:['Change blindness vs. inattentional blindness is the classic trap. Both happen because attention is elsewhere. Missed a change → change blindness. Missed a visible object → inattentional blindness.','Bottom-up = sensation (receptors send information up). Top-down = perception (your knowledge, experience, or context interprets it).','Both thresholds are measured at 50% of the time. Absolute = can you detect it at all? Difference (JND) = can you tell it changed?']
 };
 
 const TABLES = {
@@ -445,6 +473,15 @@ const TABLES = {
     ['Stimulants','Excite the central nervous system','Caffeine, nicotine, cocaine, amphetamines, meth','Cocaine blocks dopamine reuptake; amphetamines mimic adrenaline'],
     ['Hallucinogens','Distort visual and auditory perception','LSD, marijuana (THC), ecstasy/MDMA','Ecstasy can damage serotonin-producing neurons'],
     ['Opioids','Lessen pain and anxiety','Heroin, codeine, morphine, methadone, OxyContin, oxycodone','Agonists for endorphins']
+  ]},
+  'perception|Top-down vs. bottom-up': {head:['Processing','Also called','What happens','Example from your slides'], rows:()=>[
+    ['Bottom-up','Sensation','Sensory receptors register information and send it up to the brain','Being aware of the squiggles in a handwritten note'],
+    ['Top-down','Perception','Knowledge, experience, or context interprets what you sense','Knowing what the squiggles mean; reading scrambled words']
+  ]},
+  'perception|Thresholds': {head:['Term','What it measures','Example from your slides'], rows:()=>[
+    ['Absolute threshold','The weakest stimulus you can detect 50% of the time','A watch ticking 20 feet away; 1 teaspoon of salt in 2 gallons of water'],
+    ['Difference threshold (JND)','The smallest change you notice 50% of the time','Car music from 5 to 6: probably not noticed. From 5 to 10: probably noticed'],
+    ['Weber\'s law','Changes must be a constant percentage, not a constant amount','1 oz added to 10 oz is noticed; 1 oz added to 100 oz isn\'t. Weight must change 2%']
   ]}
 };
 const tableHtml = key=>{const t=TABLES[key]; return t?`<div class="scroll"><table class="compare"><thead><tr>${t.head.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${t.rows().map(r=>`<tr>${r.map((v,i)=>i?`<td>${esc(v)}</td>`:`<td><b>${esc(v)}</b></td>`).join('')}</tr>`).join('')}</tbody></table></div>`:''};
@@ -512,7 +549,15 @@ const SCEN = [
 ['sleep','When Leo quits smoking, he becomes irritable, gets headaches, and feels nervous. He is experiencing:',['Tolerance','Withdrawal','Narcolepsy','A hallucination'],1,'Those are the nicotine withdrawal symptoms on your slides.'],
 ['sleep','Which category do benzodiazepines like Valium and Xanax belong to?',['Depressants','Stimulants','Hallucinogens','Opioids'],0,'Benzodiazepines calm the nervous system and depress heartbeat and breathing.'],
 ['sleep','A drug intensifies the effects of GABA and reduces glutamate, causing slurred speech and poor judgment. Which drug is it?',['Alcohol','Cocaine','LSD','Caffeine'],0,'Alcohol: more GABA → sluggish, slurred speech; less glutamate → slow reactions, impaired judgment.'],
-['sleep','After pulling an all-nighter, Sam feels unusually hungry all day. Which change best explains this?',['More ghrelin and less leptin','More leptin and less ghrelin','More endorphins','Less GABA'],0,'Sleep loss increases hunger-arousing ghrelin and decreases hunger-suppressing leptin.']
+['sleep','After pulling an all-nighter, Sam feels unusually hungry all day. Which change best explains this?',['More ghrelin and less leptin','More leptin and less ghrelin','More endorphins','Less GABA'],0,'Sleep loss increases hunger-arousing ghrelin and decreases hunger-suppressing leptin.'],
+['perception','While texting and walking, Maya walks right past a friend who is waving at her and never sees him. This is:',['Inattentional blindness','Change blindness','The cocktail party effect','The Stroop effect'],0,'She failed to see something visible because her attention was on her phone.'],
+['perception','In a movie, an actor\'s shirt changes color between two shots, but most viewers never notice. This is:',['Change blindness','Inattentional blindness','The pop-out phenomenon','The absolute threshold'],0,'Missing a change because attention is directed elsewhere is change blindness.'],
+['perception','At a loud party, Eli is talking with one friend when he suddenly hears his own name from across the room. This is:',['The cocktail party effect','Change blindness','The pop-out phenomenon','Weber\'s law'],0,'Your brain can register your name even amongst background noise.'],
+['perception','You see the word BLUE printed in red ink and must say the ink color. You answer more slowly than usual. This is:',['The Stroop effect','Change blindness','Bottom-up processing','The difference threshold'],0,'Stroop effect: delayed reaction time when you must say the color of a word, not the word.'],
+['perception','Raj can taste one teaspoon of salt dissolved in two gallons of water about half the time. This is a measure of his:',['Absolute threshold','Difference threshold','Selective attention','Top-down processing'],0,'The weakest stimulus detected 50% of the time is the absolute threshold.'],
+['perception','When Dana turns her car radio from 5 to 6, she doesn\'t notice, but from 5 to 10 she does. This shows her:',['Difference threshold (just noticeable difference)','Absolute threshold','Inattentional blindness','Precognition'],0,'The smallest change you notice 50% of the time is the difference threshold.'],
+['perception','You can easily read "Tihs is a vrey smiple snetecne" even though the letters are scrambled. This is mainly:',['Top-down processing','Bottom-up processing','The absolute threshold','Change blindness'],0,'You read each word as a whole using what you already know. That\'s top-down.'],
+['perception','A psychic tells police where a missing person\'s body is buried, though she never saw what happened. This claim is called:',['Clairvoyance','Telepathy','Precognition','Selective attention'],0,'Clairvoyance = perceiving events you didn\'t witness. There\'s no scientific basis for it.']
 ];
 
 // Exam-style bank: hand-written questions in the style of the unit test (scenarios, "which best describes",
@@ -633,7 +678,33 @@ const EXAM = [
 ['sleep','Nina says, "I don\'t even enjoy it anymore, but I can\'t stop wanting it." This best describes:',['Addiction','Tolerance','Substance use','Withdrawal'],0,'Addiction: users want the drug more than they like the drug, and keep using despite consequences.'],
 ['sleep','Withdrawal is best described as:',['The discomfort and distress that follow stopping an addictive drug, which can be physiological and/or psychological','Needing more of a drug to get the same effect','Using a drug without it affecting daily life','The euphoria right after taking a drug'],0,'Withdrawal can be physiological, psychological, or both. "Needing more" is tolerance.'],
 ['sleep','A person meets 7 of the DSM-5 criteria for substance use disorder. The disorder would be classified as:',['Mild','Moderate','Severe','Not a disorder'],2,'Your slide: mild = 3, moderate = 4 or 5, severe = 6 or more.'],
-['sleep','Which of the following is one of the DSM-5 criteria for substance use disorder?',['Wanting to cut down or stop using but not managing to','Using a substance once at a party','Drinking coffee in the morning','Taking medicine exactly as prescribed'],0,'"Wanting to cut down or stop but not managing to" is criterion 2 on the slide\'s list of 11.']
+['sleep','Which of the following is one of the DSM-5 criteria for substance use disorder?',['Wanting to cut down or stop using but not managing to','Using a substance once at a party','Drinking coffee in the morning','Taking medicine exactly as prescribed'],0,'"Wanting to cut down or stop but not managing to" is criterion 2 on the slide\'s list of 11.'],
+
+['perception','Which of the following best describes selective attention?',['Focusing conscious awareness on one particular stimulus and not something else','Noticing every stimulus in the environment equally','The weakest stimulus a person can detect','Using past experience to interpret what you sense'],0,'Selective attention = focusing on one thing and NOT something else.'],
+['perception','In a class demo, the word GREEN is printed in purple ink, and students must say the ink color. Many answer slowly or say "green" by mistake. This demonstrates:',['The Stroop effect','Change blindness','The cocktail party effect','Weber\'s law'],0,'The Stroop effect is the delayed reaction when you must say the color of a word instead of the word itself.'],
+['perception','Which of the following is the best example of change blindness?',['Between shots in a movie, an actor\'s drink switches from full to empty, and most viewers don\'t notice.','A driver talking on the phone doesn\'t see a pedestrian in the crosswalk.','At a noisy party, you hear your name from across the room.','You can hear a watch ticking 20 feet away.'],0,'Missing a CHANGE = change blindness. Not seeing the pedestrian at all is inattentional blindness, the trap answer.'],
+['perception','Which of the following is the best example of inattentional blindness?',['While focused on texting, Ben walks past a bright yellow car parked right in front of him and never sees it.','An actor\'s shirt changes color between scenes, and viewers miss it.','You notice one red dot in a field of blue dots.','Your music goes from volume 5 to 10, and you notice.'],0,'Failing to see a visible object because attention is elsewhere = inattentional blindness. The shirt is change blindness.'],
+['perception','What do change blindness and inattentional blindness have in common?',['Both happen because attention is directed elsewhere.','Both are caused by damage to the occipital lobe.','Both involve hearing rather than vision.','Both are forms of extrasensory perception.'],0,'Both come from attention being directed elsewhere. The difference is missing a change vs. missing an object.'],
+['perception','A student is so focused on her notes in a noisy cafeteria that she doesn\'t notice her friend sit down right across from her. Which concept best explains this?',['Inattentional blindness','The cocktail party effect','The absolute threshold','Precognition'],0,'Her friend was fully visible, but her attention was directed elsewhere.'],
+['perception','At a crowded school dance, Lena can focus on her friend\'s voice and tune out everyone else. This best illustrates:',['The cocktail party effect','The pop-out phenomenon','Change blindness','The difference threshold'],0,'Focusing auditory attention on one voice while filtering out others is the cocktail party effect.'],
+['perception','Which of the following best explains why you might suddenly notice your own name being said across a noisy cafeteria?',['Your brain can register your name even amongst background noise.','Your absolute threshold for sound drops in loud places.','Top-down processing shuts off in noisy places.','Change blindness makes you notice sounds.'],0,'That\'s part of the cocktail party effect on your slides.'],
+['perception','In a crowd of people wearing black, one person in a bright orange jacket instantly catches your eye. This is:',['The pop-out phenomenon','Inattentional blindness','The Stroop effect','Clairvoyance'],0,'Something different popping out to get your attention is the pop-out phenomenon.'],
+['perception','Which of the following best describes the difference between bottom-up and top-down processing?',['Bottom-up starts with sensory receptors sending information up to the brain (sensation); top-down uses knowledge, experience, and context to interpret it (perception).','Bottom-up uses past experience; top-down uses only the senses.','Bottom-up happens only in vision; top-down only in hearing.','They are two names for the same process.'],0,'Bottom-up = sensation. Top-down = perception.'],
+['perception','Looking at a messy handwritten note, you see a squiggle and recognize it as the number 15. Recognizing what the squiggle means is an example of:',['Top-down processing','Bottom-up processing','The absolute threshold','Selective attention'],0,'Your slides: being aware of the squiggle is bottom-up; knowing what it means is top-down.'],
+['perception','You can read a paragraph where the middle letters of every word are scrambled, as long as the first and last letters are in place. Which of the following best explains this?',['Top-down processing: the mind reads each word as a whole','Bottom-up processing: the eyes read every letter separately','The Stroop effect','Weber\'s law'],0,'The mind doesn\'t read every letter by itself, but the word as a whole. That\'s top-down.'],
+['perception','Which of the following is an example of bottom-up processing?',['Receptors in your skin register the cold of an ice cube and send that information up to the brain','Recognizing a friend\'s messy handwriting because you\'ve seen it before','Reading scrambled words because you know the language','Using the context of a sentence to figure out a smudged word'],0,'Bottom-up = receptors registering information and sending it up. The others all use knowledge or context (top-down).'],
+['perception','Which of the following best defines the absolute threshold?',['The weakest amount of a stimulus a person can detect 50% of the time','The smallest change in a stimulus a person can notice 50% of the time','The point at which a stimulus becomes painful','The constant amount a stimulus must change to be noticed'],0,'Absolute = detecting it at all. The second option is the difference threshold, the trap answer.'],
+['perception','Which of the following is an example of an absolute threshold?',['Hearing a watch ticking 20 feet away','Noticing your music went from volume 5 to 10','Noticing 1 ounce added to a 10-ounce weight','Not noticing an actor\'s shirt change color'],0,'The watch is the faintest sound you can detect. The other two "noticing" options are about changes (difference threshold).'],
+['perception','The difference threshold (just noticeable difference) is best described as:',['The minimum amount something needs to change before a person notices the change 50% of the time','The weakest stimulus a person can detect at all','The ability to focus on one voice in a crowd','Perceiving events you didn\'t witness'],0,'JND = the smallest change you notice half the time.'],
+['perception','Weber\'s law states that for a difference to be noticed, two stimuli must differ by:',['A constant percentage','A constant amount','Exactly 1 ounce','At least 50%'],0,'Weber = percentage, not amount.'],
+['perception','According to Weber\'s law, which change is a person LEAST likely to notice?',['Adding 1 ounce to a 100-ounce weight','Adding 1 ounce to a 10-ounce weight','Adding 10 ounces to a 100-ounce weight','Adding 5 ounces to a 10-ounce weight'],0,'1 ounce is only 1% of 100 ounces, below the 2% needed for weight. The others are 10% or more.'],
+['perception','According to Weber\'s law, about how much must a weight change before a person notices the difference?',['2%','50%','1 ounce, no matter the starting weight','10 ounces'],0,'Your slides: weight must change by 2%.'],
+['perception','Which of the following best explains why adding 1 ounce is noticeable on a 10-ounce weight but not on a 100-ounce weight?',['Differences are noticed by percentage, not amount, and 1 ounce is a much bigger percentage of 10 ounces.','Heavier weights raise the absolute threshold for touch.','People use top-down processing only with light weights.','The Stroop effect slows reactions to heavy objects.'],0,'Weber\'s law: a constant percentage, not a constant amount.'],
+['perception','A woman claims she can send her thoughts directly into her twin\'s mind. This claim is called:',['Telepathy','Clairvoyance','Precognition','Selective attention'],0,'Telepathy = mind-to-mind communication.'],
+['perception','A man claims he dreamed about a car crash the night before it happened. This claim is called:',['Precognition','Telepathy','Clairvoyance','The pop-out phenomenon'],0,'Precognition = perceiving future events.'],
+['perception','Which statement about extrasensory perception (ESP) is most accurate?',['There is no scientific basis for it, and psychic visions given to police are no more accurate than other people\'s guesses.','Studies show clairvoyance helps police solve most cases.','Telepathy has been proven in laboratory experiments.','Precognition is a type of bottom-up processing.'],0,'Your slides: no scientific basis, and psychics do no better than guesses.'],
+['perception','Which of the following best explains why some people believe psychics are accurate?',['Psychics make so many predictions that some are bound to be right, and people remember the hits and forget the misses.','Psychics have lower absolute thresholds than other people.','Psychics use top-down processing and other people don\'t.','Most psychic predictions turn out to be correct.'],0,'So many predictions → a few hits; people focus on the 1 or 2 correct ones.'],
+['perception','Which pair is correctly matched?',['Clairvoyance — perceiving events you didn\'t witness','Telepathy — perceiving future events','Precognition — mind-to-mind communication','Pop-out phenomenon — failing to notice a change'],0,'Telepathy = mind to mind, precognition = the future, and failing to notice a change is change blindness.']
 ];
 
 const deckById = Object.fromEntries(DECKS.map(d=>[d.id,d]));
