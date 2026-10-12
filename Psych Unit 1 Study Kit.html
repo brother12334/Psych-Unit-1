@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Psych Unit 1 Study Kit</title>
+<title>Psych Study Kit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@500&display=swap">
@@ -9,7 +9,7 @@
   --bg:#f2f4f7; --surface:#ffffff; --surface-2:#f8f9fb; --ink:#15202b; --muted:#566373; --line:#d8dee6;
   --accent:#2a55c8; --accent-ink:#ffffff; --accent-soft:#e2e9fb;
   --good:#1d7f55; --good-soft:#dcf1e7; --bad:#b93a26; --bad-soft:#f9e1dc; --warn-soft:#fbf1cf; --warn-ink:#6b5208;
-  --d-neuron:#c2410c; --d-nt:#7c3aed; --d-ns:#0f766e; --d-brain:#be185d; --d-vision:#1d4ed8; --d-senses:#a16207; --d-split:#4d7c0f; --d-sleep:#c026d3; --d-perception:#0e7490;
+  --d-neuron:#c2410c; --d-nt:#7c3aed; --d-ns:#0f766e; --d-brain:#be185d; --d-vision:#1d4ed8; --d-senses:#a16207; --d-split:#4d7c0f; --d-sleep:#c026d3; --d-perception:#0e7490; --d-research:#4338ca; --d-perspectives:#e11d48; --d-stats:#475569;
   --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
   --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -19,13 +19,13 @@
   --bg:#0e141b; --surface:#161f29; --surface-2:#1b2633; --ink:#e7ecf1; --muted:#97a4b2; --line:#2a3745;
   --accent:#86a6ff; --accent-ink:#0e141b; --accent-soft:#1c2a47;
   --good:#52c98f; --good-soft:#143326; --bad:#ff8d76; --bad-soft:#3a1d18; --warn-soft:#3a3115; --warn-ink:#f1d675;
-  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635; --d-sleep:#e879f9; --d-perception:#22d3ee;
+  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635; --d-sleep:#e879f9; --d-perception:#22d3ee; --d-research:#a5b4fc; --d-perspectives:#fb7185; --d-stats:#cbd5e1;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0e141b; --surface:#161f29; --surface-2:#1b2633; --ink:#e7ecf1; --muted:#97a4b2; --line:#2a3745;
   --accent:#86a6ff; --accent-ink:#0e141b; --accent-soft:#1c2a47;
   --good:#52c98f; --good-soft:#143326; --bad:#ff8d76; --bad-soft:#3a1d18; --warn-soft:#3a3115; --warn-ink:#f1d675;
-  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635; --d-sleep:#e879f9; --d-perception:#22d3ee;
+  --d-neuron:#fb923c; --d-nt:#a78bfa; --d-ns:#2dd4bf; --d-brain:#f472b6; --d-vision:#60a5fa; --d-senses:#facc15; --d-split:#a3e635; --d-sleep:#e879f9; --d-perception:#22d3ee; --d-research:#a5b4fc; --d-perspectives:#fb7185; --d-stats:#cbd5e1;
   color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.55}
@@ -55,6 +55,10 @@ header.top{display:grid;gap:14px;margin-bottom:18px}
 .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);padding:5px 11px;border-radius:999px;font-size:.88rem}
 .chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
 .dot{width:9px;height:9px;border-radius:50%;flex:none}
+#chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}
+#chips .chip{flex:none}
+.chip.unit{font-weight:700;border-style:dashed}
+.unit-head{font-family:var(--display);font-size:1.7rem;font-weight:800;margin:6px 0 18px;padding-bottom:6px;border-bottom:2px solid var(--line)}
 .chip small{font-family:var(--mono);font-size:.7rem;opacity:.8;font-variant-numeric:tabular-nums}
 
 /* Guide */
@@ -144,8 +148,8 @@ header.top{display:grid;gap:14px;margin-bottom:18px}
 <div class="wrap">
   <header class="top">
     <div>
-      <div class="label">AP Psychology · Unit 1 · Biological bases of behavior</div>
-      <h1>Psych Unit 1 Study Kit</h1>
+      <div class="label">AP Psychology · Unit 0 and Unit 1</div>
+      <h1>Psych Study Kit</h1>
     </div>
     <div class="meter">
       <div class="bar" aria-hidden="true"><i id="mbar" style="width:0%"></i></div>
@@ -179,10 +183,20 @@ const DECKS = [
   // Optional decks stay out of "All decks", the main progress meter, and the final mixed quiz. Keep them last so saved card/lesson ids never shift.
   {id:'split', opt:true, name:'Optional: Split Brain', sub:'Optional extra from the Brain Lateralization & Split Brain slides. Your teacher said it may help on the test. Builds on the Hemispheres section of The Brain.'},
   {id:'sleep', name:'Sleep, Consciousness & Drugs', sub:'Everything on the Sleep, Consciousness, and Drugs slides: sleep, circadian rhythm, sleep loss, sleep disorders, how drugs work, the four drug categories, and addiction.'},
-  {id:'perception', name:'Perception', sub:'Everything on the Perception slides: attention and what we miss, top-down vs. bottom-up processing, thresholds and Weber\'s law, and ESP.'}
+  {id:'perception', name:'Perception', sub:'Everything on the Perception slides: attention and what we miss, top-down vs. bottom-up processing, thresholds and Weber\'s law, and ESP.'},
+  {id:'research', name:'Research Methods', sub:'Everything on the Unit 0 Research Methods slides: why intuition fails, the scientific method, operational definitions, descriptive and correlational research, experiments, problems with research, and ethics.'},
+  {id:'perspectives', name:'Perspectives in Psychology', sub:'The 7 psychological perspectives from the 0.3 slides, what each one focuses on, and how to apply them to a scenario.'},
+  {id:'stats', name:'Statistics & Data', sub:'Everything on the 0.11 Statistical Reasoning slides: histograms, mean/median/mode, percentile rank, range, standard deviation, skew, bimodal curves, and inferential statistics.'}
 ];
-// Storage order above must never change (saved lessons are numbered by it). This is the order decks are shown in.
-const DECK_VIEW = DECKS.filter(d=>!d.opt).concat(DECKS.filter(d=>d.opt));
+// Storage order above must never change (saved lessons are numbered by it). Units set the order decks are shown in.
+const UNITS = [
+  {id:'u0', name:'Unit 0', decks:['perspectives','research','stats']},
+  {id:'u1', name:'Unit 1', decks:['neuron','nt','ns','brain','vision','senses','sleep','split']},
+  {id:'u2', name:'Other', decks:['perception']}
+];
+UNITS.forEach(u=>u.decks.forEach(id=>{DECKS.find(d=>d.id===id).unit=u.id}));
+const unitById = Object.fromEntries(UNITS.map(u=>[u.id,u]));
+const DECK_VIEW = UNITS.flatMap(u=>u.decks.map(id=>DECKS.find(d=>d.id===id)).sort((a,b)=>!!a.opt-!!b.opt));
 
 // [deck, section, term, definition, hook?]
 const RAW = [
@@ -424,7 +438,103 @@ const RAW = [
 ['perception','Extrasensory perception','Clairvoyance','Perceiving events you didn\'t actually witness, like knowing where a body is buried or how someone was murdered.','Clair-voyance = "clear seeing" of something you weren\'t there for.'],
 ['perception','Extrasensory perception','Precognition','Perceiving future events.','Pre = before it happens.'],
 ['perception','Extrasensory perception','Psychics and the police','Psychic visions given to police are no more accurate than guesses made by others.'],
-['perception','Extrasensory perception','Why psychics seem accurate','Psychics make so many predictions that one of them is bound to be correct at some point, and people focus on the 1 or 2 correct predictions and forget most of the incorrect ones.']
+['perception','Extrasensory perception','Why psychics seem accurate','Psychics make so many predictions that one of them is bound to be correct at some point, and people focus on the 1 or 2 correct predictions and forget most of the incorrect ones.'],
+
+// Unit 0: Research Methods, Perspectives, Statistics. Only what's on the slides. Appended last; ids come from position.
+['research','Why psychology needs research','Intuition','Understanding without conscious reasoning. Your slides ask whether we can rely on it. We can\'t, which is why psychology uses research.'],
+['research','Why psychology needs research','Why intuition fails','Your slides: "Psychology exists because our intuition sucks," because of hindsight bias, misunderstanding of probability, and overconfidence.','HMO: Hindsight, Misunderstanding probability, Overconfidence.'],
+['research','Why psychology needs research','Hindsight bias','The tendency to believe, after learning the outcome, that you would have foreseen it.','"I knew it all along!"'],
+['research','Why psychology needs research','Overconfidence','The tendency to overestimate your knowledge and/or ability.'],
+['research','Why psychology needs research','Misunderstanding of probability','People are bad at judging chance and very large numbers. Your class showed this with a coin toss and by guessing what could hold a million, a billion, and a trillion dollars.'],
+['research','The scientific method','The scientific method (7 steps)','1. Observe some aspect of the universe. 2. Develop a theory. 3. Use the theory to make a hypothesis. 4. Test the predictions with experiments, using operational definitions. 5. Evaluate the results. 6. Modify the theory in light of your findings. 7. Replicate.'],
+['research','The scientific method','Theory','A general idea that is consistent with what you have observed. Step 2 of the scientific method.'],
+['research','The scientific method','Hypothesis','An educated prediction or guess, made using a theory. Step 3 of the scientific method. Example from your slides: students are more likely to smile for their senior pictures if they have a friendly photographer.','Hypothesis = the testable prediction.'],
+['research','The scientific method','Operational definition','Exact specifications of how the research is conducted, including exactly how each variable will be measured. Needed in step 4. Your class did a Lego activity on this.','Operational = how it OPERATES in the study.'],
+['research','The scientific method','Why operational definitions matter','Research cannot be replicated without operational definitions. In the senior-picture example, both "smiling" and "friendliness" need one, because people disagree about how many of the students in the yearbook photos are smiling.'],
+['research','The scientific method','Replicate','Doing the research a second time to ensure the reliability of the results. Step 7 of the scientific method.','Replicate = repeat.'],
+['research','Types of research','Three types of research','Descriptive, correlational, and experimental.'],
+['research','Types of research','Descriptive research','Describes behaviors, often using case studies, surveys, or naturalistic observations.'],
+['research','Types of research','Correlational research','Associates different factors or variables: it tells us about the relationship between two variables.'],
+['research','Types of research','Experimental research','Manipulates variables to establish cause-and-effect relationships. Of the three types, only experiments can show cause and effect.'],
+['research','Descriptive methods','Case study','A descriptive method that examines one individual or group in depth.'],
+['research','Descriptive methods','Case study: pros and cons','Advantages: in-depth information about a limited number of subjects; illustrates general principles that can be applied to others. Disadvantages: misleading if the individual is atypical or underrepresented; can overgeneralize the results.'],
+['research','Descriptive methods','Naturalistic observation','A descriptive technique that observes and records behavior in naturally occurring situations, without trying to manipulate or control the situation.'],
+['research','Descriptive methods','Naturalistic observation: pros and cons','Advantage: non-invasive, so subjects are more likely to show honest behavior in a natural setting. Disadvantages: can be time consuming; subjects may notice the observer and act differently; the observer may misinterpret the subjects\' actions.'],
+['research','Descriptive methods','Survey','A descriptive technique used to get the self-reported attitudes and behaviors of a particular group, usually by questioning a representative random sample of the group.'],
+['research','Descriptive methods','Survey: pros and cons','Advantages: collects a large amount of data in a short time; flexible (online, in person, etc.). Disadvantages: poorly worded questions can skew responses; participants may try to please the researcher; people may lie to look better or have mistaken memories; can have a poor response rate.'],
+['research','Correlation','Correlation','Research that tells us about the relationship between two variables (a "co-relation").'],
+['research','Correlation','Positive correlation','Two variables increase or decrease together. Examples from your slides: as sleep increases, memory increases; as salary decreases, spending also decreases; as hourly pay increases, employee morale increases.','Same direction = positive.'],
+['research','Correlation','Negative correlation','When one variable increases, the other decreases. Examples from your slides: as absences increase, grades decrease; as hours of sleep decrease, levels of stress increase.','Opposite directions = negative.'],
+['research','Correlation','Zero (no) correlation','No relationship between the two variables. On a scatterplot, the dots are scattered with no pattern.'],
+['research','Correlation','Correlation coefficient','A number from -1.0 to +1.0. The sign shows the direction. The closer to +1 or -1, the stronger the relationship; 0 means no correlation. Your slide\'s chart: 1 perfect, 0.9 high, 0.5 low, 0 none, and the same on the negative side.'],
+['research','Correlation','Positive isn\'t "good"','Positive doesn\'t mean "good" and negative doesn\'t mean "bad." The sign only describes the direction of the relationship.'],
+['research','Correlation','Correlation does not equal causation','Two things being related doesn\'t mean one causes the other. Your slides\' example: ice cream sales and violent crime are correlated, but ice cream doesn\'t turn people into criminals. Ice cream and sunburn are correlated because hot, sunny summer weather causes both.','A third factor (like summer weather) can cause both.'],
+['research','Experiments','Population','The group that the research is meant to apply to.'],
+['research','Experiments','Sample','A variety of people from the population used as participants in the research.'],
+['research','Experiments','Representative (random) sample','Participants chosen fairly to represent a population: everyone in the group being studied has an equal chance of being included.'],
+['research','Experiments','Experimental group','Participants who receive the manipulated variable. Example from your slides: the group that takes the antidepressant.'],
+['research','Experiments','Control group','Participants who do not receive the manipulated variable. Example from your slides: the group that doesn\'t take the antidepressant. Comparing the groups shows whether the medication really reduces depression.','Control = compare.'],
+['research','Experiments','Independent variable (IV)','The factor that is manipulated or controlled by the researcher. Examples from your slides: amount of sleep (does sleep deprivation cause poor memory?); temperature (does room temperature affect test scores?).','IV = what I change.'],
+['research','Experiments','Dependent variable (DV)','The factor that is measured or observed by the researcher. Examples from your slides: strength of memory; test scores.','The DV depends on the IV. DV = data.'],
+['research','Experiments','Confounding variable','An outside influence that affects the results of the study. Example from your slides: when studying how exercise (IV) affects weight loss (DV), possible confounding variables are diet, amount of sleep, and genetic issues.'],
+['research','Problems with research','Problems with research (all 11)','Placebo effect, Hawthorne effect, Barnum effect, confounding variables, hindsight bias, overconfidence, gambler\'s fallacy, social desirability bias, self-report bias, sampling bias, and wording effects (framing).'],
+['research','Problems with research','Placebo effect','Experimental results caused by expectations alone. Example: participants act or claim to feel a certain way because they think they received a drug that would cause that reaction.'],
+['research','Problems with research','Hawthorne effect','Participants changing their behavior because they know they are being observed.','Hawthorne = "they\'re watching."'],
+['research','Problems with research','Barnum effect','Believing that personality descriptions apply specifically to you (more than to other people), even though the description is filled with information that applies to everyone. Example: your horoscope.'],
+['research','Problems with research','Gambler\'s fallacy','The tendency to overestimate the occurrence of patterns in random data.'],
+['research','Problems with research','Social desirability bias','People giving answers that may be dishonest because they are seeking approval and/or want to highlight their character strengths.','Answering to look good.'],
+['research','Problems with research','Self-report bias','Participants try to affect the outcome of the research and/or are unrealistic about themselves. They may try to please the researcher or even purposely challenge the researcher\'s hypothesis.'],
+['research','Problems with research','Sampling bias','Researchers targeting participants to make their hypothesis more likely to be proven, or failing to gather a representative sample of the population, leading to skewed results.'],
+['research','Problems with research','Wording effects (framing)','How questions are worded can skew responses.'],
+['research','Ethics','Why ethics guidelines exist','Many famous psychology experiments were highly unethical and cannot be replicated. The American Psychological Association (APA) set principles to protect everyone involved in research.'],
+['research','Ethics','APA ethical guidelines','Voluntary participation, confidentiality, informed consent, debriefing, no long-term physical or psychological harm, animal participants must be well cared for, and approval from a research institution.'],
+['research','Ethics','Voluntary participation','People choose for themselves whether to take part in a study.'],
+['research','Ethics','Confidentiality','Participants\' information is kept private.'],
+['research','Ethics','Informed consent','Giving potential participants enough information about the study to let them choose whether or not to participate.','Informed consent = BEFORE.'],
+['research','Ethics','Debriefing','The explanation after the experiment of what the study was about, including its purpose and any deception.','Debriefing = AFTER.'],
+['research','Ethics','No long-term harm','Studies may not cause long-term physical or psychological harm.'],
+['research','Ethics','Animal participants','All animal participants must be well cared for.'],
+['research','Ethics','Institutional approval','Research needs approval from a research institution.'],
+
+['perspectives','What perspectives are','Psychological perspectives','The different approaches psychologists use to explain human behavior and thought processes, like viewing a situation through a different set of lenses. There are 7.','Perspective = a pair of glasses.'],
+['perspectives','What perspectives are','The 7 perspectives','Psychodynamic, cognitive, behavioral, humanistic, biological, evolutionary, and sociocultural.','Your slide\'s hand: thumb = psychodynamic; fingers = cognitive, behavioral, humanism, biological; palm = sociocultural; wrist = evolutionary.'],
+['perspectives','The seven perspectives','Psychodynamic perspective','Behavior is influenced by your unconscious mind and past experiences, especially those from childhood. Based heavily on the ideas of Freud.','Iceberg: most of the mind is hidden below the surface.'],
+['perspectives','The seven perspectives','Cognitive perspective','How our internal thought processes shape our behavior. Emphasizes memory, problem solving, intelligence, and perception.','Cognitive = thinking.'],
+['perspectives','The seven perspectives','Behavioral perspective','How our behaviors have been influenced by our learned experiences. We often repeat behaviors that are reinforced by positive rewards.','The dog that jumps through a hoop for a treat.'],
+['perspectives','The seven perspectives','Humanistic perspective','How humans can achieve their full potential, emphasizing free will, self-efficacy, and self-actualization. Also emphasizes relationships, positivity, and maximizing well-being.','Humanistic = hopeful, reaching your potential.'],
+['perspectives','The seven perspectives','Biological perspective','The importance of genetics, brain chemistry, hormones, and neurotransmitters (like dopamine and serotonin) in influencing behavior and thinking.','Bio = body: genes, brain, chemicals.'],
+['perspectives','The seven perspectives','Evolutionary perspective','Human behavior is a result of evolutionary processes that protect us, give us adaptive behaviors, and help us be more successful at reproducing.','What helped our ancestors survive.'],
+['perspectives','The seven perspectives','Sociocultural perspective','Humans behave and act differently based on the influences of their culture or way of life.','Socio = society; culture = way of life.'],
+['perspectives','Applying perspectives','Applying a perspective','To analyze a behavior from a perspective, explain it using what that perspective focuses on. The same behavior can be explained by more than one perspective.'],
+['perspectives','Applying perspectives','Slide example: Suzanne','Suzanne loves romantic comedies. Your slide\'s sociocultural explanation: in her culture it\'s popular for women to enjoy romantic movies, and going gives her something to do with friends and an easy topic of conversation.'],
+['perspectives','Applying perspectives','Perspective keywords','Unconscious, childhood, Freud → psychodynamic. Thoughts, memory, problem solving → cognitive. Rewards, learning → behavioral. Potential, free will, positivity → humanistic. Genes, hormones, neurotransmitters → biological. Ancestors, survival, reproduction → evolutionary. Culture, social norms → sociocultural.'],
+
+['stats','Descriptive statistics','Descriptive statistics','Statistics that help researchers organize data meaningfully.'],
+['stats','Descriptive statistics','Frequency distribution','A count of how often each score or range of scores appears, like the tally table of ages of people entering a store on your slide.'],
+['stats','Descriptive statistics','Histogram','A bar graph that shows a frequency distribution. Useful because it displays data visually and makes patterns in a distribution quicker to spot.'],
+['stats','Central tendency','Mean','The average. Add up all the numbers, then divide by how many numbers there are. Example from your slides: 2, 3, 4, 5, 5, 8 → mean = 4.5.'],
+['stats','Central tendency','Median','The middle number when the numbers are in numerical order. If there are two middle numbers, average them. Example from your slides: 2, 4, 5, 6, 9 → median = 5.','Median = middle, like the median strip in a road.'],
+['stats','Central tendency','Mode','The number that appears most frequently. Example from your slides: 1, 3, 6, 6, 8 → mode = 6.','Mode = most.'],
+['stats','Central tendency','Percentile rank','The percentage of scores that are less than a given score. Your slides call it a fourth measure of central tendency. Example: in the 85th percentile on a psychology test, your score is higher than 85% of your peers.'],
+['stats','Variation','Measures of variation','Tell us how similar or different scores are.'],
+['stats','Variation','Range','The difference between the highest and lowest scores: subtract the lowest from the highest. Example from your slides: 75, 78, 86, 92, 98, 100 → 100 − 75 = 25. Only a rough estimate of variation.'],
+['stats','Variation','Standard deviation','How much scores vary around the mean: whether they are packed together or spread out. A more useful measure of variation than the range.','Small SD = packed together. Big SD = spread out.'],
+['stats','Variation','Normal curve','A bell-shaped curve where most scores fall near the mean and fewer fall near either extreme.'],
+['stats','Variation','The 68% and 95% rule','In a normal curve, about 68% of scores fall within 1 standard deviation of the mean, and about 95% within 2. Your slide\'s IQ example: mean 100, SD 15, so about 68% score 85–115 and about 95% score 70–130.'],
+['stats','Skewed data','Outlier','A score far away from the rest. One or two outliers can impact results, especially the mean. Your slide\'s example: a billionaire moving into a poor town could push the mean income to $1,000,000, so the median and mode give a fuller picture.'],
+['stats','Skewed data','Skewed distribution','When an outlier disproportionately affects the mean, a few scores stretch away from the group like a tail. The skew is named for the direction of the tail.','Skew = where the tail goes.'],
+['stats','Skewed data','Positive skew','The tail goes to the right, and the mean goes to the right too. Order: mean > median > mode.','Tail toward the bigger (positive) numbers = positive.'],
+['stats','Skewed data','Negative skew','The tail goes to the left, and the mean goes to the left too. Order: mean < median < mode.'],
+['stats','Skewed data','Symmetrical distribution','No skew: mean = median = mode.'],
+['stats','Skewed data','The mean follows the tail','In a skewed distribution, the mean always moves in the direction of the tail. The mode stays at the peak.'],
+['stats','Skewed data','Bimodal curve','A graph with two peaks ("bi" means two). Each peak is a local maximum: the highest values compared with the data points right around them.'],
+['stats','Inferential statistics','Inferential statistics','Statistics that help determine whether results can be generalized to a larger population: confirming that results aren\'t just random fluctuations in the participants sampled, but true of a population.'],
+['stats','Inferential statistics','3 key principles','1. Representative samples are better than unrepresentative samples. 2. Bigger samples are better than small ones. 3. More estimates are better than fewer estimates.'],
+['stats','Inferential statistics','Meta-analysis','Combining the estimates of many studies instead of focusing on just one. Useful because more estimates are better than fewer.'],
+['stats','Inferential statistics','The café example','Alex asks two friends about Café Mocha (they love it) and two about Café Latte (they don\'t). Her conclusion isn\'t reliable because of an unrepresentative sample (her friends may have unique tastes) and a small sample size (two people each isn\'t enough).'],
+['stats','Inferential statistics','Statistical significance','An observed difference is statistically significant when the probability that it happened by chance is low enough to reject the null hypothesis. That means strong evidence the difference is due to something other than chance.'],
+['stats','Inferential statistics','P-value','A number from 0 to 1 describing how likely it is that your data happened by random chance. The smaller the p-value, the less likely the results were due to chance. A p-value of .05 or less is statistically significant.','Small p = probably real.'],
+['stats','Inferential statistics','Effect size','The strength of the relationship between two variables. A p-value only tells you whether an effect exists; effect size tells you how strong it is. Your slide\'s example: a new study technique group averaged 85 vs. 75 for the usual group, a 10-point effect.']
 ];
 
 const CARDS = RAW.map((r,i)=>({id:r[0]+'-'+i, d:r[0], s:r[1], t:r[2], x:r[3], h:r[4]||''}));
@@ -446,6 +556,9 @@ const CHAINS = {
   ],
   sleep:[
     {label:'Sleep stages', steps:['NREM 1 (Stage 1)','NREM 2 (Stage 2)','NREM 3 (Stage 3): night terrors','REM sleep']}
+  ],
+  research:[
+    {label:'The scientific method', steps:['Observe','Develop a theory','Make a hypothesis','Test it (with operational definitions)','Evaluate the results','Modify the theory','Replicate']}
   ]
 };
 const TREE = `Nervous system
@@ -463,7 +576,10 @@ const WATCH = {
   brain:['F-POT order front to back along the top: Frontal, Parietal, Occipital — with Temporal on the sides.','Scans: structure only = CT, MRI. Activity/function = PET, fMRI, EEG.'],
   split:['Two-step trick: (1) the visual field goes to the opposite hemisphere, (2) that hemisphere controls the opposite hand. Only the left hemisphere can say what it saw.','The slide on the left visual field says the patient can draw or point "with the right hand." Its own picture shows the left hand drawing, and the left hand is correct: the left visual field reaches only the right hemisphere, which controls the left hand.'],
   sleep:['Your slides list the four sleep stages by name only (the details were in the video). The one stage fact on the slides: night terrors happen in Stage 3.','Ecstasy/MDMA shows up twice on your slides: as a form of amphetamine (stimulant) and as a hallucinogen. It counts as both.','Alcohol is a depressant, even though people think it\'s a stimulant because of the crazy things people do when drinking.'],
-  perception:['Change blindness vs. inattentional blindness is the classic trap. Both happen because attention is elsewhere. Missed a change → change blindness. Missed a visible object → inattentional blindness.','Bottom-up = sensation (receptors send information up). Top-down = perception (your knowledge, experience, or context interprets it).','Both thresholds are measured at 50% of the time. Absolute = can you detect it at all? Difference (JND) = can you tell it changed?']
+  perception:['Change blindness vs. inattentional blindness is the classic trap. Both happen because attention is elsewhere. Missed a change → change blindness. Missed a visible object → inattentional blindness.','Bottom-up = sensation (receptors send information up). Top-down = perception (your knowledge, experience, or context interprets it).','Both thresholds are measured at 50% of the time. Absolute = can you detect it at all? Difference (JND) = can you tell it changed?'],
+  research:['Your Dependent Variable slide labels its answers "IV = strength of memory" and "IV = test scores." Those are DVs; the slide has a typo. IV = what the researcher changes. DV = what gets measured.','The positive and negative correlation slides are titled +1.0 and -1.0. Those are perfect correlations; real correlations can be anywhere from -1 to +1.','Only experiments can show cause and effect. Correlation does not equal causation.','Informed consent comes BEFORE the study. Debriefing comes AFTER.'],
+  perspectives:['Behavioral vs. cognitive: behavioral = rewards and learned behavior; cognitive = thoughts (like changing how you think about something).','Humanistic vs. psychodynamic: humanistic looks forward (potential, positivity, relationships); psychodynamic looks back (unconscious mind, childhood).','The "Identify the perspective" slide has blank answers. The practice questions here use the best-fit answer for each; check them against what your teacher went over in class.'],
+  stats:['The mean always follows the tail: positive skew → the mean is highest; negative skew → the mean is lowest.','Your slides call percentile rank a "fourth measure of central tendency." Many textbooks list it separately, but go with your slides.','Descriptive statistics organize and describe data (mean, median, mode, range, standard deviation). Inferential statistics decide whether results apply to a whole population (p-values, significance).']
 };
 
 const TABLES = {
@@ -482,6 +598,38 @@ const TABLES = {
     ['Absolute threshold','The weakest stimulus you can detect 50% of the time','A watch ticking 20 feet away; 1 teaspoon of salt in 2 gallons of water'],
     ['Difference threshold (JND)','The smallest change you notice 50% of the time','Car music from 5 to 6: probably not noticed. From 5 to 10: probably noticed'],
     ['Weber\'s law','Changes must be a constant percentage, not a constant amount','1 oz added to 10 oz is noticed; 1 oz added to 100 oz isn\'t. Weight must change 2%']
+  ]},
+  'research|Descriptive methods': {head:['Method','What it is','Advantages','Disadvantages'], rows:()=>[
+    ['Case study','One individual or group in depth','In-depth information; illustrates general principles','Misleading if the person is atypical; can overgeneralize'],
+    ['Naturalistic observation','Recording behavior in natural situations without controlling them','Non-invasive; more honest behavior','Time consuming; subjects may notice the observer; observer may misinterpret'],
+    ['Survey','Self-reported attitudes and behaviors from a sample','Lots of data fast; flexible','Wording can skew answers; people please the researcher, lie, or misremember; poor response rate']
+  ]},
+  'research|Experiments': {head:['Research question','IV (changed)','DV (measured)'], rows:()=>[
+    ['Does sleep deprivation cause poor memory?','Amount of sleep','Strength of memory'],
+    ['Does room temperature affect test scores?','Temperature','Test scores'],
+    ['How does exercise affect weight loss?','Amount of exercise','Weight loss (confounds: diet, sleep, genetics)'],
+    ['Do antidepressants decrease depression?','Taking the medication or not','Depression']
+  ]},
+  'perspectives|The seven perspectives': {head:['Perspective','Focuses on','Practice scenario from your slides'], rows:()=>[
+    ['Psychodynamic','Unconscious mind, childhood, Freud','Juliette\'s anxiety comes from her poor relationship with her father as a child'],
+    ['Cognitive','Thought processes: memory, problem solving, intelligence, perception','Jason\'s therapist helps him change how he thinks about work'],
+    ['Behavioral','Learned experiences and rewards','Mr. Epstein gives candy for doing homework'],
+    ['Humanistic','Full potential, free will, positivity, relationships','Alex focuses on positive relationships and his future potential'],
+    ['Biological','Genes, brain chemistry, hormones, neurotransmitters','Rosa\'s schizophrenia from too much dopamine; Carl\'s antidepressants'],
+    ['Evolutionary','Survival, adaptive behavior, reproduction','Jason\'s fear of snakes is an instinct his ancestors also had'],
+    ['Sociocultural','Culture or way of life','Heather wears skirts because that\'s the norm where she lives']
+  ]},
+  'stats|Central tendency': {head:['Measure','How to find it','Example from your slides'], rows:()=>[
+    ['Mean','Add them up, divide by how many','2, 3, 4, 5, 5, 8 → 4.5'],
+    ['Median','Put in order, take the middle (average the two middle numbers if needed)','2, 4, 5, 6, 9 → 5'],
+    ['Mode','The most frequent number','1, 3, 6, 6, 8 → 6'],
+    ['Percentile rank','% of scores below yours','85th percentile = higher than 85% of peers']
+  ]},
+  'stats|Skewed data': {head:['Shape','Tail','Order'], rows:()=>[
+    ['Positive skew','Right','Mean > median > mode'],
+    ['Negative skew','Left','Mean < median < mode'],
+    ['Symmetrical','None','Mean = median = mode'],
+    ['Bimodal','Two peaks','Each peak is a local maximum']
   ]}
 };
 const tableHtml = key=>{const t=TABLES[key]; return t?`<div class="scroll"><table class="compare"><thead><tr>${t.head.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${t.rows().map(r=>`<tr>${r.map((v,i)=>i?`<td>${esc(v)}</td>`:`<td><b>${esc(v)}</b></td>`).join('')}</tr>`).join('')}</tbody></table></div>`:''};
@@ -557,7 +705,31 @@ const SCEN = [
 ['perception','Raj can taste one teaspoon of salt dissolved in two gallons of water about half the time. This is a measure of his:',['Absolute threshold','Difference threshold','Selective attention','Top-down processing'],0,'The weakest stimulus detected 50% of the time is the absolute threshold.'],
 ['perception','When Dana turns her car radio from 5 to 6, she doesn\'t notice, but from 5 to 10 she does. This shows her:',['Difference threshold (just noticeable difference)','Absolute threshold','Inattentional blindness','Precognition'],0,'The smallest change you notice 50% of the time is the difference threshold.'],
 ['perception','You can easily read "Tihs is a vrey smiple snetecne" even though the letters are scrambled. This is mainly:',['Top-down processing','Bottom-up processing','The absolute threshold','Change blindness'],0,'You read each word as a whole using what you already know. That\'s top-down.'],
-['perception','A psychic tells police where a missing person\'s body is buried, though she never saw what happened. This claim is called:',['Clairvoyance','Telepathy','Precognition','Selective attention'],0,'Clairvoyance = perceiving events you didn\'t witness. There\'s no scientific basis for it.']
+['perception','A psychic tells police where a missing person\'s body is buried, though she never saw what happened. This claim is called:',['Clairvoyance','Telepathy','Precognition','Selective attention'],0,'Clairvoyance = perceiving events you didn\'t witness. There\'s no scientific basis for it.'],
+['research','A researcher records how children play at recess without interacting with them or changing anything. Which method is this?',['Naturalistic observation','Case study','Survey','Experiment'],0,'Observing behavior in a natural setting without controlling it is naturalistic observation.'],
+['research','Students who miss more school tend to have lower grades. This is a:',['Negative correlation','Positive correlation','Zero correlation','Proven cause-and-effect relationship'],0,'One goes up while the other goes down: negative. It still doesn\'t prove absences cause the lower grades.'],
+['research','A study tests whether caffeine improves memory. One group gets caffeine, the other gets none, then both take a memory test. What is the dependent variable?',['Memory test scores','Caffeine','The group with no caffeine','The number of participants'],0,'The DV is what\'s measured. Caffeine is the IV (what the researcher changes).'],
+['research','In the caffeine study, the group that gets no caffeine is the:',['Control group','Experimental group','Population','Confounding variable'],0,'The control group doesn\'t receive the manipulated variable, so it can be compared with the experimental group.'],
+['research','Factory workers become more productive just because they know researchers are watching them. This is the:',['Hawthorne effect','Placebo effect','Barnum effect','Gambler\'s fallacy'],0,'Changing behavior because you know you\'re being observed is the Hawthorne effect.'],
+['research','After the game, Sam says, "I knew they would lose all along." This is:',['Hindsight bias','Overconfidence','Gambler\'s fallacy','Social desirability bias'],0,'Believing after the outcome that you would have foreseen it is hindsight bias.'],
+['research','After an experiment, participants are told the study\'s real purpose and about any deception. This is called:',['Debriefing','Informed consent','Confidentiality','Replication'],0,'Debriefing happens after the study. Informed consent happens before.'],
+['research','On an anonymous-looking survey about cheating, almost no students admit to cheating, even though many do. The most likely problem is:',['Social desirability bias','The Hawthorne effect','The placebo effect','Gambler\'s fallacy'],0,'People give dishonest answers to seek approval or look good.'],
+['perspectives','Mr. Epstein gives his students candy to reward them for doing their homework. Which perspective fits best?',['Behavioral','Cognitive','Humanistic','Psychodynamic'],0,'Rewarding a behavior so it gets repeated is the behavioral perspective.'],
+['perspectives','Doctors believe Rosa suffers from schizophrenia because there is too much dopamine in her brain. Which perspective fits best?',['Biological','Psychodynamic','Sociocultural','Evolutionary'],0,'Neurotransmitters like dopamine belong to the biological perspective.'],
+['perspectives','Alex is learning to focus on positive relationships and his future potential, instead of the past, to improve his self-esteem. Which perspective fits best?',['Humanistic','Psychodynamic','Behavioral','Biological'],0,'Potential, positivity, and relationships are humanistic. Focusing on the past would be psychodynamic.'],
+['perspectives','Juliette\'s therapist believes her anxiety is influenced by her poor relationship with her father as a child. Which perspective fits best?',['Psychodynamic','Humanistic','Cognitive','Evolutionary'],0,'Childhood experiences shaping behavior is the psychodynamic perspective.'],
+['perspectives','Jason\'s fear of snakes is a survival instinct his ancestors also had. Which perspective fits best?',['Evolutionary','Behavioral','Biological','Sociocultural'],0,'Survival instincts passed down from ancestors are evolutionary.'],
+['perspectives','Heather wears skirts and dresses because that is the norm in the society where she lives. Which perspective fits best?',['Sociocultural','Evolutionary','Humanistic','Cognitive'],0,'Behavior shaped by culture or way of life is sociocultural.'],
+['perspectives','Carl takes antidepressants to help improve his mood. Which perspective fits best?',['Biological','Cognitive','Humanistic','Psychodynamic'],0,'Medication changes brain chemistry, which is the biological perspective.'],
+['perspectives','Jason has been feeling very negatively about work, so his therapist encourages him to change how he thinks about it. Which perspective fits best?',['Cognitive','Behavioral','Biological','Evolutionary'],0,'Changing thought processes is the cognitive perspective.'],
+['stats','What is the mean of 2, 4, 6, 8, 10?',['6','5','8','4'],0,'2 + 4 + 6 + 8 + 10 = 30, and 30 ÷ 5 = 6.'],
+['stats','What is the median of 3, 9, 1, 7, 5?',['5','7','9','3'],0,'In order: 1, 3, 5, 7, 9. The middle number is 5.'],
+['stats','What is the mode of 4, 7, 7, 2, 9, 7, 4?',['7','4','9','2'],0,'7 appears three times, more than any other number.'],
+['stats','Test scores: 60, 72, 85, 90, 95. What is the range?',['35','80.4','85','25'],0,'95 − 60 = 35. (80.4 is the mean, a trap.)'],
+['stats','On a very hard test, most students score low, but a few score very high. The distribution is:',['Positively skewed','Negatively skewed','Symmetrical','Bimodal'],0,'The few high scores make a tail to the right: positive skew.'],
+['stats','On a very easy quiz, most students score near 100, but a few score very low. How does the mean compare to the median?',['The mean is lower than the median','The mean is higher than the median','They are equal','There is no mean'],0,'The tail goes left (negative skew), and the mean follows the tail.'],
+['stats','A study finds p = .03. What does this mean?',['The result is statistically significant: it\'s unlikely to be due to chance','The result is not significant','The effect is very strong','3% of participants improved'],0,'p ≤ .05 is statistically significant. A p-value says nothing about how strong the effect is; that\'s effect size.'],
+['stats','Jada scored in the 90th percentile on a practice test. This means:',['She scored higher than 90% of test takers','She got 90% of the questions right','90 people took the test','She scored 90 points above the mean'],0,'Percentile rank is the percentage of scores below yours.']
 ];
 
 // Exam-style bank: hand-written questions in the style of the unit test (scenarios, "which best describes",
@@ -704,7 +876,75 @@ const EXAM = [
 ['perception','A man claims he dreamed about a car crash the night before it happened. This claim is called:',['Precognition','Telepathy','Clairvoyance','The pop-out phenomenon'],0,'Precognition = perceiving future events.'],
 ['perception','Which statement about extrasensory perception (ESP) is most accurate?',['There is no scientific basis for it, and psychic visions given to police are no more accurate than other people\'s guesses.','Studies show clairvoyance helps police solve most cases.','Telepathy has been proven in laboratory experiments.','Precognition is a type of bottom-up processing.'],0,'Your slides: no scientific basis, and psychics do no better than guesses.'],
 ['perception','Which of the following best explains why some people believe psychics are accurate?',['Psychics make so many predictions that some are bound to be right, and people remember the hits and forget the misses.','Psychics have lower absolute thresholds than other people.','Psychics use top-down processing and other people don\'t.','Most psychic predictions turn out to be correct.'],0,'So many predictions → a few hits; people focus on the 1 or 2 correct ones.'],
-['perception','Which pair is correctly matched?',['Clairvoyance — perceiving events you didn\'t witness','Telepathy — perceiving future events','Precognition — mind-to-mind communication','Pop-out phenomenon — failing to notice a change'],0,'Telepathy = mind to mind, precognition = the future, and failing to notice a change is change blindness.']
+['perception','Which pair is correctly matched?',['Clairvoyance — perceiving events you didn\'t witness','Telepathy — perceiving future events','Precognition — mind-to-mind communication','Pop-out phenomenon — failing to notice a change'],0,'Telepathy = mind to mind, precognition = the future, and failing to notice a change is change blindness.'],
+
+['research','Which of the following best explains why psychologists rely on research instead of intuition?',['Intuition is distorted by hindsight bias, overconfidence, and misunderstanding of probability.','Intuition is always wrong.','Research never contains errors.','Intuition only works for experts.'],0,'Your slides: psychology exists because intuition is unreliable, due to hindsight bias, misunderstanding of probability, and overconfidence.'],
+['research','Which of the following is the correct order of the first four steps of the scientific method?',['Observe → develop a theory → make a hypothesis → test it','Make a hypothesis → observe → replicate → develop a theory','Test → observe → develop a theory → evaluate','Develop a theory → replicate → observe → make a hypothesis'],0,'Observe, theory, hypothesis, test, evaluate, modify, replicate.'],
+['research','A researcher decides that "smiling" means at least four teeth showing and "friendly" means the photographer tells at least two jokes. These are:',['Operational definitions','Hypotheses','Confounding variables','Theories'],0,'Operational definitions state exactly how each variable will be measured.'],
+['research','Which of the following best explains why operational definitions are important?',['Without them, other researchers can\'t replicate the study.','They guarantee the hypothesis will be supported.','They replace the need for a control group.','They make the sample representative.'],0,'Your slides: research cannot be replicated without operational definitions.'],
+['research','A researcher repeats another scientist\'s study with new participants to see whether the results hold up. This is:',['Replication','Debriefing','Sampling bias','Naturalistic observation'],0,'Replicating means doing the research a second time to check that the results are reliable.'],
+['research','Which research method is the only one that can establish cause and effect?',['Experiment','Correlational study','Case study','Survey'],0,'Experiments manipulate variables to establish cause and effect.'],
+['research','A psychologist spends two years studying one patient with a rare memory disorder in great detail. Which of the following is the biggest weakness of this method?',['The findings may not apply to others, because the patient may be atypical.','It gives too little in-depth information.','It cannot describe behavior.','It always involves deception.'],0,'Case studies can be misleading if the person is atypical, and can lead to overgeneralizing.'],
+['research','A researcher wants to know how 2,000 teens feel about social media and needs results quickly. Which method fits best?',['Survey','Case study','Naturalistic observation','Experiment'],0,'Surveys collect a lot of self-reported data in a short time.'],
+['research','Which of the following is a disadvantage of naturalistic observation?',['Subjects may notice the observer and act differently.','Subjects behave less honestly than in a lab.','It requires manipulating variables.','It only studies one person.'],0,'It\'s non-invasive, but subjects may become aware of the observer, and it can be time consuming.'],
+['research','As hours of sleep decrease, levels of stress increase. Which type of correlation is this?',['Negative','Positive','Zero','Perfect positive'],0,'One goes down while the other goes up: negative.'],
+['research','As salary decreases, spending also decreases. Which type of correlation is this?',['Positive','Negative','Zero','It isn\'t a correlation'],0,'Both move in the same direction (both decrease), so it\'s positive. Positive doesn\'t mean "good."'],
+['research','Which correlation coefficient shows the strongest relationship?',['-0.9','+0.5','0','+0.3'],0,'Strength is how close the number is to +1 or -1. The sign only shows direction.'],
+['research','A study finds that students who eat breakfast earn higher grades. Which conclusion is most appropriate?',['Breakfast and grades are related, but the study can\'t show that breakfast causes better grades.','Eating breakfast causes higher grades.','Higher grades cause students to eat breakfast.','There is no relationship between them.'],0,'Correlation does not equal causation. Another factor could explain both.'],
+['research','Ice cream sales and sunburns rise together. According to your slides, which of the following best explains this?',['Hot, sunny summer weather causes both.','Ice cream causes sunburns.','Sunburns make people buy ice cream.','It\'s a negative correlation.'],0,'A third factor (summer weather) causes both, so they\'re correlated without one causing the other.'],
+['research','A researcher randomly picks 500 names from a list of every student in a school, so every student has an equal chance of being chosen. This is a:',['Representative (random) sample','Population','Control group','Case study'],0,'Everyone having an equal chance of inclusion makes it a representative random sample. The whole school is the population.'],
+['research','Plants are randomly put in a room with music or a silent room, and their height is measured after a month. What is the independent variable?',['Whether the plants hear music','Plant height','The type of plant','The length of the study'],0,'The IV is what the researcher manipulates.'],
+['research','In the same plant study, what is the dependent variable?',['Plant height','Whether the plants hear music','The silent room','The type of plant'],0,'The DV is what gets measured.'],
+['research','A study tests whether exercise causes weight loss, but the exercise group also happened to eat healthier food. Diet is a:',['Confounding variable','Dependent variable','Independent variable','Control group'],0,'An outside influence that affects the results is a confounding variable. Your slides list diet, sleep, and genetics for this exact example.'],
+['research','Patients given a sugar pill they believe is a pain medication report feeling less pain. This is the:',['Placebo effect','Hawthorne effect','Barnum effect','Gambler\'s fallacy'],0,'Results caused by expectations alone are the placebo effect.'],
+['research','A horoscope says, "You sometimes doubt yourself, but you have hidden strengths," and Mia thinks it describes her perfectly. This is the:',['Barnum effect','Hindsight bias','Placebo effect','Self-report bias'],0,'Believing a general description applies specifically to you is the Barnum effect.'],
+['research','After a coin lands heads five times in a row, Leo bets on tails because tails is "due." This is:',['Gambler\'s fallacy','Overconfidence','Hindsight bias','The Barnum effect'],0,'Seeing patterns in random data is the gambler\'s fallacy. Each flip is still 50/50.'],
+['research','A survey asks, "Don\'t you agree that dangerous video games should be banned?" The biggest problem with this question is:',['Wording effects (framing)','The placebo effect','The Hawthorne effect','Debriefing'],0,'The wording pushes people toward one answer.'],
+['research','A researcher studying the exercise habits of all Americans surveys only members of one gym. The main problem is:',['Sampling bias','The placebo effect','Hindsight bias','Wording effects'],0,'The sample doesn\'t represent the population, so the results will be skewed.'],
+['research','Before a study begins, participants are told what it involves so they can decide whether to take part. This is:',['Informed consent','Debriefing','Confidentiality','Replication'],0,'Informed consent comes before; debriefing comes after.'],
+['research','Which of the following would violate the APA\'s ethical guidelines?',['Publishing participants\' names and personal answers without permission','Debriefing participants after a study','Letting people choose whether to participate','Getting approval from a research institution'],0,'That breaks confidentiality. The other three are required guidelines.'],
+['research','Overconfidence is best described as:',['Overestimating your knowledge and/or ability','Believing you knew the outcome all along','Seeing patterns in random data','Giving answers that make you look good'],0,'The others are hindsight bias, gambler\'s fallacy, and social desirability bias.'],
+['research','Participants in a study answer questions in ways they think the researcher wants, or exaggerate how good they are. This is:',['Self-report bias','Sampling bias','The placebo effect','The gambler\'s fallacy'],0,'Self-report bias: trying to affect the outcome, please the researcher, or being unrealistic about yourself.'],
+
+['perspectives','Antonio is feeling much healthier now that he is focusing on his positive traits and having good relationships. Which perspective fits best?',['Humanistic','Biological','Psychodynamic','Behavioral'],0,'Positivity, relationships, and well-being are humanistic.'],
+['perspectives','Which perspective is based heavily on the ideas of Freud?',['Psychodynamic','Humanistic','Cognitive','Sociocultural'],0,'Psychodynamic: the unconscious mind and childhood experiences.'],
+['perspectives','Which perspective focuses on genetics, brain chemistry, hormones, and neurotransmitters?',['Biological','Evolutionary','Cognitive','Behavioral'],0,'That\'s the biological perspective. Evolutionary is about survival and reproduction.'],
+['perspectives','Which perspective emphasizes memory, problem solving, intelligence, and perception?',['Cognitive','Behavioral','Humanistic','Psychodynamic'],0,'Cognitive = internal thought processes.'],
+['perspectives','Which of the following best describes the behavioral perspective?',['Behavior is shaped by learned experiences, and rewarded behaviors tend to be repeated.','Behavior comes from the unconscious mind.','Behavior is mostly determined by genes.','Behavior depends on a person\'s culture.'],0,'Behavioral = learning and rewards.'],
+['perspectives','Which of the following best describes the evolutionary perspective?',['Behaviors exist because they helped our ancestors survive and reproduce.','Behavior is shaped by childhood memories.','Behavior is shaped by social norms.','Behavior depends on how we think about situations.'],0,'Evolutionary = protection, adaptive behavior, and reproduction.'],
+['perspectives','Charles has a terrible fear of spiders. Which explanation fits the evolutionary perspective?',['Fearing spiders helped his ancestors avoid dangerous bites and survive.','A frightening spider experience from early childhood is affecting him unconsciously.','His thoughts about spiders are exaggerated and unrealistic.','In his culture, spiders are treated as scary and disgusting.'],0,'Survival advantage for ancestors = evolutionary. The others are psychodynamic, cognitive, and sociocultural.'],
+['perspectives','Charles has a terrible fear of spiders. Which explanation fits the psychodynamic perspective?',['A frightening spider experience from early childhood is affecting him unconsciously.','Fearing spiders helped his ancestors survive.','His brain chemistry makes him more anxious.','People around him taught him spiders are gross.'],0,'Unconscious mind + childhood = psychodynamic.'],
+['perspectives','Charles has a terrible fear of spiders. Which explanation fits the cognitive perspective?',['He believes every spider he sees could kill him, and those thoughts drive his fear.','He inherited a gene linked to anxiety.','In his culture, spiders are seen as dangerous.','He has an unconscious memory of being bitten.'],0,'Cognitive = how thought processes shape behavior.'],
+['perspectives','Charles has a terrible fear of spiders. Which explanation fits the sociocultural perspective?',['In his culture, spiders are commonly treated as scary and disgusting.','Fearing spiders helped his ancestors survive.','His neurotransmitter levels are unusual.','He focuses on his potential to overcome fear.'],0,'Culture or way of life = sociocultural.'],
+['perspectives','Suzanne loves romantic comedy movies. Which explanation uses the biological perspective?',['Watching them causes her brain to release feel-good chemicals like dopamine.','In her culture, it\'s popular for women to enjoy romantic movies.','She was often taken to romantic movies as a child.','She enjoys predicting how the plot will turn out.'],0,'Brain chemistry and neurotransmitters = biological. The culture answer is your slide\'s sociocultural example.'],
+['perspectives','A therapist helps a client focus on free will, self-actualization, and reaching their full potential. Which perspective is the therapist using?',['Humanistic','Psychodynamic','Behavioral','Biological'],0,'Free will, self-efficacy, and self-actualization are humanistic.'],
+['perspectives','A psychologist argues that a teen\'s aggression is mostly due to high testosterone levels. Which perspective is this?',['Biological','Sociocultural','Cognitive','Humanistic'],0,'Hormones = biological.'],
+['perspectives','A researcher compares how families in different countries discipline their children, expecting differences based on each country\'s way of life. Which perspective is this?',['Sociocultural','Evolutionary','Psychodynamic','Cognitive'],0,'Differences based on culture or way of life = sociocultural.'],
+['perspectives','Which of the following best explains why psychologists use different perspectives?',['Each one is like a different set of lenses, giving a different explanation of the same behavior.','Only one perspective can be correct.','Each perspective is used for only one type of behavior.','Perspectives are only used to diagnose disorders.'],0,'Your slides: perspectives are like viewing situations through different lenses. A behavior can be explained by several.'],
+
+['stats','Which of the following best describes the purpose of descriptive statistics?',['To organize and summarize data meaningfully','To decide whether results apply to a whole population','To manipulate variables','To prove cause and effect'],0,'Descriptive statistics organize data. Deciding whether results generalize is inferential statistics.'],
+['stats','Which type of graph is a bar graph that shows a frequency distribution?',['Histogram','Scatterplot','Pie chart','Line graph'],0,'Histograms show frequency distributions and make patterns quick to spot.'],
+['stats','What is the mean of 3, 5, 7, 9, 11, 13?',['8','7','9','6'],0,'3 + 5 + 7 + 9 + 11 + 13 = 48, and 48 ÷ 6 = 8.'],
+['stats','What is the median of 4, 10, 6, 2, 8, 12?',['7','6','8','10'],0,'In order: 2, 4, 6, 8, 10, 12. The two middle numbers are 6 and 8, so the median is (6 + 8) ÷ 2 = 7.'],
+['stats','For the data 2, 3, 3, 5, 9, 9, 9, 12, which statement is correct?',['Mode = 9, median = 7, mean = 6.5','Mode = 3, median = 5, mean = 6.5','Mode = 9, median = 5, mean = 7','Mode = 9, median = 7, mean = 7'],0,'9 appears most (mode). Middle two are 5 and 9, so the median is 7. Sum is 52, and 52 ÷ 8 = 6.5.'],
+['stats','Scores: 55, 70, 70, 85, 100. What is the range?',['45','70','76','100'],0,'100 − 55 = 45. (70 is the mode and median; 76 is the mean.)'],
+['stats','Which of the following best explains why standard deviation is a more useful measure of variation than the range?',['It shows how much all the scores vary around the mean, not just the gap between the two extremes.','It is easier to calculate.','It shows the most common score.','It is always smaller than the mean.'],0,'The range only uses the highest and lowest scores, so it\'s just a rough estimate.'],
+['stats','Class A and Class B both averaged 80 on a test. Class A\'s standard deviation is 3; Class B\'s is 15. Which statement is true?',['Class B\'s scores are more spread out.','Class A\'s scores are more spread out.','Class B scored higher on average.','Both classes have the same spread.'],0,'A bigger standard deviation means scores are more dispersed around the mean.'],
+['stats','IQ scores have a mean of 100 and a standard deviation of 15. About what percent of people score between 85 and 115?',['68%','95%','50%','99%'],0,'85–115 is within 1 standard deviation of the mean: about 68%.'],
+['stats','On the same IQ scale, about 95% of people score between:',['70 and 130','85 and 115','55 and 145','100 and 130'],0,'Within 2 standard deviations (2 × 15 = 30 points) of 100.'],
+['stats','A billionaire moves into a small town where most families earn very little. Which measure best describes a typical family\'s income?',['Median','Mean','Range','Standard deviation'],0,'The outlier pulls the mean way up. Your slides say the median and mode give a fuller picture.'],
+['stats','Which statement is true of a positively skewed distribution?',['Mean > median > mode','Mean < median < mode','Mean = median = mode','The tail goes to the left'],0,'Positive skew: tail to the right, and the mean follows the tail.'],
+['stats','In a negatively skewed distribution, the tail points:',['Left, and the mean is pulled left','Right, and the mean is pulled right','Left, and the mode is pulled left','Nowhere, because it\'s symmetrical'],0,'Negative skew = tail to the left. The mean always follows the tail.'],
+['stats','Most families in a town earn $20,000–$50,000, but a few earn millions. How is income in this town distributed?',['Positively skewed','Negatively skewed','Symmetrical','Bimodal'],0,'A few very high values make a tail to the right: positive skew.'],
+['stats','A graph of the heights of a group of kindergartners and their parents has two clear peaks. This is a:',['Bimodal distribution','Positive skew','Negative skew','Normal curve'],0,'"Bi" means two: two peaks = bimodal.'],
+['stats','Which statement best describes inferential statistics?',['They help determine whether results can be generalized to a larger population.','They organize data into histograms.','They find the middle score.','They measure how spread out scores are.'],0,'Inferential statistics check that results aren\'t just chance fluctuations in the sample.'],
+['stats','Which is one of the three key principles of inferential statistics on your slides?',['Bigger samples are better than small ones.','Fewer estimates are better than more estimates.','Unrepresentative samples are better than representative ones.','One study is enough to generalize.'],0,'The three: representative samples, bigger samples, and more estimates are better.'],
+['stats','Why is meta-analysis useful?',['It combines the estimates of many studies instead of relying on just one.','It studies one person in depth.','It removes the need for a sample.','It guarantees that results are significant.'],0,'More estimates are better than fewer estimates.'],
+['stats','Alex asks two friends about each café and decides Café Mocha is better. Which of the following best explains why her conclusion isn\'t reliable?',['Her sample is small and unrepresentative.','Her p-value is too small.','She used a control group.','Her effect size is too large.'],0,'Your slide names both problems: unrepresentative samples and small sample size.'],
+['stats','A study reports p = .20. Which conclusion is correct?',['The result is not statistically significant; it could easily be due to chance.','The result is significant because .20 is small.','The effect size is 20 points.','20% of participants improved.'],0,'Significant means p ≤ .05. .20 is too high.'],
+['stats','Which statement about p-values and effect size is correct?',['A p-value tells whether an effect likely exists; effect size tells how strong it is.','They mean the same thing.','Effect size tells whether a result is due to chance.','A larger p-value means a stronger effect.'],0,'Your slides: unlike p-values, effect size tells how strong the effect is.'],
+['stats','Students using a new study technique averaged 85; students studying as usual averaged 75. According to your slides, the 10-point difference is the:',['Effect size','P-value','Range','Percentile rank'],0,'Effect size shows the practical importance of the result: 85 − 75 = 10.'],
+['stats','Ty is in the 70th percentile on a psychology test. This means:',['He scored higher than 70% of his peers.','He got 70% of the questions right.','He scored 70 points.','70% of students scored higher than him.'],0,'Percentile rank = the percentage of scores below yours.']
 ];
 
 const deckById = Object.fromEntries(DECKS.map(d=>[d.id,d]));
@@ -733,7 +973,9 @@ const $ = s=>document.querySelector(s);
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const shuffle = a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const inAll = d=>S.set.includeOpt||!deckById[d].opt;
-const inDeck = c=>S.deck==='all'?inAll(c.d):c.d===S.deck;
+const deckIn = (d,sel=S.deck)=>sel==='all'?inAll(d):unitById[sel]?deckById[d].unit===sel&&inAll(d):d===sel;
+const inDeck = c=>deckIn(c.d);
+const scopeName = sel=>sel==='all'?'all decks':unitById[sel]?unitById[sel].name:deckById[sel].name;
 const hookHtml = c=>c.h&&S.set.hooks?`<span class="hook">Memory hook: ${esc(c.h)}</span>`:'';
 const CORE_CARDS = CARDS.filter(c=>!deckById[c.d].opt);
 const cardsNow = ()=>CARDS.filter(inDeck);
@@ -747,22 +989,23 @@ function renderMeter(){
   $('#mbar').style.width=(100*n/CORE_CARDS.length)+'%';
 }
 function renderChips(){
-  const opts=[{id:'all',name:'All decks'}].concat(DECK_VIEW);
+  const opts=[{id:'all',name:'All decks'}].concat(UNITS.flatMap(u=>[u].concat(DECK_VIEW.filter(d=>d.unit===u.id))));
   $('#chips').innerHTML = opts.map(d=>{
-    const cs = d.id==='all'?CARDS.filter(c=>inAll(c.d)):CARDS.filter(c=>c.d===d.id);
+    const cs = CARDS.filter(c=>deckIn(c.d,d.id)), unit=!!unitById[d.id];
     const k = cs.filter(c=>S.known[c.id]).length;
-    return `<button class="chip" data-deck="${d.id}" aria-pressed="${S.deck===d.id}">${d.id!=='all'?`<span class="dot" style="${dotStyle(d.id)}"></span>`:''}${esc(d.name)} <small>${k}/${cs.length}</small></button>`;
+    return `<button class="chip${unit?' unit':''}" data-deck="${d.id}" aria-pressed="${S.deck===d.id}">${d.id!=='all'&&!unit?`<span class="dot" style="${dotStyle(d.id)}"></span>`:''}${esc(d.name)} <small>${k}/${cs.length}</small></button>`;
   }).join('');
 }
 function renderTabs(){document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===S.tab))}
 
 /* ---------- Guide ---------- */
 function renderGuide(){
-  const decks = DECK_VIEW.filter(d=>S.deck==='all'?inAll(d.id):d.id===S.deck);
-  $('#view').innerHTML = decks.map(d=>{
+  const decks = DECK_VIEW.filter(d=>deckIn(d.id));
+  $('#view').innerHTML = decks.map((d,i)=>{
+    const uh = (i===0||decks[i-1].unit!==d.unit)&&new Set(decks.map(x=>x.unit)).size>1?`<h2 class="unit-head">${esc(unitById[d.unit].name)}</h2>`:'';
     const cs = CARDS.filter(c=>c.d===d.id);
     const secs = [...new Set(cs.map(c=>c.s))];
-    let h = `<section class="deck" id="deck-${d.id}"><div class="deck-head"><span class="dot" style="${dotStyle(d.id)}"></span><h2>${esc(d.name)}</h2><span class="label">${cs.filter(c=>S.known[c.id]).length} of ${cs.length} known</span></div><p class="deck-sub">${esc(d.sub)}</p>`;
+    let h = uh+`<section class="deck" id="deck-${d.id}"><div class="deck-head"><span class="dot" style="${dotStyle(d.id)}"></span><h2>${esc(d.name)}</h2><span class="label">${cs.filter(c=>S.known[c.id]).length} of ${cs.length} known</span></div><p class="deck-sub">${esc(d.sub)}</p>`;
     (CHAINS[d.id]||[]).forEach(ch=>{h+=`<div class="chain"><div class="label">${esc(ch.label)} · in order</div><ol>${ch.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol></div>`});
     if(d.id==='ns') h+=`<div class="chain"><div class="label">How the nervous system divides</div><div class="tree">${esc(TREE)}</div></div>`;
     secs.forEach(s=>{
@@ -863,7 +1106,7 @@ function newQuiz(qs, extra){
 }
 function startQuiz(n, onlyIds){
   let cs = onlyIds?CARDS.filter(c=>onlyIds.includes(c.id)):cardsNow();
-  let sc = onlyIds?[]:SCEN.filter(s=>S.deck==='all'?inAll(s[0]):s[0]===S.deck);
+  let sc = onlyIds?[]:SCEN.filter(s=>deckIn(s[0]));
   const mix = S.set.quizMix, focus = S.set.quizFocus;
   if(!onlyIds&&focus==='weak'){ cs=cs.filter(c=>S.miss[c.id]); if(mix!=='scen') sc=[]; }
   const nS = onlyIds||mix==='terms'?0:Math.min(sc.length, mix==='scen'?n:Math.round(n*0.4));
@@ -943,8 +1186,8 @@ function renderBuilder(){
   const num=(id,k,max,label)=>`<label class="set-row" for="${id}"><span class="label">${label}</span><span style="display:flex;gap:8px;align-items:center"><input id="${id}" class="qcount" type="number" min="0" max="200" value="${T[k]}" inputmode="numeric"><small style="color:var(--muted)">of ${max}</small></span></label>`;
   return `<div class="qbox setup" style="margin-top:16px"><div><div class="label">Custom test</div><h2 style="margin-top:6px">Build a test</h2></div>
     <p>Pick any topics, choose how many of each kind of question, and take it like the real thing. Exam-style questions are hand-written to match the unit test; the other types are built from the flashcards.</p>
-    <div class="set-row"><div class="label">Topics</div><div class="chips">${DECK_VIEW.map(d=>`<button class="chip" data-tdeck="${d.id}" aria-pressed="${T.decks.includes(d.id)}"><span class="dot" style="${dotStyle(d.id)}"></span>${esc(d.name)}</button>`).join('')}</div>
-      <div class="toggle"><button class="btn small" data-act="t-core">All main topics</button><button class="btn small" data-act="t-every">Everything</button><button class="btn small" data-act="t-none">Clear</button></div></div>
+    <div class="set-row"><div class="label">Topics</div>${UNITS.map(u=>`<div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap"><b style="font-size:.9rem;min-width:4.2em">${esc(u.name)}</b><div class="chips" style="flex:1">${DECK_VIEW.filter(d=>d.unit===u.id).map(d=>`<button class="chip" data-tdeck="${d.id}" aria-pressed="${T.decks.includes(d.id)}"><span class="dot" style="${dotStyle(d.id)}"></span>${esc(d.name)}</button>`).join('')}</div></div>`).join('')}
+      <div class="toggle">${UNITS.map(u=>`<button class="btn small" data-act="t-unit" data-unit="${u.id}">Only ${esc(u.name)}</button>`).join('')}<button class="btn small" data-act="t-core">All main topics</button><button class="btn small" data-act="t-every">Everything</button><button class="btn small" data-act="t-none">Clear</button></div></div>
     <div style="display:flex;flex-wrap:wrap;gap:16px 26px">${num('texam','exam',P.exam.length,'Exam-style')}${num('tmc','mc',P.cards.length,'Multiple choice')}${num('ttf','tf',P.cards.length,'True / false')}${num('tscen','scen',P.scen.length,'Scenarios')}</div>
     <div class="set-row"><div class="label">Answer choices (multiple choice)</div>${seg('choices',[[3,'3'],[4,'4'],[5,'5']])}<p>Scenario questions always have 4.</p></div>
     <div class="set-row"><div class="label">Show answers</div>${seg('feedback',[['end','At the end, like a real test'],['each','After each question']])}${T.feedback==='end'?'<p>You can go back and change answers before you finish.</p>':''}</div>
@@ -957,7 +1200,7 @@ function renderQuiz(){
   $('#chips').hidden=!!(S.quiz&&S.quiz.test);
   const Q=S.quiz;
   if(!Q){
-    const scope = S.deck==='all'?'all decks':deckById[S.deck].name;
+    const scope = scopeName(S.deck);
     const last = store.get('ps1-qcount',15);
     $('#view').innerHTML=`${S.quizNote?`<div class="watch" style="margin:0 0 14px"><b>Nothing to quiz</b>${esc(S.quizNote)}</div>`:''}${renderExamCard()}<div class="qbox setup"><div><div class="label">Quick quiz · ${esc(scope)}</div><h2 style="margin-top:6px">Test yourself</h2></div>
       <p>Each round mixes term questions (pulled first from cards you haven't marked “got it”) with scenario questions like the ones on AP tests. Anything you miss gets flagged so it comes back in flashcards.</p>
@@ -1027,7 +1270,7 @@ DECKS.forEach(d=>{
   });
   LESSONS[LESSONS.length-1].checkpoint=true;
 });
-const CHAIN_AT={'neuron|Parts of a neuron':CHAINS.neuron[0],'neuron|Firing a neuron':CHAINS.neuron[1],'vision|The eye':CHAINS.vision[0],'senses|Hearing':CHAINS.senses[0],'sleep|Sleep & consciousness':CHAINS.sleep[0]};
+const CHAIN_AT={'neuron|Parts of a neuron':CHAINS.neuron[0],'neuron|Firing a neuron':CHAINS.neuron[1],'vision|The eye':CHAINS.vision[0],'senses|Hearing':CHAINS.senses[0],'sleep|Sleep & consciousness':CHAINS.sleep[0],'research|The scientific method':CHAINS.research[0]};
 // Optional lessons come after every core lesson, so saved lesson numbers stay the same.
 const CORE_LESSONS=DECK_VIEW.filter(d=>!d.opt).flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id)), LAST_CORE=CORE_LESSONS[CORE_LESSONS.length-1];
 if(S.li>=LESSONS.length) S.li=0;
@@ -1093,7 +1336,7 @@ function renderLearn(){
   let h=`<div class="qbox" style="margin-bottom:14px;padding:14px 18px">
     <div class="qmeta" style="margin:0"><span class="label">${deck.opt?`Optional lesson ${optLs.indexOf(S.li)+1} of ${optLs.length}`:`Lesson ${CORE_LESSONS.indexOf(S.li)+1} of ${CORE_LESSONS.length}`} · ${coreDone} done</span><button class="btn small" data-act="l-map">${S.showMap?'Hide lesson map':'Lesson map'}</button></div>
     <div class="bar" style="margin-top:8px" aria-hidden="true"><i style="width:${pct}%"></i></div>
-    ${S.showMap?`<div style="margin-top:12px;display:grid;gap:14px">${DECK_VIEW.map(d=>`<div><div class="label" style="margin-bottom:6px"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d.id)}"></span>${esc(d.name)}</div><div class="chips">${LESSONS.map((l,i)=>l.d===d.id?`<button class="chip" data-lesson="${i}" aria-pressed="${i===S.li}">${S.done.includes(i)?'✓ ':''}${esc(lessonTitle(i))}</button>`:'').join('')}</div></div>`).join('')}</div>`:''}
+    ${S.showMap?`<div style="margin-top:12px;display:grid;gap:14px">${DECK_VIEW.map((d,i)=>`${i===0||DECK_VIEW[i-1].unit!==d.unit?`<h3 style="margin-top:${i?8:0}px">${esc(unitById[d.unit].name)}</h3>`:''}<div><div class="label" style="margin-bottom:6px"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d.id)}"></span>${esc(d.name)}</div><div class="chips">${LESSONS.map((l,i)=>l.d===d.id?`<button class="chip" data-lesson="${i}" aria-pressed="${i===S.li}">${S.done.includes(i)?'✓ ':''}${esc(lessonTitle(i))}</button>`:'').join('')}</div></div>`).join('')}</div>`:''}
   </div>`;
   const head=`<div class="deck-head"><span class="dot" style="${dotStyle(lesson.d)}"></span><span class="label">${esc(deck.name)}</span></div><h2 style="margin-bottom:4px">${esc(lessonTitle(S.li))}</h2>`;
 
@@ -1195,7 +1438,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.lesson!==undefined){startLesson(+t.dataset.lesson);return}
   if(t.dataset.lopt!==undefined){learnPick(+t.dataset.lopt);return}
   if(t.dataset.deck){S.deck=t.dataset.deck;store.set('ps1-deck',S.deck);S.fc=null;S.quiz=null;
-    if(S.tab==='learn'&&S.deck!=='all'){const ls=LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===S.deck);startLesson(ls.find(i=>!S.done.includes(i))??ls[0]);renderChips();return}
+    if(S.tab==='learn'&&S.deck!=='all'){const ls=DECK_VIEW.filter(d=>deckIn(d.id)&&(!d.opt||S.deck===d.id)).flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id));startLesson(ls.find(i=>!S.done.includes(i))??ls[0]);renderChips();return}
     render();return}
   if(t.dataset.act&&t.dataset.act.startsWith('l-')){
     const a=t.dataset.act;
@@ -1213,6 +1456,7 @@ document.addEventListener('click',e=>{
     if(t.dataset.tdeck){const id=t.dataset.tdeck; T.decks=T.decks.includes(id)?T.decks.filter(x=>x!==id):DECKS.map(d=>d.id).filter(x=>x===id||T.decks.includes(x))}
     else if(t.dataset.tset) T[t.dataset.tset]=JSON.parse(t.dataset.val);
     else if(a==='t-core') T.decks=DECKS.filter(d=>!d.opt).map(d=>d.id);
+    else if(a==='t-unit') T.decks=DECKS.filter(d=>d.unit===t.dataset.unit&&!d.opt).map(d=>d.id);
     else if(a==='t-every') T.decks=DECKS.map(d=>d.id);
     else if(a==='t-none') T.decks=[];
     else if(a==='t-start'){startTest();window.scrollTo({top:0});return}
