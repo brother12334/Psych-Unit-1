@@ -1532,9 +1532,18 @@ function related(a,b){
 }
 const APPROACH=new Set(['psychodynamic','cognitive','behavioral','humanistic','biological','evolutionary','sociocultural']);
 // Cards named after the whole deck; they'd otherwise clash with every specific disorder.
-const GENERAL=new Set(['personality|Personality disorders','personality|Causes of personality disorders']);
+const GENERAL=new Set(['personality|Causes of personality disorders']);
 // Hand-checked pairs the rules above can't see. ['hub', ...] = hub vs each of the others; ['*', ...] = every pair.
 const PAIRS=new Set();
+// General or fact cards about a whole topic: any card in the same deck could be confused with them.
+const UMBRELLA=['nt|Neurotransmitter','sleep|Psychoactive drugs','sleep|Four categories of psychoactive drugs','research|Problems with research (all 11)',
+ 'stats|Descriptive statistics','stats|Inferential statistics','health|Stress','disorders|When is it a disorder? (the 3 Ds)','anxiety|Anxiety disorders',
+ 'mood|Depressive disorders','mood|Depression quick facts','mood|Bipolar disorders','neurodev|Neurodevelopmental disorders','neurodev|High heritability',
+ 'neurodev|ADHD onset','neurodev|ASD statistics','dissoc|Dissociative disorders','schizo|Schizophrenia','ocdptsd|Obsessive-compulsive & related disorders',
+ 'ocdptsd|Trauma- and stressor-related disorders','eating|Feeding & eating disorders','eating|The two to know','personality|Personality disorders',
+ 'personality|Three clusters','treatment|Psychotherapy','treatment|Biomedical therapy','treatment|Psychotropic medications','treatment|Behavioral therapies',
+ 'treatment|Psychodynamic therapies','perspectives|Psychological perspectives','perspectives|The 7 perspectives','perception|Extrasensory perception (ESP)'];
+UMBRELLA.forEach(k=>{const d=k.split('|')[0]; PAIR_KEYS.add(k); ALL_CARDS.filter(c=>c.d===d).forEach(c=>{const o=c.d+'|'+c.t; if(o!==k){PAIRS.add(k+'~'+o);PAIRS.add(o+'~'+k)}})});
 [
  ['*','sleep|Antagonist','sleep|Reuptake inhibitor'],
  ['*','research|Correlational research','research|Correlation'],
@@ -1907,7 +1916,8 @@ function learnQ(item, lesson){
   const c=cardById(item.id);
   const pick=(arr)=>shuffle(arr.filter(x=>x.id!==c.id));
   const near=pick(lesson.ids.map(cardById)), sec=pick(CARDS.filter(x=>x.d===c.d&&x.s===c.s)), deck=pick(CARDS.filter(x=>x.d===c.d)), rest=pick(CARDS.filter(x=>x.d!==c.d&&deckById[x.d].unit===deckById[c.d].unit));
-  const distract=safeDistractors(c, near.concat(sec,deck,rest), 3);
+  const any=pick(CARDS.filter(x=>x.d!==c.d&&!deckById[x.d].opt));
+  const distract=safeDistractors(c, near.concat(sec,deck,rest,any), 3);
   const all=shuffle([c].concat(distract)), reverse=Math.random()<0.35;
   return {item,card:c,deck:c.d,ask:(item.review?'Review from earlier · ':'')+(reverse?'Which definition matches this term?':'Which term matches this definition?'),
     prompt:reverse?c.t:c.x, opts:all.map(x=>reverse?x.x:x.t), ans:all.indexOf(c)};
