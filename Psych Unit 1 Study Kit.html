@@ -773,7 +773,10 @@ const RAW = [
 ['treatment','Modes of therapy','Individual therapy','One-on-one with a therapist. Personalized, more intimate, and flexible in scheduling, but very expensive. Some disorders can\'t be treated well in a group, so individual therapy is preferred.']
 ];
 
-const CARDS = RAW.map((r,i)=>({id:r[0]+'-'+i, d:r[0], s:r[1], t:r[2], x:r[3], h:r[4]||''}));
+const ALL_CARDS = RAW.map((r,i)=>({id:r[0]+'-'+i, d:r[0], s:r[1], t:r[2], x:r[3], h:r[4]||''}));
+// Cards removed from study. They stay in RAW so every saved card id (based on position) keeps pointing at the same term.
+const HIDDEN = new Set(['Cynophobia','Sociophobia','Dentophobia','Aerophobia','Trypanophobia','Acrophobia','Arachnophobia','Other phobias on your slides'].map(t=>'anxiety|'+t));
+const CARDS = ALL_CARDS.filter(c=>!HIDDEN.has(c.d+'|'+c.t));
 
 const CHAINS = {
   neuron:[
@@ -824,7 +827,7 @@ const WATCH = {
   stats:['The mean always follows the tail: positive skew → the mean is highest; negative skew → the mean is lowest.','Your slides call percentile rank a "fourth measure of central tendency." Many textbooks list it separately, but go with your slides.','Descriptive statistics organize and describe data (mean, median, mode, range, standard deviation). Inferential statistics decide whether results apply to a whole population (p-values, significance).'],
   health:['The stress slide says "flight/flight/freeze." It means fight/flight/freeze.','Coping: problem-focused = change the stressor itself. Emotion-focused = change how you feel about it.','GAS order: Alarm → Resistance → Exhaustion.'],
   disorders:['The evolutionary box says "reduce our change of survival." It means chance.'],
-  anxiety:['Don\'t mix these up: acrophobia = heights, trypanophobia = needles.','Agoraphobia is not only fear of open spaces: it also includes crowds, enclosed places, public transportation, and being outside the home alone.','GAD = worry about everything for 6+ months. Panic disorder = sudden panic attacks and fear of having more.'],
+  anxiety:['Agoraphobia is not only fear of open spaces: it also includes crowds, enclosed places, public transportation, and being outside the home alone.','GAD = worry about everything for 6+ months. Panic disorder = sudden panic attacks and fear of having more.'],
   mood:['Time rules: major depressive disorder = 2 weeks or more. Persistent depressive disorder = 2 years or more.','Bipolar I = full mania, can include psychosis, more severe. Bipolar II = hypomania, no psychosis, more common.','If someone has depression plus a manic episode, it\'s bipolar disorder, not persistent depressive disorder.'],
   neurodev:['ADHD numbers: 6+ symptoms up to age 16, 5+ for 17 and older; symptoms before age 12; in 2+ settings; 6+ months. Average onset is around age 8.'],
   dissoc:['Dissociative identity disorder (multiple "alters") is not schizophrenia. Schizophrenia is psychosis: delusions and hallucinations.'],
@@ -1019,9 +1022,8 @@ const SCEN = [
 ['disorders','A therapist says a client\'s depression comes from irrational beliefs like "I always fail." Which approach is this?',['Cognitive','Behavioral','Psychodynamic','Biological'],0,'Cognitive = maladaptive, irrational thoughts and beliefs.'],
 ['disorders','Which manual is used to classify psychological disorders in the United States?',['DSM-5','APA Code of Ethics','The MMPI','The ICD-1'],0,'The Diagnostic and Statistical Manual of Mental Disorders, 5th edition.'],
 ['anxiety','For more than a year, Emma has worried constantly about money, school, her health, and her family, and she can\'t sleep. She most likely has:',['Generalized anxiety disorder','Panic disorder','A specific phobia','Agoraphobia'],0,'GAD = excessive worry about many everyday things for at least 6 months.'],
-['anxiety','Carlos stopped riding the bus and going to the mall because he\'s afraid he\'ll have a panic attack and won\'t be able to escape. He most likely has:',['Agoraphobia','Social anxiety disorder','Arachnophobia','GAD'],0,'Agoraphobia: fear of public transportation, crowds, and places where escape seems hard.'],
-['anxiety','Priya refuses to give her class presentation because she\'s terrified the other students will judge her. She most likely has:',['Social anxiety disorder','Panic disorder','Agoraphobia','Acrophobia'],0,'Social anxiety disorder = fear of being scrutinized or judged.'],
-['anxiety','Ben won\'t climb a ladder or look over a balcony because of an intense fear of heights. This is:',['Acrophobia','Trypanophobia','Aerophobia','Cynophobia'],0,'Acrophobia = heights. (Trypanophobia = needles.)'],
+['anxiety','Carlos stopped riding the bus and going to the mall because he\'s afraid he\'ll have a panic attack and won\'t be able to escape. He most likely has:',['Agoraphobia','Social anxiety disorder','Panic disorder','GAD'],0,'Agoraphobia: fear of public transportation, crowds, and places where escape seems hard.'],
+['anxiety','Priya refuses to give her class presentation because she\'s terrified the other students will judge her. She most likely has:',['Social anxiety disorder','Panic disorder','Agoraphobia','GAD'],0,'Social anxiety disorder = fear of being scrutinized or judged.'],
 ['mood','For the past three weeks, Dana has felt sad nearly every day, lost interest in soccer, and can\'t sleep. She most likely has:',['Major depressive disorder','Persistent depressive disorder','Bipolar II','GAD'],0,'MDD = symptoms for 2+ weeks. Persistent depressive disorder needs 2+ years.'],
 ['mood','For a week, Tom barely slept, talked very fast, felt invincible, and spent all his savings. Earlier he had long periods of depression. He most likely has:',['Bipolar disorder','Persistent depressive disorder','ADHD','GAD'],0,'Mania plus depression = bipolar disorder.'],
 ['mood','A patient has hypomanic episodes and depression but no hallucinations or delusions. Which diagnosis fits?',['Bipolar II','Bipolar I','Schizophrenia','Major depressive disorder'],0,'Bipolar II: hypomania, no psychosis.'],
@@ -1296,7 +1298,6 @@ const EXAM = [
 ['anxiety','Which of the following is a cognitive symptom of agoraphobia?',['Intense fear of being trapped or unable to escape','Sweating and tremors','Staying home','Rapid heartbeat'],0,'Sweating, tremors, and rapid heartbeat are physical; staying home is behavioral.'],
 ['anxiety','A child becomes terrified of dogs after watching her mother scream every time a dog walks by. Which cause of anxiety disorders does this show?',['Behavioral (modeling)','Biological','Genetic','Cognitive'],0,'Behavioral causes include modeling anxiety responses from others.'],
 ['anxiety','Which neurotransmitter imbalances do your slides link to anxiety disorders?',['Serotonin and GABA','Dopamine and glutamate','Acetylcholine and endorphins','Melatonin and leptin'],0,'Biological cause: imbalances in serotonin and GABA, plus hormonal imbalances.'],
-['anxiety','Which phobia is correctly matched with what is feared?',['Trypanophobia — needles','Acrophobia — spiders','Cynophobia — flying','Arachnophobia — dentists'],0,'Acrophobia = heights, cynophobia = dogs, arachnophobia = spiders.'],
 
 ['mood','Which of the following best describes depressive disorders?',['A sad, empty, or irritable mood with physical and cognitive changes that affect functioning','A temporary bad mood after a disappointment','Extreme mood swings between mania and depression','Persistent fear of social situations'],0,'Depression is a mental health condition, not just a temporary mood swing.'],
 ['mood','What is the key time difference between major depressive disorder and persistent depressive disorder?',['MDD lasts 2+ weeks; persistent depressive disorder lasts 2+ years','MDD lasts 2+ years; persistent lasts 2+ weeks','Both last 6 months','There is no time requirement'],0,'MDD = 2 weeks. Persistent = 2 years.'],
@@ -1693,17 +1694,20 @@ function finishTest(){
 /* ---------- Learn (guided lessons) ---------- */
 const LESSONS=[];
 DECKS.forEach(d=>{
-  const cs=CARDS.filter(c=>c.d===d.id);
+  const cs=ALL_CARDS.filter(c=>c.d===d.id);
   [...new Set(cs.map(c=>c.s))].forEach(s=>{
-    const sc=cs.filter(c=>c.s===s), n=Math.ceil(sc.length/5), size=Math.ceil(sc.length/n);
-    for(let k=0;k<n;k++) LESSONS.push({d:d.id,s,part:n>1?`part ${k+1} of ${n}`:'',ids:sc.slice(k*size,(k+1)*size).map(c=>c.id)});
+    const sc=cs.filter(c=>c.s===s), n=Math.ceil(sc.length/5), size=Math.ceil(sc.length/n), start=LESSONS.length;
+    for(let k=0;k<n;k++){const ids=sc.slice(k*size,(k+1)*size).filter(c=>!HIDDEN.has(c.d+'|'+c.t)).map(c=>c.id); LESSONS.push({d:d.id,s,part:'',ids,skip:!ids.length})}
+    const live=LESSONS.slice(start).filter(l=>!l.skip);
+    if(live.length>1) live.forEach((l,k)=>l.part=`part ${k+1} of ${live.length}`);
   });
   LESSONS[LESSONS.length-1].checkpoint=true;
 });
 const CHAIN_AT={'neuron|Parts of a neuron':CHAINS.neuron[0],'neuron|Firing a neuron':CHAINS.neuron[1],'vision|The eye':CHAINS.vision[0],'senses|Hearing':CHAINS.senses[0],'sleep|Sleep & consciousness':CHAINS.sleep[0],'research|The scientific method':CHAINS.research[0],'health|General Adaptation Syndrome':CHAINS.health[0],'ocdptsd|OCD':CHAINS.ocdptsd[0]};
 // Optional lessons come after every core lesson, so saved lesson numbers stay the same.
-const CORE_LESSONS=DECK_VIEW.filter(d=>!d.opt).flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id)), LAST_CORE=CORE_LESSONS[CORE_LESSONS.length-1];
+const CORE_LESSONS=DECK_VIEW.filter(d=>!d.opt).flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id&&!LESSONS[i].skip)), LAST_CORE=CORE_LESSONS[CORE_LESSONS.length-1];
 if(S.li>=LESSONS.length) S.li=0;
+while(LESSONS[S.li].skip) S.li=(S.li+1)%LESSONS.length;
 const cardById=id=>CARDS.find(c=>c.id===id);
 
 function learnQ(item, lesson){
@@ -1762,11 +1766,11 @@ function renderLearn(){
   if(!S.L) S.L={phase:'teach'};
   const L=S.L;
   const coreDone=S.done.filter(i=>CORE_LESSONS.includes(i)).length, pct=Math.round(100*coreDone/CORE_LESSONS.length);
-  const optLs=LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===lesson.d);
+  const optLs=LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===lesson.d&&!LESSONS[i].skip);
   let h=`<div class="qbox" style="margin-bottom:14px;padding:14px 18px">
     <div class="qmeta" style="margin:0"><span class="label">${deck.opt?`Optional lesson ${optLs.indexOf(S.li)+1} of ${optLs.length}`:`Lesson ${CORE_LESSONS.indexOf(S.li)+1} of ${CORE_LESSONS.length}`} · ${coreDone} done</span><button class="btn small" data-act="l-map">${S.showMap?'Hide lesson map':'Lesson map'}</button></div>
     <div class="bar" style="margin-top:8px" aria-hidden="true"><i style="width:${pct}%"></i></div>
-    ${S.showMap?`<div style="margin-top:12px;display:grid;gap:14px">${DECK_VIEW.map((d,i)=>`${i===0||DECK_VIEW[i-1].unit!==d.unit?`<h3 style="margin-top:${i?8:0}px">${esc(unitById[d.unit].name)}</h3>`:''}<div><div class="label" style="margin-bottom:6px"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d.id)}"></span>${esc(d.name)}</div><div class="chips">${LESSONS.map((l,i)=>l.d===d.id?`<button class="chip" data-lesson="${i}" aria-pressed="${i===S.li}">${S.done.includes(i)?'✓ ':''}${esc(lessonTitle(i))}</button>`:'').join('')}</div></div>`).join('')}</div>`:''}
+    ${S.showMap?`<div style="margin-top:12px;display:grid;gap:14px">${DECK_VIEW.map((d,i)=>`${i===0||DECK_VIEW[i-1].unit!==d.unit?`<h3 style="margin-top:${i?8:0}px">${esc(unitById[d.unit].name)}</h3>`:''}<div><div class="label" style="margin-bottom:6px"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d.id)}"></span>${esc(d.name)}</div><div class="chips">${LESSONS.map((l,i)=>l.d===d.id&&!l.skip?`<button class="chip" data-lesson="${i}" aria-pressed="${i===S.li}">${S.done.includes(i)?'✓ ':''}${esc(lessonTitle(i))}</button>`:'').join('')}</div></div>`).join('')}</div>`:''}
   </div>`;
   const head=`<div class="deck-head"><span class="dot" style="${dotStyle(lesson.d)}"></span><span class="label">${esc(deck.name)}</span></div><h2 style="margin-bottom:4px">${esc(lessonTitle(S.li))}</h2>`;
 
@@ -1776,7 +1780,7 @@ function renderLearn(){
     chs.forEach(ch=>h+=`<div class="chain"><div class="label">${esc(ch.label)} · in order</div><ol>${ch.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol></div>`);
     if(lesson.d==='ns'&&lesson.s==='Divisions') h+=`<div class="chain"><div class="label">How the nervous system divides</div><div class="tree">${esc(TREE)}</div></div>`;
     h+=`<div class="rows">${lesson.ids.map(cardById).map(c=>`<div class="row" style="grid-template-columns:minmax(120px,190px) 1fr"><div class="t">${esc(c.t)}</div><div class="x">${esc(c.x)}${hookHtml(c)}</div></div>`).join('')}</div>`;
-    if(LESSONS.filter(l=>l.d===lesson.d&&l.s===lesson.s).pop()===lesson) h+=tableHtml(lesson.d+'|'+lesson.s);
+    if(LESSONS.filter(l=>l.d===lesson.d&&l.s===lesson.s&&!l.skip).pop()===lesson) h+=tableHtml(lesson.d+'|'+lesson.s);
     if(lesson.checkpoint) (WATCH[lesson.d]||[]).forEach(w=>h+=`<div class="watch"><b>Heads up</b>${esc(w)}</div>`);
     if(lesson.checkpoint) h+=`<p class="deck-sub" style="margin-top:14px">This is the last lesson in ${esc(deck.name)}, so the quiz ends with scenario questions on the whole deck.</p>`;
     h+=`<div class="qnav"><button class="btn primary" data-act="l-quiz">I've read them. Quiz me</button></div></div>`;
@@ -1794,7 +1798,7 @@ function renderLearn(){
   else {
     const missed=[...L.missedIds].map(cardById), allDone=coreDone===CORE_LESSONS.length;
     // Next core lesson in study order; optional lessons are offered as a side button, never in the way.
-    const order=DECK_VIEW.flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id)), pos=order.indexOf(S.li);
+    const order=DECK_VIEW.flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id&&!LESSONS[i].skip)), pos=order.indexOf(S.li);
     const nextIdx=order.slice(pos+1).find(i=>!deckById[LESSONS[i].d].opt||deck.opt), last=nextIdx===undefined;
     const optStart=!deck.opt?LESSONS.findIndex(l=>deckById[l.d].opt):-1;
     const optNext=S.li===LAST_CORE&&optStart>=0?`<button class="btn" data-lesson="${optStart}">Optional: ${esc(deckById[LESSONS[optStart].d].name.replace(/^Optional: /,''))}</button>`:'';
@@ -1868,7 +1872,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.lesson!==undefined){startLesson(+t.dataset.lesson);return}
   if(t.dataset.lopt!==undefined){learnPick(+t.dataset.lopt);return}
   if(t.dataset.deck){S.deck=t.dataset.deck;store.set('ps1-deck',S.deck);S.fc=null;S.quiz=null;
-    if(S.tab==='learn'&&S.deck!=='all'){const ls=DECK_VIEW.filter(d=>deckIn(d.id)&&(!d.opt||S.deck===d.id)).flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id));startLesson(ls.find(i=>!S.done.includes(i))??ls[0]);renderChips();return}
+    if(S.tab==='learn'&&S.deck!=='all'){const ls=DECK_VIEW.filter(d=>deckIn(d.id)&&(!d.opt||S.deck===d.id)).flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id&&!LESSONS[i].skip));startLesson(ls.find(i=>!S.done.includes(i))??ls[0]);renderChips();return}
     render();return}
   if(t.dataset.act&&t.dataset.act.startsWith('l-')){
     const a=t.dataset.act;
