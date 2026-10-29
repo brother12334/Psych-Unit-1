@@ -1543,6 +1543,14 @@ const UMBRELLA=['nt|Neurotransmitter','sleep|Psychoactive drugs','sleep|Four cat
  'ocdptsd|Trauma- and stressor-related disorders','eating|Feeding & eating disorders','eating|The two to know','personality|Personality disorders',
  'personality|Three clusters','treatment|Psychotherapy','treatment|Biomedical therapy','treatment|Psychotropic medications','treatment|Behavioral therapies',
  'treatment|Psychodynamic therapies','perspectives|Psychological perspectives','perspectives|The 7 perspectives','perception|Extrasensory perception (ESP)'];
+// Symptom lists that could describe more than one disorder: every symptom card vs every disorder in the list.
+[
+ [['mood|Symptoms of major depressive disorder','mood|Depressive episode (bipolar)'],['mood|Major depressive disorder (MDD)','mood|Persistent depressive disorder','mood|Depressive disorders','mood|Bipolar I','mood|Bipolar II']],
+ [['anxiety|Symptoms of specific phobias','anxiety|Symptoms of agoraphobia','anxiety|Symptoms of panic disorder','anxiety|Symptoms of social anxiety disorder','anxiety|Symptoms of GAD'],
+  ['anxiety|Specific phobia','anxiety|Agoraphobia','anxiety|Panic disorder','anxiety|Social anxiety disorder (social phobia)','anxiety|Generalized anxiety disorder (GAD)']],
+ [['eating|Signs of anorexia','eating|Signs of bulimia','eating|Binge eating episode'],['eating|Anorexia nervosa','eating|Bulimia nervosa']],
+ [['dissoc|Symptoms of dissociative disorders','dissoc|Symptoms of dissociative amnesia','dissoc|Symptoms of DID'],['dissoc|Dissociative amnesia','dissoc|Dissociative identity disorder (DID)','dissoc|Fugue state','dissoc|Alters']],
+].forEach(([A,B])=>A.forEach(x=>B.forEach(y=>{PAIR_KEYS.add(x);PAIR_KEYS.add(y);PAIRS.add(x+'~'+y);PAIRS.add(y+'~'+x)})));
 UMBRELLA.forEach(k=>{const d=k.split('|')[0]; PAIR_KEYS.add(k); ALL_CARDS.filter(c=>c.d===d).forEach(c=>{const o=c.d+'|'+c.t; if(o!==k){PAIRS.add(k+'~'+o);PAIRS.add(o+'~'+k)}})});
 [
  ['*','sleep|Antagonist','sleep|Reuptake inhibitor'],
