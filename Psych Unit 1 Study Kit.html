@@ -1498,13 +1498,137 @@ function fcAnswer(got){
 }
 
 /* ---------- Quiz ---------- */
+/* Distractor safety: never offer a wrong answer that is about the same thing as the right one
+   (a disorder and its symptoms, a term and a card that names it, near-identical definitions). */
+const STOP=new Set('the a an and or of to in on for with by is are be as at it its that this from your you can when which who their they them not no than more most like such'.split(' '));
+function aliases(t, full){
+  t=t.toLowerCase(); const out=new Set();
+  (t.match(/\(([^)]+)\)/g)||[]).forEach(m=>out.add(m.slice(1,-1).trim()));
+  let core=t.replace(/\([^)]*\)/g,' ').replace(/\s+/g,' ').trim().replace(/^(symptoms|signs|causes?|results|health risks|other) of /,'').replace(/^(the|other) /,'');
+  out.add(core); if(!full) core.split(/:| vs\.? | and /).forEach(x=>out.add(x.trim()));
+  // drop a plural s so "Bipolar disorders" also matches "bipolar disorder"
+  return [...out].map(x=>x.replace(/^(symptoms|signs|causes?) of /,'').trim().replace(/([^si])s$/,'$1')).filter(x=>x.length>=3&&!STOP.has(x));
+}
+const hasWord=(hay,w)=>new RegExp('(^|[^a-z0-9])'+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(s|es)?([^a-z0-9]|$)').test(hay);
+const CARD_INFO=new Map();
+const info=c=>{let v=CARD_INFO.get(c.id); if(!v){v={main:aliases(c.t,true),t:c.t.toLowerCase(),x:c.x.toLowerCase()}; CARD_INFO.set(c.id,v)} return v};
+// A card whose definition names 3+ other cards in its deck is a summary/list card.
+const listed=c=>{const I=info(c); if(I.list===undefined) I.list=CARDS.filter(o=>o.d===c.d&&o.id!==c.id&&info(o).main.some(w=>hasWord(I.x,w)));return I.list};
+const PAIR_KEYS=new Set();
+function related(a,b){
+  if(a.id===b.id) return true;
+  const ka=a.d+'|'+a.t, kb=b.d+'|'+b.t;
+  if(PAIRS.has(ka+'~'+kb)) return true;
+  // Same approach across topics ("Psychodynamic perspective" / "Psychodynamic explanation")
+  const fa=a.t.toLowerCase().split(/[\s&]/)[0], fb=b.t.toLowerCase().split(/[\s&]/)[0];
+  if(fa===fb&&APPROACH.has(fa)&&a.d!==b.d) return true;
+  const A=info(a), B=info(b);
+  // one card is about the other: its full name is inside the other's name ("GAD" / "Symptoms of GAD")
+  const general=GENERAL.has(ka)!==GENERAL.has(kb);
+  if(!general&&(A.main.some(w=>hasWord(B.t,w))||B.main.some(w=>hasWord(A.t,w)))) return true;
+  // a list card and one of the things it lists
+  const la=listed(a), lb=listed(b);
+  return (la.length>=3&&la.includes(b))||(lb.length>=3&&lb.includes(a));
+}
+const APPROACH=new Set(['psychodynamic','cognitive','behavioral','humanistic','biological','evolutionary','sociocultural']);
+// Cards named after the whole deck; they'd otherwise clash with every specific disorder.
+const GENERAL=new Set(['personality|Personality disorders','personality|Causes of personality disorders']);
+// Hand-checked pairs the rules above can't see. ['hub', ...] = hub vs each of the others; ['*', ...] = every pair.
+const PAIRS=new Set();
+[
+ ['*','sleep|Antagonist','sleep|Reuptake inhibitor'],
+ ['*','research|Correlational research','research|Correlation'],
+ ['research|APA ethical guidelines','research|No long-term harm','research|Institutional approval'],
+ ['*','perspectives|The 7 perspectives','perspectives|Perspective keywords'],
+ ['*','health|Tend-and-befriend theory','health|Befriending','health|Tending'],
+ ['*','anxiety|Symptoms of specific phobias','anxiety|Symptoms of agoraphobia','anxiety|Symptoms of panic disorder','anxiety|Symptoms of social anxiety disorder'],
+ ['*','mood|Symptoms of major depressive disorder','mood|Depressive episode (bipolar)'],
+ ['*','dissoc|Symptoms of dissociative disorders','dissoc|Symptoms of DID','dissoc|Alters','dissoc|Dissociative identity disorder (DID)'],
+ ['ocdptsd|Obsessive-compulsive & related disorders','ocdptsd|Excoriation disorder','ocdptsd|Trichotillomania','ocdptsd|Their own DSM-5 category','ocdptsd|Hoarding disorder','ocdptsd|OCD'],
+ ['*','ocdptsd|Trauma- and stressor-related disorders','ocdptsd|Cause of trauma disorders'],
+ ['*','personality|Personality disorders','personality|Causes of personality disorders','personality|Three clusters'],
+ ['personality|Cluster A','personality|Paranoid personality disorder','personality|Schizoid personality disorder','personality|Schizotypal personality disorder'],
+ ['personality|Cluster B','personality|Antisocial personality disorder','personality|Histrionic personality disorder','personality|Narcissistic personality disorder','personality|Borderline personality disorder'],
+ ['personality|Cluster C','personality|Avoidant personality disorder','personality|Dependent personality disorder','personality|Obsessive-compulsive personality disorder'],
+ ['*','personality|Three clusters','personality|Cluster A','personality|Cluster B','personality|Cluster C'],
+ ['*','nt|SSRI','treatment|Antidepressants'],
+ ['*','sleep|Benzodiazepines','treatment|Anti-anxiety medications'],
+ ['*','sleep|Barbiturates / sedatives','treatment|Anti-anxiety medications'],
+ ['*','research|Confidentiality','treatment|Confidentiality (cardinal rule)','treatment|Respect for rights and dignity'],
+ ['*','stats|Meta-analysis','treatment|Is psychotherapy effective?'],
+ ['*','ocdptsd|OCD','personality|Obsessive-compulsive personality disorder'],
+ ['*','perspectives|Psychodynamic perspective','disorders|Psychodynamic explanation','treatment|Psychodynamic therapies','treatment|Free association','treatment|Dream interpretation'],
+ ['*','perspectives|Humanistic perspective','disorders|Humanistic explanation','treatment|Person-centered (client-centered) therapy'],
+ ['*','perspectives|Behavioral perspective','disorders|Behavioral explanation','treatment|Behavioral therapies'],
+ ['*','perspectives|Cognitive perspective','disorders|Cognitive explanation','treatment|Cognitive therapy'],
+ // Unit 1
+ ['brain|Brainstem','brain|Medulla','brain|Pons','brain|Reticular formation'],
+ ['*','brain|Broca\'s area','brain|Broca\'s aphasia'],
+ ['*','brain|Wernicke\'s area','brain|Wernicke\'s aphasia'],
+ ['*','brain|Temporal lobe','brain|Primary auditory cortex'],
+ ['*','brain|Parietal lobe','brain|Somatosensory cortex'],
+ ['*','brain|Occipital lobe','vision|Primary visual cortex'],
+ ['*','vision|Lens','vision|Accommodation'],
+ ['*','vision|Ganglion cells','vision|Optic nerve'],
+ ['*','vision|Opponent-process theory','vision|Afterimage'],
+ ['vision|Which color theory is right?','vision|Trichromatic theory','vision|Opponent-process theory'],
+ ['vision|Binocular cues','vision|Retinal disparity'],
+ ['vision|Monocular cues','vision|Relative size','vision|Interposition','vision|Linear perspective','vision|Relative clarity'],
+ ['vision|Gestalt','vision|Proximity','vision|Similarity','vision|Closure','vision|Figure-ground'],
+ ['sleep|Hallucinogens','sleep|LSD','sleep|THC','sleep|Ecstasy (MDMA)'],
+ ['*','sleep|Amphetamines','sleep|Ecstasy (MDMA)'],
+ // Perception
+ ['*','perception|Selective attention','perception|Cocktail party effect','perception|Hearing your name'],
+ ['perception|Top-down processing','perception|Reading scrambled words','perception|The handwriting example'],
+ ['perception|Bottom-up processing','perception|The handwriting example'],
+ ['*','perception|Difference threshold (just noticeable difference)','perception|JND example'],
+ // Unit 0
+ ['research|Three types of research','research|Descriptive research','research|Correlational research','research|Experimental research'],
+ ['*','research|Social desirability bias','research|Self-report bias'],
+ ['*','research|Wording effects (framing)','research|Survey: pros and cons'],
+ ['*','research|Why ethics guidelines exist','research|APA ethical guidelines'],
+ ['*','research|Voluntary participation','research|Informed consent'],
+ ['*','stats|Frequency distribution','stats|Histogram'],
+ ['stats|Measures of variation','stats|Range','stats|Standard deviation'],
+ ['*','stats|Statistical significance','stats|P-value'],
+ ['stats|The mean follows the tail','stats|Positive skew','stats|Negative skew','stats|Skewed distribution'],
+ // Unit 5
+ ['health|General Adaptation Syndrome (GAS)','health|Alarm stage','health|Resistance stage','health|Exhaustion stage'],
+ ['*','mood|Hypomanic episode','mood|Bipolar II'],
+ ['*','neurodev|Teratogens','neurodev|Causes of neurodevelopmental disorders'],
+ ['*','dissoc|Fugue state','dissoc|Symptoms of dissociative amnesia'],
+ ['*','schizo|Disorganized thinking/speech','schizo|Word salad'],
+ ['schizo|Negative symptoms','schizo|Flat affect','schizo|Catatonic stupor'],
+ ['*','ocdptsd|Hypervigilance','ocdptsd|Symptoms of PTSD'],
+ ['*','eating|Bulimia nervosa','eating|Binge eating episode'],
+ ['*','eating|Signs of anorexia','eating|Signs of bulimia'],
+ ['*','treatment|Lobotomies in history','treatment|Lobotomy'],
+ ['treatment|Biomedical therapy','treatment|Pharmacology','treatment|Psychotropic medications'],
+ ['*','treatment|Person-centered (client-centered) therapy','treatment|Non-directive therapy','treatment|Active listening'],
+ ['*','treatment|Unconditional positive regard','treatment|Empathy, congruence, UPR'],
+ ['treatment|Cognitive therapy','treatment|Cognitive restructuring','treatment|Fear hierarchy'],
+ ['*','treatment|Cognitive restructuring','treatment|Socratic questioning'],
+ ['*','treatment|Beck\'s cognitive theory of depression','treatment|Negative cognitive triad'],
+ ['*','treatment|Exposure therapy','treatment|Systematic desensitization','treatment|Fear hierarchy'],
+ ['*','treatment|Aversion therapy','treatment|Antabuse'],
+ ['treatment|Cognitive behavioral therapy (CBT)','treatment|Dialectical behavior therapy (DBT)','treatment|Rational emotive behavior therapy (REBT)'],
+ ['treatment|Modes of therapy','treatment|Group therapy','treatment|Individual therapy'],
+].forEach(g=>{const hub=g[0]==='*'?null:g[0], rest=g.slice(1), all=hub?[hub,...rest]:rest;
+  const add=(x,y)=>{PAIRS.add(x+'~'+y);PAIRS.add(y+'~'+x)};
+  if(hub) rest.forEach(m=>add(hub,m)); else rest.forEach((x,i)=>rest.slice(i+1).forEach(y=>add(x,y)));
+  all.forEach(k=>PAIR_KEYS.add(k));});
+function safeDistractors(c, ordered, n){
+  const out=[], seen=new Set([c.id]);
+  for(const x of ordered){ if(out.length>=n) break; if(seen.has(x.id)) continue; seen.add(x.id);
+    if(related(c,x)||out.some(y=>related(x,y))) continue; out.push(x); }
+  return out;
+}
 function genQuestion(c, pool, nOpts){
   pool = (pool||cardsNow()).filter(x=>x.id!==c.id); nOpts = nOpts||4;
   const same = shuffle(pool.filter(x=>x.d===c.d&&x.s===c.s));
   const deck = shuffle(pool.filter(x=>x.d===c.d&&x.s!==c.s));
   const rest = shuffle(pool.filter(x=>x.d!==c.d)).concat(shuffle(CARDS.filter(x=>x.d!==c.d&&inAll(x.d))));
-  const seen = new Set([c.id]), distract = [];
-  same.concat(deck,rest).forEach(x=>{if(distract.length<nOpts-1&&!seen.has(x.id)){seen.add(x.id);distract.push(x)}});
+  const distract = safeDistractors(c, same.concat(deck,rest), nOpts-1);
   const dir = S.set.quizDir, reverse = dir==='term'?true:dir==='def'?false:Math.random()<0.3;
   const all = shuffle([c].concat(distract));
   return reverse
@@ -1516,7 +1640,7 @@ function tfQuestion(c, pool){
   let shown=c;
   if(Math.random()<0.5){
     const near=shuffle(pool.filter(x=>x.id!==c.id&&x.d===c.d&&x.s===c.s)).concat(shuffle(pool.filter(x=>x.id!==c.id&&x.d===c.d)),shuffle(pool.filter(x=>x.id!==c.id)));
-    shown=near.find(x=>x.x!==c.x)||c;
+    shown=near.find(x=>x.x!==c.x&&!related(c,x))||c;
   }
   return {kind:'card', type:'tf', card:c, ask:'True or false?', prompt:`${c.t}: ${shown.x}`, opts:['True','False'], ans:shown===c?0:1,
     exp:shown===c?`True. ${c.t}: ${c.x}`:`False. That describes ${shown.t}. ${c.t}: ${c.x}`};
@@ -1717,9 +1841,8 @@ function learnQ(item, lesson){
   }
   const c=cardById(item.id);
   const pick=(arr)=>shuffle(arr.filter(x=>x.id!==c.id));
-  const near=pick(lesson.ids.map(cardById)), sec=pick(CARDS.filter(x=>x.d===c.d&&x.s===c.s)), deck=pick(CARDS.filter(x=>x.d===c.d));
-  const seen=new Set(), distract=[];
-  near.concat(sec,deck).forEach(x=>{if(distract.length<3&&!seen.has(x.id)){seen.add(x.id);distract.push(x)}});
+  const near=pick(lesson.ids.map(cardById)), sec=pick(CARDS.filter(x=>x.d===c.d&&x.s===c.s)), deck=pick(CARDS.filter(x=>x.d===c.d)), rest=pick(CARDS.filter(x=>x.d!==c.d&&deckById[x.d].unit===deckById[c.d].unit));
+  const distract=safeDistractors(c, near.concat(sec,deck,rest), 3);
   const all=shuffle([c].concat(distract)), reverse=Math.random()<0.35;
   return {item,card:c,deck:c.d,ask:(item.review?'Review from earlier · ':'')+(reverse?'Which definition matches this term?':'Which term matches this definition?'),
     prompt:reverse?c.t:c.x, opts:all.map(x=>reverse?x.x:x.t), ans:all.indexOf(c)};
