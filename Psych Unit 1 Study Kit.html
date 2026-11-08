@@ -57,6 +57,8 @@ header.top{display:grid;gap:14px;margin-bottom:18px}
 .dot{width:9px;height:9px;border-radius:50%;flex:none}
 #chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}
 #chips .chip{flex:none}
+.unitpick{margin-bottom:14px;padding:12px 16px;display:grid;gap:8px}
+.unitpick .seg small{font-family:var(--mono);font-size:.7rem;opacity:.8}
 .chip.unit{font-weight:700;border-style:dashed}
 .unit-head{font-family:var(--display);font-size:1.7rem;font-weight:800;margin:6px 0 18px;padding-bottom:6px;border-bottom:2px solid var(--line)}
 .chip small{font-family:var(--mono);font-size:.7rem;opacity:.8;font-variant-numeric:tabular-nums}
@@ -1813,7 +1815,8 @@ function examCfg(n){
 }
 function renderExamCard(){
   const decks=S.test.decks.length?S.test.decks:DEF_TEST.decks, P=testPool(decks), total=P.exam.length+P.scen.length;
-  const names=decks.length===DECKS.length?'every topic':decks.length===DEF_TEST.decks.length&&DEF_TEST.decks.every(d=>decks.includes(d))?'all main topics':decks.map(d=>deckById[d].name).join(', ');
+  const unitHit=UNITS.find(u=>{const ud=scopeDecks(u.id);return ud.length===decks.length&&ud.every(d=>decks.includes(d))});
+  const names=unitHit?scopeLabel(unitHit.id):decks.length===DECKS.length?'every topic':decks.length===DEF_TEST.decks.length&&DEF_TEST.decks.every(d=>decks.includes(d))?'all main topics':decks.map(d=>deckById[d].name).join(', ');
   return `<div class="qbox setup" style="margin-bottom:16px;border-color:var(--accent)"><div><div class="label">Exam mode · hardest</div><h2 style="margin-top:6px">Practice exam</h2></div>
     <p>Questions written like the real unit test: scenarios, "which best describes," and answer choices built to trip you up. Answers are shown at the end, with an explanation of each trap. Covers ${esc(names)} (change topics in Build a test below).</p>
     <div class="toggle">${[15,30].filter(n=>n<total).map((n,i)=>`<button class="btn ${i?'':'primary'}" data-act="exam" data-n="${n}">${n} questions</button>`).join('')}<button class="btn ${total<=15?'primary':''}" data-act="exam" data-n="0">All ${total}</button></div></div>`;
@@ -1839,7 +1842,7 @@ function renderQuiz(){
   if(!Q){
     const scope = scopeName(S.deck);
     const last = store.get('ps1-qcount',15);
-    $('#view').innerHTML=`${S.quizNote?`<div class="watch" style="margin:0 0 14px"><b>Nothing to quiz</b>${esc(S.quizNote)}</div>`:''}${renderExamCard()}<div class="qbox setup"><div><div class="label">Quick quiz · ${esc(scope)}</div><h2 style="margin-top:6px">Test yourself</h2></div>
+    $('#view').innerHTML=`${scopePicker('quiz')}${S.quizNote?`<div class="watch" style="margin:0 0 14px"><b>Nothing to quiz</b>${esc(S.quizNote)}</div>`:''}${renderExamCard()}<div class="qbox setup"><div><div class="label">Quick quiz · ${esc(scope)}</div><h2 style="margin-top:6px">Test yourself</h2></div>
       <p>Each round mixes term questions (pulled first from cards you haven't marked “got it”) with scenario questions like the ones on AP tests. Anything you miss gets flagged so it comes back in flashcards.</p>
       <div class="toggle"><button class="btn primary" data-quiz="10">10 questions</button><button class="btn" data-quiz="20">20 questions</button><button class="btn" data-quiz="40">40 questions</button></div>
       <div class="toggle" style="align-items:center"><label for="qcount" style="color:var(--muted)">Custom:</label><input id="qcount" class="qcount" type="number" min="1" max="200" value="${+last||15}" inputmode="numeric"><button class="btn" data-act="customquiz">Start</button></div>
@@ -1967,14 +1970,34 @@ function finishLesson(){
   S.L.phase='summary'; renderLearn();
 }
 function lessonTitle(i){const l=LESSONS[i];return `${l.s}${l.part?` (${l.part})`:''}`}
+/* Study one unit (or everything) with one tap, in Learn and in Quiz. */
+const SCOPES=[{id:'all',name:'Everything'}].concat(UNITS.map(u=>({id:u.id,name:u.id==='u2'?'Perception':u.name})));
+const scopeLabel=id=>(SCOPES.find(x=>x.id===id)||{name:scopeName(id)}).name;
+const scopeLessons=sel=>DECK_VIEW.filter(d=>deckIn(d.id,sel)&&(!d.opt||sel===d.id)).flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id&&!LESSONS[i].skip));
+const scopeDecks=sel=>DECKS.filter(d=>(sel==='all'||d.unit===sel)&&!d.opt).map(d=>d.id);
+function scopePicker(kind){
+  return `<div class="qbox unitpick"><div class="label">${kind==='learn'?'Learn':'Quizzes &amp; tests on'}</div><div class="seg">${SCOPES.map(x=>{
+    let extra=''; if(kind==='learn'){const ls=scopeLessons(x.id); extra=` <small>${ls.filter(i=>S.done.includes(i)).length}/${ls.length}</small>`;}
+    return `<button class="btn small" data-scope-${kind}="${x.id}" aria-pressed="${S.deck===x.id}">${esc(x.name)}${extra}</button>`;}).join('')}</div></div>`;
+}
+function startScopeLearn(id){
+  S.deck=id; store.set('ps1-deck',id); S.fc=null; S.quiz=null;
+  const ls=scopeLessons(id); renderChips(); startLesson(ls.find(i=>!S.done.includes(i))??ls[0]);
+}
+function setQuizScope(id){
+  S.deck=id; store.set('ps1-deck',id); S.fc=null; S.quiz=null; S.quizNote='';
+  S.test.decks=scopeDecks(id); saveTest(); renderChips(); renderQuiz();
+}
 function renderLearn(){
   const lesson=LESSONS[S.li], deck=deckById[lesson.d];
   if(!S.L) S.L={phase:'teach'};
   const L=S.L;
-  const coreDone=S.done.filter(i=>CORE_LESSONS.includes(i)).length, pct=Math.round(100*coreDone/CORE_LESSONS.length);
+  const coreDone=S.done.filter(i=>CORE_LESSONS.includes(i)).length;
+  const scoped=S.deck!=='all'&&!deck.opt&&scopeLessons(S.deck).includes(S.li), SL=scoped?scopeLessons(S.deck):CORE_LESSONS;
+  const scopeDone=S.done.filter(i=>SL.includes(i)).length, pct=Math.round(100*scopeDone/SL.length);
   const optLs=LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===lesson.d&&!LESSONS[i].skip);
-  let h=`<div class="qbox" style="margin-bottom:14px;padding:14px 18px">
-    <div class="qmeta" style="margin:0"><span class="label">${deck.opt?`Optional lesson ${optLs.indexOf(S.li)+1} of ${optLs.length}`:`Lesson ${CORE_LESSONS.indexOf(S.li)+1} of ${CORE_LESSONS.length}`} · ${coreDone} done</span><button class="btn small" data-act="l-map">${S.showMap?'Hide lesson map':'Lesson map'}</button></div>
+  let h=scopePicker('learn')+`<div class="qbox" style="margin-bottom:14px;padding:14px 18px">
+    <div class="qmeta" style="margin:0"><span class="label">${deck.opt?`Optional lesson ${optLs.indexOf(S.li)+1} of ${optLs.length}`:`${scoped?esc(scopeLabel(S.deck))+' · ':''}Lesson ${SL.indexOf(S.li)+1} of ${SL.length}`} · ${scoped?scopeDone:coreDone} done</span><button class="btn small" data-act="l-map">${S.showMap?'Hide lesson map':'Lesson map'}</button></div>
     <div class="bar" style="margin-top:8px" aria-hidden="true"><i style="width:${pct}%"></i></div>
     ${S.showMap?`<div style="margin-top:12px;display:grid;gap:14px">${DECK_VIEW.map((d,i)=>`${i===0||DECK_VIEW[i-1].unit!==d.unit?`<h3 style="margin-top:${i?8:0}px">${esc(unitById[d.unit].name)}</h3>`:''}<div><div class="label" style="margin-bottom:6px"><span class="dot" style="display:inline-block;margin-right:6px;${dotStyle(d.id)}"></span>${esc(d.name)}</div><div class="chips">${LESSONS.map((l,i)=>l.d===d.id&&!l.skip?`<button class="chip" data-lesson="${i}" aria-pressed="${i===S.li}">${S.done.includes(i)?'✓ ':''}${esc(lessonTitle(i))}</button>`:'').join('')}</div></div>`).join('')}</div>`:''}
   </div>`;
@@ -2004,15 +2027,16 @@ function renderLearn(){
   else {
     const missed=[...L.missedIds].map(cardById), allDone=coreDone===CORE_LESSONS.length;
     // Next core lesson in study order; optional lessons are offered as a side button, never in the way.
-    const order=DECK_VIEW.flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id&&!LESSONS[i].skip)), pos=order.indexOf(S.li);
+    const order=scoped?SL:DECK_VIEW.flatMap(d=>LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].d===d.id&&!LESSONS[i].skip)), pos=order.indexOf(S.li);
     const nextIdx=order.slice(pos+1).find(i=>!deckById[LESSONS[i].d].opt||deck.opt), last=nextIdx===undefined;
     const optStart=!deck.opt?LESSONS.findIndex(l=>deckById[l.d].opt):-1;
     const optNext=S.li===LAST_CORE&&optStart>=0?`<button class="btn" data-lesson="${optStart}">Optional: ${esc(deckById[LESSONS[optStart].d].name.replace(/^Optional: /,''))}</button>`:'';
     h+=`<div class="qbox">${head}<div class="score" style="font-size:2.4rem">${L.first}/${L.firstTotal}</div><p class="deck-sub">right on the first try.${missed.length?' The terms below gave you trouble. They\'ll show up again as review questions in later lessons.':' Clean lesson.'}</p>
       ${missed.length?`<div class="missed">${missed.map(c=>`<div><b>${esc(c.t)}</b>: ${esc(c.x)}</div>`).join('')}</div>`:''}
       ${L.scenMiss.length?`<div class="missed" style="margin-top:8px">${L.scenMiss.map(q=>`<div>${esc(q.prompt)} <b>${esc(q.opts[q.ans])}</b>. ${esc(q.exp)}</div>`).join('')}</div>`:''}
-      ${allDone&&last?`<div class="watch" style="margin-top:16px"><b>You finished every lesson.</b>Now take a 40-question mixed quiz on everything and retry what you miss.</div>`:''}
-      <div class="qnav" style="gap:8px;flex-wrap:wrap"><button class="btn" data-act="l-redo">Redo this lesson</button>${last?`${optNext}<button class="btn primary" data-act="l-final">Take the final mixed quiz</button>`:`<button class="btn primary" data-lesson="${nextIdx}">Next lesson: ${esc(lessonTitle(nextIdx))}</button>`}</div></div>`;
+      ${scoped&&last?`<div class="watch" style="margin-top:16px"><b>End of ${esc(scopeLabel(S.deck))}.</b>${scopeDone===SL.length?'You finished every lesson in it. ':`${SL.length-scopeDone} lesson${SL.length-scopeDone>1?'s':''} in it ${SL.length-scopeDone>1?'are':'is'} still unfinished (see the lesson map). `}Test yourself on the whole unit.</div>`:''}
+      ${!scoped&&allDone&&last?`<div class="watch" style="margin-top:16px"><b>You finished every lesson.</b>Now take a 40-question mixed quiz on everything and retry what you miss.</div>`:''}
+      <div class="qnav" style="gap:8px;flex-wrap:wrap"><button class="btn" data-act="l-redo">Redo this lesson</button>${last&&scoped?`<button class="btn" data-act="l-scopeexam">${esc(scopeLabel(S.deck))} practice exam</button><button class="btn primary" data-act="l-scopequiz">Take a ${esc(scopeLabel(S.deck))} quiz</button>`:last?`${optNext}<button class="btn primary" data-act="l-final">Take the final mixed quiz</button>`:`<button class="btn primary" data-lesson="${nextIdx}">Next lesson: ${esc(lessonTitle(nextIdx))}</button>`}</div></div>`;
   }
   $('#view').innerHTML=h;
 }
@@ -2075,6 +2099,8 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('button'); if(!t) return;
   if(t.dataset.tab){S.tab=t.dataset.tab;store.set('ps1-tab2',S.tab);render();window.scrollTo({top:0});return}
   if(t.dataset.goto){S.tab=t.dataset.goto;store.set('ps1-tab2',S.tab);if(S.tab==='cards')S.fc=null;if(S.tab==='quiz')S.quiz=null;render();return}
+  if(t.dataset.scopeLearn){startScopeLearn(t.dataset.scopeLearn);return}
+  if(t.dataset.scopeQuiz){setQuizScope(t.dataset.scopeQuiz);return}
   if(t.dataset.lesson!==undefined){startLesson(+t.dataset.lesson);return}
   if(t.dataset.lopt!==undefined){learnPick(+t.dataset.lopt);return}
   if(t.dataset.deck){S.deck=t.dataset.deck;store.set('ps1-deck',S.deck);S.fc=null;S.quiz=null;
@@ -2087,6 +2113,8 @@ document.addEventListener('click',e=>{
     else if(a==='l-next'){nextLearnQ()}
     else if(a==='l-nextlesson'){startLesson(S.li+1)}
     else if(a==='l-redo'){startLesson(S.li)}
+    else if(a==='l-scopequiz'){S.tab='quiz';store.set('ps1-tab2','quiz');setQuizScope(S.deck);render();startQuiz(30);window.scrollTo({top:0})}
+    else if(a==='l-scopeexam'){const sc=S.deck;S.tab='quiz';store.set('ps1-tab2','quiz');setQuizScope(sc);render();startTest(examCfg(30));window.scrollTo({top:0})}
     else if(a==='l-final'){S.deck='all';store.set('ps1-deck','all');S.tab='quiz';store.set('ps1-tab2','quiz');render();startQuiz(40)}
     return;
   }
